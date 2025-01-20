@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: seutempo
+  datasource:
+    url: ${db-name}
+    username: ${db-username}
+    password: ${db-password}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
