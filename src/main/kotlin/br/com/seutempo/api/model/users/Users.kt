@@ -33,8 +33,8 @@ data class Users(
     val cpf: String,
     @Column(name = "phone")
     val phone: String,
-    @Column(name = "photoUser")
-    val photoUser: String?,
+    @Column(name = "photo_user")
+    val photoUser: String? = null,
     @Column(name = "date_anniversary")
     val dateAnniversary: LocalDate,
     @Column(name = "created_at")
