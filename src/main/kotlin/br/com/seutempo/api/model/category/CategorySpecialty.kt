@@ -14,7 +14,7 @@ import jakarta.persistence.Table
 data class CategorySpecialty(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int? = null,
     @OneToMany
     @JoinColumn(name = "id_category")
     val idCategory: List<Category>,
