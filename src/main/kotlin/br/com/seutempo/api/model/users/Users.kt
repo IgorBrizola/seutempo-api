@@ -1,5 +1,7 @@
 package br.com.seutempo.api.model.users
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -7,12 +9,17 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Inheritance
+import jakarta.persistence.InheritanceType
 import jakarta.persistence.Table
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class Users(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +37,7 @@ data class Users(
     @Column(name = "phone")
     val phone: String,
     @Column(name = "photoUser")
-    val photoUser: String,
+    val photoUser: String?,
     @Column(name = "date_anniversary")
     val dateAnniversary: LocalDate,
     @Column(name = "created_at")
