@@ -4,6 +4,6 @@ import br.com.seutempo.api.repository.professional.ProfessionalSpecialtyReposito
 import org.springframework.stereotype.Service
 
 @Service
-class ProfessionalSpecialty(
+class ProfessionalSpecialtyService(
     private val professionalSpecialtyRepository: ProfessionalSpecialtyRepository,
 )
