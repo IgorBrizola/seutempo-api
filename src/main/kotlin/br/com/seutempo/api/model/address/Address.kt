@@ -18,7 +18,7 @@ import jakarta.persistence.Table
 data class Address(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int? = null,
     @Column(name = "cep")
     val cep: String?,
     @Column(name = "state")
