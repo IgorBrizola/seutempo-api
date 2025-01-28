@@ -9,6 +9,8 @@ import java.util.Optional
 interface UsersRepository : JpaRepository<Users, Int> {
     fun existsByEmailAndActiveIsTrue(email: String): Boolean
 
+    fun existsByCpfAndActiveIsTrue(cpf: String): Boolean
+
     fun findByIdAndActiveIsTrue(id: Int): Optional<Users>
 
     fun findAllByActiveIsTrue(): List<Users>
