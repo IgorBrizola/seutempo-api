@@ -1,10 +1,9 @@
 package br.com.seutempo.api.service.professional
 
 import br.com.seutempo.api.exception.users.UserAlreadyExistsException
+import br.com.seutempo.api.mapper.users.UsersMapper
 import br.com.seutempo.api.model.professional.Professional
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
-import br.com.seutempo.api.model.users.TypeUser
-import br.com.seutempo.api.model.users.Users
 import br.com.seutempo.api.repository.professional.ProfessionalRepository
 import br.com.seutempo.api.repository.users.UsersRepository
 import br.com.seutempo.api.util.AppUtil.removeAccents
@@ -15,6 +14,7 @@ import kotlin.random.Random
 class ProfessionalService(
     private val professionalRepository: ProfessionalRepository,
     private val usersRepository: UsersRepository,
+    private val usersMapper: UsersMapper,
 ) {
     fun createUsersProfessional(newUsersProfessionalRequest: UsersProfessionalRequestNew) {
         if (usersRepository.existsByEmailAndActiveIsTrue(newUsersProfessionalRequest.email)) {
@@ -25,17 +25,7 @@ class ProfessionalService(
             throw UserAlreadyExistsException("User with cpf '${newUsersProfessionalRequest.cpf}' already exists.")
         }
 
-        val newUser =
-            Users(
-                name = newUsersProfessionalRequest.name,
-                lastName = newUsersProfessionalRequest.lastName,
-                email = newUsersProfessionalRequest.email,
-                password = newUsersProfessionalRequest.password,
-                cpf = newUsersProfessionalRequest.cpf,
-                phone = newUsersProfessionalRequest.phone,
-                dateAnniversary = newUsersProfessionalRequest.dateAnniversary,
-                typeUser = TypeUser.PROFESSIONAL,
-            )
+        val newUser = usersMapper.usersProfessionalRequestToUsers(newUsersProfessionalRequest)
 
         val user = usersRepository.save(newUser)
 
@@ -51,13 +41,12 @@ class ProfessionalService(
 
         val linkProfessional = if (existsUrlProfessional) urlProfessionalRandom else urlProfessional
 
-        val newProfessional =
+        professionalRepository.save(
             Professional(
                 user = user,
                 linkProfessional = linkProfessional,
                 valueHour = newUsersProfessionalRequest.valueHour,
-            )
-
-        professionalRepository.save(newProfessional)
+            ),
+        )
     }
 }

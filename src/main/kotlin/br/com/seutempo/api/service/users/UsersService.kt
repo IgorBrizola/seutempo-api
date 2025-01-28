@@ -14,6 +14,6 @@ class UsersService(
         usersRepository
             .findAll()
             .map { user ->
-                usersMapper.toResponseUser(user)
+                usersMapper.usersToUsersResponse(user)
             }
 }

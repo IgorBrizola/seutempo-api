@@ -1,7 +1,9 @@
 package br.com.seutempo.api.model.professional.request
 
+import br.com.seutempo.api.model.users.TypeUser
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class UsersProfessionalRequestNew(
     val name: String,
@@ -12,4 +14,6 @@ data class UsersProfessionalRequestNew(
     val phone: String,
     val dateAnniversary: LocalDate,
     val valueHour: BigDecimal,
+    val typeUser: TypeUser = TypeUser.PROFESSIONAL,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 )
