@@ -22,7 +22,7 @@ data class Professional(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_users")
     val user: Users,
     @Column(name = "link_professional")
     val linkProfessional: String,
