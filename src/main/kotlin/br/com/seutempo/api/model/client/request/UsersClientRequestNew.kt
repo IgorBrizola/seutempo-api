@@ -1,4 +1,4 @@
-package br.com.seutempo.api.model.users.request
+package br.com.seutempo.api.model.client.request
 
 import br.com.seutempo.api.model.address.request.AddressRequest
 import java.time.LocalDate
