@@ -18,13 +18,13 @@ class ClientService(
     private val addressRepository: AddressRepository,
 ) {
     fun createUsersClient(newUsersClientRequest: UsersClientRequestNew) {
-        val userExist = usersRepository.existsByEmailAndActiveIsTrue(newUsersClientRequest.email)
+        if (usersRepository.existsByEmailAndActiveIsTrue(newUsersClientRequest.email)) {
+            throw UserAlreadyExistsException("User with email '${newUsersClientRequest.email}' already exists.")
+        }
 
-        if (userExist) throw UserAlreadyExistsException("User with email '${newUsersClientRequest.email}' already exists.")
-
-        val cpfExist = usersRepository.existsByCpfAndActiveIsTrue(newUsersClientRequest.cpf)
-
-        if (cpfExist) throw UserAlreadyExistsException("User with cpf '${newUsersClientRequest.cpf}' already exists.")
+        if (usersRepository.existsByCpfAndActiveIsTrue(newUsersClientRequest.cpf)) {
+            throw UserAlreadyExistsException("User with cpf '${newUsersClientRequest.cpf}' already exists.")
+        }
 
         val newUser =
             Users(
