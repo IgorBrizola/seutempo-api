@@ -1,5 +1,6 @@
 package br.com.seutempo.api.model.address
 
+import br.com.seutempo.api.model.client.Client
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import jakarta.persistence.Column
@@ -9,6 +10,8 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -38,6 +41,9 @@ data class Address(
     @Column(name = "type_address")
     @Enumerated(EnumType.STRING)
     val typeAddress: TypeAddress?,
+    @ManyToOne
+    @JoinColumn(name = "id_client")
+    val client: Client,
 )
 
 enum class TypeAddress { RESIDENTIAL, COMMERCIAL }

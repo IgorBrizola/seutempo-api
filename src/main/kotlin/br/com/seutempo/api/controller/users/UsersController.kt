@@ -1,6 +1,6 @@
 package br.com.seutempo.api.controller.users
 
-import br.com.seutempo.api.model.users.request.UsersRequestNew
+import br.com.seutempo.api.model.users.request.UsersClientRequestNew
 import br.com.seutempo.api.model.users.response.UsersResponse
 import br.com.seutempo.api.service.users.UsersService
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ class UsersController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun registerUsers(
-        @RequestBody usersRequestNew: UsersRequestNew,
-    ) = usersService.createUsers(usersRequestNew)
+    fun registerUsersClient(
+        @RequestBody usersRequestNew: UsersClientRequestNew,
+    ) = usersService.createUsersClient(usersRequestNew)
 }
