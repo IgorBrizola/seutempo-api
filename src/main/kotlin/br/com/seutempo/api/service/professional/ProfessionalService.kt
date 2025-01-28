@@ -17,13 +17,13 @@ class ProfessionalService(
     private val usersRepository: UsersRepository,
 ) {
     fun createUsersProfessional(newUsersProfessionalRequest: UsersProfessionalRequestNew) {
-        val userExist = usersRepository.existsByEmailAndActiveIsTrue(newUsersProfessionalRequest.email)
+        if (usersRepository.existsByEmailAndActiveIsTrue(newUsersProfessionalRequest.email)) {
+            throw UserAlreadyExistsException("User with email '${newUsersProfessionalRequest.email}' already exists.")
+        }
 
-        if (userExist) throw UserAlreadyExistsException("User with email '${newUsersProfessionalRequest.email}' already exists.")
-
-        val cpfExist = usersRepository.existsByCpfAndActiveIsTrue(newUsersProfessionalRequest.cpf)
-
-        if (cpfExist) throw UserAlreadyExistsException("User with cpf '${newUsersProfessionalRequest.cpf}' already exists.")
+        if (usersRepository.existsByCpfAndActiveIsTrue(newUsersProfessionalRequest.cpf)) {
+            throw UserAlreadyExistsException("User with cpf '${newUsersProfessionalRequest.cpf}' already exists.")
+        }
 
         val newUser =
             Users(
