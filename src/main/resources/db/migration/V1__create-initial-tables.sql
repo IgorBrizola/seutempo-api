@@ -12,25 +12,29 @@ CREATE TABLE users (
     type_user VARCHAR(50) NOT NULL,
     active BIT NOT NULL);
 
-    CREATE TABLE address (
-    id INT IDENTITY PRIMARY KEY,
-    cep VARCHAR(20),
-    state VARCHAR(50),
-    city VARCHAR(100),
-    neighborhood VARCHAR(100),
-    street VARCHAR(255),
-    number INT,
-    complement VARCHAR(50),
-    additional_address VARCHAR(255),
-    type_address VARCHAR(50));
 
-    CREATE TABLE client (
-    id INT IDENTITY PRIMARY KEY,
-    surname VARCHAR(255),
-    address INT NOT NULL,
-    id_users INT NOT NULL,
-    FOREIGN KEY (address) REFERENCES address(id),
-    FOREIGN KEY (id_users) REFERENCES users(id));
+  CREATE TABLE client (
+      id INT IDENTITY PRIMARY KEY,
+      surname VARCHAR(255),
+      id_users INT NOT NULL,
+      FOREIGN KEY (id_users) REFERENCES users(id)
+  );
+
+  CREATE TABLE address (
+      id INT IDENTITY PRIMARY KEY,
+      cep VARCHAR(20),
+      state VARCHAR(50),
+      city VARCHAR(100),
+      neighborhood VARCHAR(100),
+      street VARCHAR(255),
+      number INT,
+      complement VARCHAR(50),
+      additional_address VARCHAR(255),
+      type_address VARCHAR(50),
+      id_client INT,
+      FOREIGN KEY (id_client) REFERENCES client(id)
+  );
+
 
     CREATE TABLE professional (
     id INT IDENTITY PRIMARY KEY,
