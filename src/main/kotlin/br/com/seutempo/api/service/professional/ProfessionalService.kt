@@ -1,8 +1,8 @@
 package br.com.seutempo.api.service.professional
 
-import br.com.seutempo.api.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.mapper.users.UsersMapper
+import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
 import br.com.seutempo.api.model.users.Users
 import br.com.seutempo.api.repository.professional.ProfessionalRepository
