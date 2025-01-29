@@ -42,23 +42,15 @@ CREATE TABLE users (
     id_users INT NOT NULL,
     FOREIGN KEY (id_users) REFERENCES users(id));
 
-    CREATE TABLE specialty (
-       id INT IDENTITY PRIMARY KEY,
-       name_specialty VARCHAR(255) NOT NULL);
-
-
     CREATE TABLE category (
       id INT IDENTITY PRIMARY KEY,
       name_category VARCHAR(255) NOT NULL);
 
-
-    CREATE TABLE category_specialty (
+    CREATE TABLE specialty (
        id INT IDENTITY PRIMARY KEY,
+       name_specialty VARCHAR(255) NOT NULL,
        id_category INT NOT NULL,
-       id_specialty INT NOT NULL,
-       FOREIGN KEY (id_category) REFERENCES category(id),
-       FOREIGN KEY (id_specialty) REFERENCES specialty(id));
-
+       FOREIGN KEY (id_category) REFERENCES category(id));
 
      CREATE TABLE professional_specialty (
       id INT IDENTITY PRIMARY KEY,
