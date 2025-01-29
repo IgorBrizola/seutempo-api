@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ProfessionalRepository : JpaRepository<Professional, Int>
+interface ProfessionalRepository : JpaRepository<Professional, Int> {
+    fun existsByLinkProfessional(link: String): Boolean
+}

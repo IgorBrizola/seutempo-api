@@ -3,6 +3,7 @@ package br.com.seutempo.api.model.professional
 import br.com.seutempo.api.model.users.Users
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -21,8 +22,8 @@ data class Professional(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
-    @OneToOne
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = [CascadeType.ALL], optional = false)
+    @JoinColumn(name = "id_users")
     val user: Users,
     @Column(name = "link_professional")
     val linkProfessional: String,

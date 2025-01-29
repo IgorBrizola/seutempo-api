@@ -2,8 +2,6 @@ package br.com.seutempo.api.model.client
 
 import br.com.seutempo.api.model.address.Address
 import br.com.seutempo.api.model.users.Users
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonInclude
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -17,18 +15,15 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "client")
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class Client(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
-    @OneToOne
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = [CascadeType.ALL], optional = false)
+    @JoinColumn(name = "id_users")
     val user: Users,
+    @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val addresses: List<Address>?,
     @Column(name = "surname")
-    val surname: String?,
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "address")
-    val address: List<Address>,
+    val surname: String? = null,
 )
