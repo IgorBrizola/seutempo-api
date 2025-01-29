@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SpecialtyRepository : JpaRepository<Specialty, Int>
+interface SpecialtyRepository : JpaRepository<Specialty, Int> {
+    fun existsByNameSpecialty(nameSpecialty: String): Boolean
+}
