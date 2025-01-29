@@ -2,6 +2,7 @@ package br.com.seutempo.api.controller.exception
 
 import br.com.seutempo.api.model.exception.ErrorMessageModel
 import br.com.seutempo.api.model.exception.category.CategoryAlreadyExistsException
+import br.com.seutempo.api.model.exception.category.CategoryNotFoundException
 import br.com.seutempo.api.model.exception.specialty.SpecialtyAlreadyExistsException
 import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import org.springframework.http.HttpStatus
@@ -32,6 +33,17 @@ class ExceptionHandlerController {
                 ex.message,
             )
         return ResponseEntity(errorMessage, HttpStatus.CONFLICT)
+    }
+
+    @ExceptionHandler(CategoryNotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun handleCategoryNotFoundException(ex: CategoryNotFoundException): ResponseEntity<ErrorMessageModel> {
+        val errorMessage =
+            ErrorMessageModel(
+                HttpStatus.NOT_FOUND.value(),
+                ex.message,
+            )
+        return ResponseEntity(errorMessage, HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(SpecialtyAlreadyExistsException::class)
