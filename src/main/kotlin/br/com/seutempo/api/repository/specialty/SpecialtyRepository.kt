@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface SpecialtyRepository : JpaRepository<Specialty, Int> {
-    fun existsByNameSpecialty(nameSpecialty: String): Boolean
+    fun existsByNameSpecialtyAndCategoryId(
+        nameSpecialty: String,
+        categoryId: Int,
+    ): Boolean
 }
