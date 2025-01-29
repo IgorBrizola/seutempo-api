@@ -16,4 +16,5 @@ data class UsersProfessionalRequestNew(
     val valueHour: BigDecimal,
     val typeUser: TypeUser = TypeUser.PROFESSIONAL,
     val createdAt: LocalDateTime = LocalDateTime.now(),
+    val active: Boolean = true,
 )
