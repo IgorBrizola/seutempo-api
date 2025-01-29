@@ -3,7 +3,6 @@ package br.com.seutempo.api.service.client
 import br.com.seutempo.api.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.mapper.client.ClientMapper
 import br.com.seutempo.api.model.client.request.UsersClientRequestNew
-import br.com.seutempo.api.repository.address.AddressRepository
 import br.com.seutempo.api.repository.client.ClientRepository
 import br.com.seutempo.api.repository.users.UsersRepository
 import org.springframework.stereotype.Service
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional
 class ClientService(
     private val clientRepository: ClientRepository,
     private val usersRepository: UsersRepository,
-    private val addressRepository: AddressRepository,
     private val clientMapper: ClientMapper,
 ) {
     @Transactional
