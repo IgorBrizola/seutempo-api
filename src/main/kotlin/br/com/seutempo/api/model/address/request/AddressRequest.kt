@@ -10,6 +10,6 @@ data class AddressRequest(
     val street: String,
     val number: Int,
     val complement: String,
-    val additionalAddress: String,
+    val additionalAddress: String? = null,
     val typeAddress: TypeAddress,
 )
