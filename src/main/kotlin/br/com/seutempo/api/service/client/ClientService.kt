@@ -1,8 +1,8 @@
 package br.com.seutempo.api.service.client
 
-import br.com.seutempo.api.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.mapper.client.ClientMapper
 import br.com.seutempo.api.model.client.request.UsersClientRequestNew
+import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.repository.client.ClientRepository
 import br.com.seutempo.api.repository.users.UsersRepository
 import org.springframework.stereotype.Service
