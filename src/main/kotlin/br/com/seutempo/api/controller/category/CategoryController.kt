@@ -1,8 +1,13 @@
 package br.com.seutempo.api.controller.category
 
+import br.com.seutempo.api.model.category.request.CategoryNewRequest
 import br.com.seutempo.api.service.category.CategoryService
 import br.com.seutempo.api.service.category.CategorySpecialtyService
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -10,4 +15,10 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryController(
     private val categoryService: CategoryService,
     private val categorySpecialty: CategorySpecialtyService,
-)
+) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun createCategory(
+        @RequestBody categoryRequestNew: CategoryNewRequest,
+    ) = categoryService.createNewCategory(categoryRequestNew)
+}
