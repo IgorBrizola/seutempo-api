@@ -1,4 +1,4 @@
-package br.com.seutempo.api.exception.users
+package br.com.seutempo.api.model.exception.users
 
 class UserAlreadyExistsException(
     message: String,

@@ -1,4 +1,4 @@
-package br.com.seutempo.api.exception.users.request
+package br.com.seutempo.api.model.exception
 
 data class ErrorMessageModel(
     val status: Int? = null,
