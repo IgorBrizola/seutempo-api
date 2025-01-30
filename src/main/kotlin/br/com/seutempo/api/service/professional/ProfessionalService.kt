@@ -33,7 +33,7 @@ class ProfessionalService(
 
         val specialties =
             specialtyService
-                .listSpecialty(newUsersProfessionalRequest.specialtyIds)
+                .findSpecialtyByIds(newUsersProfessionalRequest.specialtyIds)
 
         val professional =
             professionalMapper.newUsersProfessionalRequestToProfessional(
