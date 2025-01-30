@@ -33,4 +33,6 @@ class SpecialtyService(
             ),
         )
     }
+
+    fun findSpecialtyByIds(specialtyIds: List<Int>): List<Specialty> = specialtyRepository.findAllById(specialtyIds)
 }
