@@ -31,6 +31,9 @@ CREATE TABLE users (
       complement VARCHAR(50),
       additional_address VARCHAR(255),
       type_address VARCHAR(50),
+      latitude DECIMAL(9,6),
+      longitude DECIMAL(9,6),
+      location GEOGRAPHY,
       id_client INT,
       FOREIGN KEY (id_client) REFERENCES client(id)
   );
@@ -39,6 +42,11 @@ CREATE TABLE users (
     id INT IDENTITY PRIMARY KEY,
     link_professional VARCHAR(255) NOT NULL,
     value_hour DECIMAL(10, 2) NOT NULL,
+    cep VARCHAR(9) NOT NULL,
+    latitude DECIMAL(9,6) NOT NULL,
+    longitude DECIMAL(9,6) NOT NULL,
+    service_radius_km INT NOT NULL,
+    location GEOGRAPHY NOT NULL,
     id_users INT NOT NULL,
     FOREIGN KEY (id_users) REFERENCES users(id));
 
@@ -58,3 +66,10 @@ CREATE TABLE users (
       id_specialty INT NOT NULL,
       FOREIGN KEY (id_professional) REFERENCES professional(id),
       FOREIGN KEY (id_specialty) REFERENCES specialty(id));
+
+
+    CREATE SPATIAL INDEX idx_professional_location
+    ON professional(location);
+
+    CREATE SPATIAL INDEX idx_address_location
+    ON address(location);
