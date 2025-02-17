@@ -2,6 +2,7 @@ package br.com.seutempo.api.mapper.professional
 
 import br.com.seutempo.api.model.professional.Professional
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
+import br.com.seutempo.api.model.professional.response.ProfessionalResponse
 import br.com.seutempo.api.model.specialty.Specialty
 import br.com.seutempo.api.model.users.Users
 import org.mapstruct.Mapper
@@ -26,4 +27,8 @@ interface ProfessionalMapper {
         linkProfessional: String,
         specialties: List<Specialty>,
     ): Professional
+
+    fun professionalToProfessionalResponse(professional: Professional): ProfessionalResponse
+
+    fun professionalResponseToProfessional(professionalResponse: ProfessionalResponse): Professional
 }

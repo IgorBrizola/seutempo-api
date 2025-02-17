@@ -4,7 +4,10 @@ import br.com.seutempo.api.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.mapper.users.UsersMapper
 import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
+import br.com.seutempo.api.model.professional.response.ProfessionalResponse
 import br.com.seutempo.api.model.users.Users
+import br.com.seutempo.api.model.users.response.UsersResponse
+import br.com.seutempo.api.model.users.response.UsersResponse.Companion.calcAge
 import br.com.seutempo.api.repository.professional.ProfessionalRepository
 import br.com.seutempo.api.repository.users.UsersRepository
 import br.com.seutempo.api.service.specialty.SpecialtyService
@@ -64,4 +67,58 @@ class ProfessionalService(
             throw UserAlreadyExistsException("User with cpf '${newUsersProfessionalRequest.cpf}' already exists.")
         }
     }
+
+    fun getProfessionalToClients(): List<ProfessionalResponse> =
+        professionalRepository
+            .findAll()
+            .map { item ->
+                ProfessionalResponse(
+                    user =
+                        UsersResponse(
+                            id = item.user.id,
+                            name = item.user.name,
+                            email = item.user.email,
+                            phone = item.user.phone,
+                            age = calcAge(item.user.dateAnniversary),
+                            typeUser = item.user.typeUser,
+                        ),
+                    linkProfessional = item.linkProfessional,
+                    valueHour = item.valueHour,
+                    cep = item.cep,
+                    lat = item.lat,
+                    lon = item.lon,
+                    serviceRadiusKm = item.serviceRadiusKm,
+                    specialties =
+                        specialtyService.getSpecialtyByProfessional(
+                            item.id,
+                        ),
+                )
+            }
+
+    fun getProfessionalBySpecialtyId(id: Int): List<ProfessionalResponse> =
+        professionalRepository
+            .findProfessionalBySpecialtiesId(id)
+            .map { item ->
+                ProfessionalResponse(
+                    user =
+                        UsersResponse(
+                            id = item.user.id,
+                            name = item.user.name,
+                            email = item.user.email,
+                            phone = item.user.phone,
+                            age = calcAge(item.user.dateAnniversary),
+                            typeUser = item.user.typeUser,
+                        ),
+                    linkProfessional = item.linkProfessional,
+                    valueHour = item.valueHour,
+                    cep = item.cep,
+                    lat = item.lat,
+                    lon = item.lon,
+                    serviceRadiusKm = item.serviceRadiusKm,
+                    specialties =
+                        specialtyService.getSpecialtyByProfessional(
+                            item.id,
+                        ),
+                )
+            }
 }
