@@ -1,9 +1,10 @@
 package br.com.seutempo.api.mapper.client
 
-import br.com.seutempo.api.model.address.Address
 import br.com.seutempo.api.model.client.Client
 import br.com.seutempo.api.model.client.request.UsersClientRequestNew
+import br.com.seutempo.api.model.client.response.AddressResponse
 import br.com.seutempo.api.model.users.Users
+import org.locationtech.jts.geom.Point
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
@@ -22,13 +23,6 @@ interface ClientMapper {
 
     @Mapping(source = "user", target = "user")
     @Mapping(source = "newUsersClientRequest.surname", target = "surname")
-    fun usersClientRequestToClient(
-        user: Users,
-        newUsersClientRequest: UsersClientRequestNew,
-    ): Client
-
-    fun addressToUsersClientRequest(address: Address): UsersClientRequestNew
-
     @Mapping(source = "newUsersClientRequest.address.cep", target = "cep")
     @Mapping(source = "newUsersClientRequest.address.state", target = "state")
     @Mapping(source = "newUsersClientRequest.address.city", target = "city")
@@ -38,9 +32,16 @@ interface ClientMapper {
     @Mapping(source = "newUsersClientRequest.address.complement", target = "complement")
     @Mapping(source = "newUsersClientRequest.address.additionalAddress", target = "additionalAddress")
     @Mapping(source = "newUsersClientRequest.address.typeAddress", target = "typeAddress")
-    @Mapping(source = "client", target = "client")
-    fun usersClientRequestToAddress(
+    @Mapping(source = "lat", target = "latitude")
+    @Mapping(source = "lon", target = "longitude")
+    @Mapping(source = "location", target = "location")
+    fun usersClientRequestToClient(
+        user: Users,
         newUsersClientRequest: UsersClientRequestNew,
-        client: Client,
-    ): Address
+        lat: Double,
+        lon: Double,
+        location: Point,
+    ): Client
+
+    fun toAddressResponse(client: Client): AddressResponse
 }
