@@ -14,6 +14,7 @@ import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import org.locationtech.jts.geom.Point
 import java.math.BigDecimal
 
 @Entity
@@ -44,6 +45,6 @@ data class Professional(
     val lon: BigDecimal,
     @Column(name = "service_radius_km")
     val serviceRadiusKm: Int,
-    @Column(name = "location")
-    val location: String,
+    @Column(name = "location", columnDefinition = "geography")
+    val location: Point,
 )

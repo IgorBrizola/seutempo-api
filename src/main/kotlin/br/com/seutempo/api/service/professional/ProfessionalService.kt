@@ -6,11 +6,11 @@ import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
 import br.com.seutempo.api.model.professional.response.ProfessionalResponse
 import br.com.seutempo.api.model.users.Users
-import br.com.seutempo.api.model.users.response.UsersResponse
-import br.com.seutempo.api.model.users.response.UsersResponse.Companion.calcAge
 import br.com.seutempo.api.repository.professional.ProfessionalRepository
 import br.com.seutempo.api.repository.users.UsersRepository
+import br.com.seutempo.api.service.client.ClientService
 import br.com.seutempo.api.service.specialty.SpecialtyService
+import br.com.seutempo.api.service.users.UsersService
 import br.com.seutempo.api.util.AppUtil.removeAccents
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,6 +23,8 @@ class ProfessionalService(
     private val usersMapper: UsersMapper,
     private val professionalMapper: ProfessionalMapper,
     private val specialtyService: SpecialtyService,
+    private val usersService: UsersService,
+    private val clientService: ClientService,
 ) {
     private val baseUrlPerfil = "https://seutempo.com.br/st/"
 
@@ -36,10 +38,17 @@ class ProfessionalService(
             specialtyService
                 .findSpecialtyByIds(newUsersProfessionalRequest.specialtyIds)
 
+        val geometry = usersService.convertLocationGeo(newUsersProfessionalRequest.cep)
+
+        val point = usersService.convertGeometryPoint(geometry)
+
         val professional =
             professionalMapper.newUsersProfessionalRequestToProfessional(
                 user = user,
                 newUsersProfessionalRequest = newUsersProfessionalRequest,
+                lat = geometry.location.lat,
+                lon = geometry.location.lng,
+                location = point,
                 linkProfessional = generateLink(user),
                 specialties = specialties,
             )
@@ -68,26 +77,13 @@ class ProfessionalService(
         }
     }
 
-    fun getProfessionalToClients(): List<ProfessionalResponse> =
+    fun getProfessionalToClients(name: String?): List<ProfessionalResponse> =
         professionalRepository
-            .findAll()
+            .findByUserNameOrProfessionals(name)
             .map { item ->
-                ProfessionalResponse(
-                    user =
-                        UsersResponse(
-                            id = item.user.id,
-                            name = item.user.name,
-                            email = item.user.email,
-                            phone = item.user.phone,
-                            age = calcAge(item.user.dateAnniversary),
-                            typeUser = item.user.typeUser,
-                        ),
-                    linkProfessional = item.linkProfessional,
-                    valueHour = item.valueHour,
-                    cep = item.cep,
-                    lat = item.lat,
-                    lon = item.lon,
-                    serviceRadiusKm = item.serviceRadiusKm,
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professional = item,
                     specialties =
                         specialtyService.getSpecialtyByProfessional(
                             item.id,
@@ -99,26 +95,28 @@ class ProfessionalService(
         professionalRepository
             .findProfessionalBySpecialtiesId(id)
             .map { item ->
-                ProfessionalResponse(
-                    user =
-                        UsersResponse(
-                            id = item.user.id,
-                            name = item.user.name,
-                            email = item.user.email,
-                            phone = item.user.phone,
-                            age = calcAge(item.user.dateAnniversary),
-                            typeUser = item.user.typeUser,
-                        ),
-                    linkProfessional = item.linkProfessional,
-                    valueHour = item.valueHour,
-                    cep = item.cep,
-                    lat = item.lat,
-                    lon = item.lon,
-                    serviceRadiusKm = item.serviceRadiusKm,
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professional = item,
                     specialties =
                         specialtyService.getSpecialtyByProfessional(
                             item.id,
                         ),
                 )
             }
+
+    fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> {
+        val clientLocation = clientService.findClientById(id).addresses.location
+
+        return professionalRepository.findProfessionalsWithinRadius(clientLocation).map { item ->
+            professionalMapper.professionalToProfessionalResponse(
+                user = usersMapper.usersToUsersResponse(item.user),
+                professional = item,
+                specialties =
+                    specialtyService.getSpecialtyByProfessional(
+                        item.id,
+                    ),
+            )
+        }
+    }
 }

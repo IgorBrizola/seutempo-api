@@ -4,7 +4,10 @@ import br.com.seutempo.api.model.professional.Professional
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
 import br.com.seutempo.api.model.professional.response.ProfessionalResponse
 import br.com.seutempo.api.model.specialty.Specialty
+import br.com.seutempo.api.model.specialty.response.SpecialtyResponse
 import br.com.seutempo.api.model.users.Users
+import br.com.seutempo.api.model.users.response.UsersResponse
+import org.locationtech.jts.geom.Point
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
@@ -24,11 +27,19 @@ interface ProfessionalMapper {
     fun newUsersProfessionalRequestToProfessional(
         user: Users,
         newUsersProfessionalRequest: UsersProfessionalRequestNew,
+        lat: Double,
+        lon: Double,
+        location: Point,
         linkProfessional: String,
         specialties: List<Specialty>,
     ): Professional
 
-    fun professionalToProfessionalResponse(professional: Professional): ProfessionalResponse
+    @Mapping(source = "specialties", target = "specialties")
+    fun professionalToProfessionalResponse(
+        user: UsersResponse,
+        professional: Professional,
+        specialties: List<SpecialtyResponse>,
+    ): ProfessionalResponse
 
     fun professionalResponseToProfessional(professionalResponse: ProfessionalResponse): Professional
 }
