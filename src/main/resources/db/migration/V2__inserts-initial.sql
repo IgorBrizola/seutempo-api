@@ -31,19 +31,6 @@ VALUES
 ('https://seutempo.com.br/st/marcelo-cunha', 130.00, '01001-000',
  -23.550520, -46.633308, 10, geography::Point(-23.550520, -46.633308, 4326), 10);
 
--- Inserindo dados na tabela address
-INSERT INTO address (cep, state, city, neighborhood, street, number, complement, additional_address, type_address, latitude, longitude, location, id_client)
-VALUES
-('01000-000', 'SP', 'São Paulo', 'Centro', 'Rua A', 123, 'Apto 101', 'Próximo ao mercado', 'Residencial', -23.600000, -46.650000,
- geography::Point(-23.600000, -46.650000, 4326), 1),
-('02000-000', 'RJ', 'Rio de Janeiro', 'Copacabana', 'Rua B', 456, 'Bloco 2', 'Ao lado do parque', 'Residencial', -23.600000, -46.650000,
- geography::Point(-23.600000, -46.650000, 4326), 2),
-('03000-000', 'MG', 'Belo Horizonte', 'Savassi', 'Rua C', 789, 'Casa', 'Em frente ao shopping', 'Residencial', -23.600000, -46.650000,
- geography::Point(-23.600000, -46.650000, 4326), 3),
-('04000-000', 'RS', 'Porto Alegre', 'Moinhos de Vento', 'Rua D', 101, 'Apto 202', 'Perto da praça', 'Residencial', -23.600000, -46.650000,
- geography::Point(-23.600000, -46.650000, 4326), 4),
-('05000-000', 'PR', 'Curitiba', 'Batel', 'Rua E', 202, 'Cobertura', 'Vista para o mar', 'Residencial', -23.600000, -46.650000,
- geography::Point(-23.600000, -46.650000, 4326), 5);
 
 -- Inserindo dados na tabela category
 INSERT INTO category (name_category)

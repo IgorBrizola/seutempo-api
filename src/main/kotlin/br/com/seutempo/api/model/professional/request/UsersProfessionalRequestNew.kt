@@ -15,6 +15,8 @@ data class UsersProfessionalRequestNew(
     val dateAnniversary: LocalDate,
     val valueHour: BigDecimal,
     val specialtyIds: List<Int>,
+    val cep: String,
+    val serviceRadiusKm: Int,
     val typeUser: TypeUser = TypeUser.PROFESSIONAL,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val active: Boolean = true,

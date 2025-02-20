@@ -17,11 +17,6 @@ CREATE TABLE users (
       id INT IDENTITY PRIMARY KEY,
       surname VARCHAR(255),
       id_users INT NOT NULL,
-      FOREIGN KEY (id_users) REFERENCES users(id)
-  );
-
-  CREATE TABLE address (
-      id INT IDENTITY PRIMARY KEY,
       cep VARCHAR(20),
       state VARCHAR(50),
       city VARCHAR(100),
@@ -34,8 +29,7 @@ CREATE TABLE users (
       latitude DECIMAL(9,6),
       longitude DECIMAL(9,6),
       location GEOGRAPHY,
-      id_client INT,
-      FOREIGN KEY (id_client) REFERENCES client(id)
+      FOREIGN KEY (id_users) REFERENCES users(id)
   );
 
     CREATE TABLE professional (
@@ -71,5 +65,5 @@ CREATE TABLE users (
     CREATE SPATIAL INDEX idx_professional_location
     ON professional(location);
 
-    CREATE SPATIAL INDEX idx_address_location
-    ON address(location);
+    CREATE SPATIAL INDEX idx_client_location
+    ON client(location);

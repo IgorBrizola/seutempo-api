@@ -14,6 +14,7 @@ import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
+import org.locationtech.jts.geom.Point
 import java.math.BigDecimal
 
 @Entity
@@ -29,11 +30,21 @@ data class Professional(
     val linkProfessional: String,
     @Column(name = "value_hour")
     val valueHour: BigDecimal,
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
         name = "professional_specialty",
         joinColumns = [JoinColumn(name = "id_professional")],
         inverseJoinColumns = [JoinColumn(name = "id_specialty")],
     )
     val specialties: List<Specialty>,
+    @Column(name = "cep")
+    val cep: String,
+    @Column(name = "latitude")
+    val lat: BigDecimal,
+    @Column(name = "longitude")
+    val lon: BigDecimal,
+    @Column(name = "service_radius_km")
+    val serviceRadiusKm: Int,
+    @Column(name = "location", columnDefinition = "geography")
+    val location: Point,
 )

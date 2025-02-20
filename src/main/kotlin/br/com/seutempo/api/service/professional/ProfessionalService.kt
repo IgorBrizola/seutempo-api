@@ -4,10 +4,13 @@ import br.com.seutempo.api.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.mapper.users.UsersMapper
 import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
+import br.com.seutempo.api.model.professional.response.ProfessionalResponse
 import br.com.seutempo.api.model.users.Users
 import br.com.seutempo.api.repository.professional.ProfessionalRepository
 import br.com.seutempo.api.repository.users.UsersRepository
+import br.com.seutempo.api.service.client.ClientService
 import br.com.seutempo.api.service.specialty.SpecialtyService
+import br.com.seutempo.api.service.users.UsersService
 import br.com.seutempo.api.util.AppUtil.removeAccents
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +23,8 @@ class ProfessionalService(
     private val usersMapper: UsersMapper,
     private val professionalMapper: ProfessionalMapper,
     private val specialtyService: SpecialtyService,
+    private val usersService: UsersService,
+    private val clientService: ClientService,
 ) {
     private val baseUrlPerfil = "https://seutempo.com.br/st/"
 
@@ -33,10 +38,17 @@ class ProfessionalService(
             specialtyService
                 .findSpecialtyByIds(newUsersProfessionalRequest.specialtyIds)
 
+        val geometry = usersService.convertLocationGeo(newUsersProfessionalRequest.cep)
+
+        val point = usersService.convertGeometryPoint(geometry)
+
         val professional =
             professionalMapper.newUsersProfessionalRequestToProfessional(
                 user = user,
                 newUsersProfessionalRequest = newUsersProfessionalRequest,
+                lat = geometry.location.lat,
+                lon = geometry.location.lng,
+                location = point,
                 linkProfessional = generateLink(user),
                 specialties = specialties,
             )
@@ -62,6 +74,49 @@ class ProfessionalService(
         }
         if (usersRepository.existsByCpfAndActiveIsTrue(newUsersProfessionalRequest.cpf)) {
             throw UserAlreadyExistsException("User with cpf '${newUsersProfessionalRequest.cpf}' already exists.")
+        }
+    }
+
+    fun getProfessionalToClients(name: String?): List<ProfessionalResponse> =
+        professionalRepository
+            .findByUserNameOrProfessionals(name)
+            .map { item ->
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professional = item,
+                    specialties =
+                        specialtyService.getSpecialtyByProfessional(
+                            item.id,
+                        ),
+                )
+            }
+
+    fun getProfessionalBySpecialtyId(id: Int): List<ProfessionalResponse> =
+        professionalRepository
+            .findProfessionalBySpecialtiesId(id)
+            .map { item ->
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professional = item,
+                    specialties =
+                        specialtyService.getSpecialtyByProfessional(
+                            item.id,
+                        ),
+                )
+            }
+
+    fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> {
+        val clientLocation = clientService.findClientById(id).addresses.location
+
+        return professionalRepository.findProfessionalsWithinRadius(clientLocation).map { item ->
+            professionalMapper.professionalToProfessionalResponse(
+                user = usersMapper.usersToUsersResponse(item.user),
+                professional = item,
+                specialties =
+                    specialtyService.getSpecialtyByProfessional(
+                        item.id,
+                    ),
+            )
         }
     }
 }

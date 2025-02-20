@@ -1,6 +1,6 @@
-package br.com.seutempo.api.model.address.request
+package br.com.seutempo.api.model.client.request
 
-import br.com.seutempo.api.model.address.TypeAddress
+import br.com.seutempo.api.model.client.TypeAddress
 
 data class AddressRequest(
     val cep: String,

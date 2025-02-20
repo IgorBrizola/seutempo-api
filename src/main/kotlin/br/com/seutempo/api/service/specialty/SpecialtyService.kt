@@ -4,6 +4,7 @@ import br.com.seutempo.api.model.exception.category.CategoryNotFoundException
 import br.com.seutempo.api.model.exception.specialty.SpecialtyAlreadyExistsException
 import br.com.seutempo.api.model.specialty.Specialty
 import br.com.seutempo.api.model.specialty.request.SpecialtyNewRequest
+import br.com.seutempo.api.model.specialty.response.SpecialtyResponse
 import br.com.seutempo.api.repository.category.CategoryRepository
 import br.com.seutempo.api.repository.specialty.SpecialtyRepository
 import org.springframework.stereotype.Service
@@ -35,4 +36,15 @@ class SpecialtyService(
     }
 
     fun findSpecialtyByIds(specialtyIds: List<Int>): List<Specialty> = specialtyRepository.findAllById(specialtyIds)
+
+    fun getAllSpecialty(): List<SpecialtyResponse> =
+        specialtyRepository
+            .findAll()
+            .map { item -> SpecialtyResponse(item.category.nameCategory, item.nameSpecialty) }
+
+    fun getSpecialtyByProfessional(id: Int?): List<SpecialtyResponse> =
+        specialtyRepository
+            .findByProfessionalsId(
+                id,
+            ).map { item -> SpecialtyResponse(nameSpecialty = item.nameSpecialty, nameCategory = item.category.nameCategory) }
 }
