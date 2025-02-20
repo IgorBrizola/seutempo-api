@@ -12,3 +12,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
+service:
+  google:
+    maps:
+      url: ${GOOGLE_API_URL}
+      key: ${GOOGLE_API_KEY}
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
