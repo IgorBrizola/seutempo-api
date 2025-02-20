@@ -6,7 +6,6 @@ import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNe
 import br.com.seutempo.api.model.users.Users
 import br.com.seutempo.api.model.users.response.UsersResponse
 import org.mapstruct.Mapper
-import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
 import org.mapstruct.ReportingPolicy
 
@@ -17,7 +16,6 @@ import org.mapstruct.ReportingPolicy
 interface UsersMapper {
     fun usersResponseToUsers(usersResponse: UsersResponse): Users
 
-    @Mapping(target = "age", expression = "java(UsersResponse.Companion.calcAge(users.getDateAnniversary()))")
     fun usersToUsersResponse(users: Users): UsersResponse
 
     fun usersToProfessionalRequest(users: Users): UsersProfessionalRequestNew

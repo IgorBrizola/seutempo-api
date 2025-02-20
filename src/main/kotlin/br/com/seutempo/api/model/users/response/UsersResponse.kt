@@ -6,16 +6,15 @@ import java.time.Period
 
 data class UsersResponse(
     val id: Int?,
-    val name: String?,
-    val email: String?,
-    val phone: String?,
-    val age: Int?,
-    val typeUser: TypeUser?,
+    val name: String,
+    val email: String,
+    val phone: String,
+    val dateAnniversary: LocalDate,
+    val typeUser: TypeUser,
 ) {
+    val age: Int = calcAge(dateAnniversary)
+
     companion object {
-        fun calcAge(dateBirth: LocalDate): Int {
-            val age = Period.between(dateBirth, LocalDate.now()).years
-            return age
-        }
+        fun calcAge(dateAnniversary: LocalDate): Int = Period.between(dateAnniversary, LocalDate.now()).years
     }
 }

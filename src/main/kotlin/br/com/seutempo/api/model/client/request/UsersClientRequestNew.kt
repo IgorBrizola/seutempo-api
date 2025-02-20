@@ -1,6 +1,5 @@
 package br.com.seutempo.api.model.client.request
 
-import br.com.seutempo.api.model.address.request.AddressRequest
 import br.com.seutempo.api.model.users.TypeUser
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
