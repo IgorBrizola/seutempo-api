@@ -48,4 +48,10 @@ class SpecialtyController(
         @PathVariable id: Int,
         @RequestBody updateSpecialtyRequest: UpdateSpecialtyRequest,
     ) = specialtyService.updateSpecialty(id, updateSpecialtyRequest)
+
+    @GetMapping("{ids}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getSpecialtyByIds(
+        @PathVariable ids: List<Int>,
+    ): List<SpecialtyResponse> = specialtyService.findSpecialtyByIds(ids)
 }
