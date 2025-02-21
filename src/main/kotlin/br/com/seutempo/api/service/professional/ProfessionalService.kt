@@ -1,6 +1,7 @@
 package br.com.seutempo.api.service.professional
 
 import br.com.seutempo.api.mapper.professional.ProfessionalMapper
+import br.com.seutempo.api.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.mapper.users.UsersMapper
 import br.com.seutempo.api.model.exception.ResourceNotFoundException
 import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
@@ -29,6 +30,7 @@ class ProfessionalService(
     private val specialtyService: SpecialtyService,
     private val usersService: UsersService,
     private val clientService: ClientService,
+    private val specialtyMapper: SpecialtyMapper,
 ) {
     private val log = LogManager.getLogger(javaClass)
 
@@ -40,9 +42,11 @@ class ProfessionalService(
 
         val user = usersMapper.usersProfessionalRequestToUsers(newUsersProfessionalRequest)
 
-        val specialties =
+        val specialtiesResponse =
             specialtyService
                 .findSpecialtyByIds(newUsersProfessionalRequest.specialtyIds)
+
+        val specialtyEntity = specialtiesResponse.map { item -> specialtyMapper.toSpecialtyEntity(item) }
 
         val geometry = usersService.convertLocationGeo(newUsersProfessionalRequest.cep)
 
@@ -59,7 +63,7 @@ class ProfessionalService(
                 location = point,
                 linkNameProfessional = urlProfessional.linkNameProfessional,
                 urlProfessional = urlProfessional.urlProfessional,
-                specialties = specialties,
+                specialties = specialtyEntity,
             )
 
         professionalRepository.save(professional)

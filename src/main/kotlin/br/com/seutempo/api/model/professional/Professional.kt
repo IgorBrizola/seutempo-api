@@ -32,13 +32,13 @@ data class Professional(
     val linkNameProfessional: String,
     @Column(name = "value_hour")
     val valueHour: BigDecimal,
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "professional_specialty",
         joinColumns = [JoinColumn(name = "id_professional")],
         inverseJoinColumns = [JoinColumn(name = "id_specialty")],
     )
-    val specialties: List<Specialty>,
+    val specialties: MutableList<Specialty> = mutableListOf(),
     @Column(name = "cep")
     val cep: String,
     @Column(name = "latitude")
