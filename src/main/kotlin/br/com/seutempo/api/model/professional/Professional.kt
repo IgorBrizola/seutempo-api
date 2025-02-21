@@ -42,9 +42,9 @@ data class Professional(
     @Column(name = "cep")
     val cep: String,
     @Column(name = "latitude")
-    val lat: BigDecimal,
+    val lat: Double,
     @Column(name = "longitude")
-    val lon: BigDecimal,
+    val lon: Double,
     @Column(name = "service_radius_km")
     val serviceRadiusKm: Int,
     @Column(name = "location", columnDefinition = "geography")
