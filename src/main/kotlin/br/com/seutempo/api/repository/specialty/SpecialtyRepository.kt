@@ -12,4 +12,6 @@ interface SpecialtyRepository : JpaRepository<Specialty, Int> {
     ): Boolean
 
     fun findByProfessionalsId(id: Int?): List<Specialty>
+
+    fun findByCategoryId(id: Int?): List<Specialty>
 }

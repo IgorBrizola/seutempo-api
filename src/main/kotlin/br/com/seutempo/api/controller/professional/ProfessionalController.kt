@@ -48,5 +48,5 @@ class ProfessionalController(
     @ResponseStatus(HttpStatus.OK)
     fun getProfessionalByCategory(
         @PathVariable id: Int,
-    ): List<ProfessionalResponse> = professionalService.getProfessionalBySpecialtyId(id)
+    ): List<ProfessionalResponse> = professionalService.getProfessionalByCategoryId(id)
 }
