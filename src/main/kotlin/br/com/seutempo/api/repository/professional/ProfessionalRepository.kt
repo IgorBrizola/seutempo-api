@@ -13,6 +13,8 @@ interface ProfessionalRepository : JpaRepository<Professional, Int> {
 
     fun findProfessionalBySpecialtiesId(id: Int): List<Professional>
 
+    fun findProfessionalBySpecialtiesCategoryId(id: Int): List<Professional>
+
     @Query(
         "SELECT p FROM Professional p WHERE :name IS NULL OR :name = '' OR p.user.name LIKE %:name%",
     )

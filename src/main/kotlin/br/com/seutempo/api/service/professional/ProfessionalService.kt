@@ -84,10 +84,6 @@ class ProfessionalService(
                 professionalMapper.professionalToProfessionalResponse(
                     user = usersMapper.usersToUsersResponse(item.user),
                     professional = item,
-                    specialties =
-                        specialtyService.getSpecialtyByProfessional(
-                            item.id,
-                        ),
                 )
             }
 
@@ -98,10 +94,16 @@ class ProfessionalService(
                 professionalMapper.professionalToProfessionalResponse(
                     user = usersMapper.usersToUsersResponse(item.user),
                     professional = item,
-                    specialties =
-                        specialtyService.getSpecialtyByProfessional(
-                            item.id,
-                        ),
+                )
+            }
+
+    fun getProfessionalByCategoryId(id: Int): List<ProfessionalResponse> =
+        professionalRepository
+            .findProfessionalBySpecialtiesCategoryId(id)
+            .map { item ->
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professional = item,
                 )
             }
 
@@ -112,10 +114,6 @@ class ProfessionalService(
             professionalMapper.professionalToProfessionalResponse(
                 user = usersMapper.usersToUsersResponse(item.user),
                 professional = item,
-                specialties =
-                    specialtyService.getSpecialtyByProfessional(
-                        item.id,
-                    ),
             )
         }
     }

@@ -34,11 +34,14 @@ interface ProfessionalMapper {
         specialties: List<Specialty>,
     ): Professional
 
-    @Mapping(source = "specialties", target = "specialties")
+    @Mapping(source = "category.nameCategory", target = "nameCategory")
+    fun toSpecialtyResponse(specialties: Specialty): SpecialtyResponse
+
+    fun toSpecialtyListResponse(specialties: List<Specialty>): List<SpecialtyResponse>
+
     fun professionalToProfessionalResponse(
         user: UsersResponse,
         professional: Professional,
-        specialties: List<SpecialtyResponse>,
     ): ProfessionalResponse
 
     fun professionalResponseToProfessional(professionalResponse: ProfessionalResponse): Professional
