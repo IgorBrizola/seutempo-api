@@ -17,6 +17,7 @@ import br.com.seutempo.api.util.AppUtil.removeAccents
 import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
 import kotlin.random.Random
 
 @Service
@@ -94,9 +95,12 @@ class ProfessionalService(
         }
     }
 
-    fun getProfessionalToClients(name: String?): List<ProfessionalResponse> =
+    fun getProfessionalToClients(
+        name: String?,
+        value: BigDecimal?,
+    ): List<ProfessionalResponse> =
         professionalRepository
-            .findByUserNameOrProfessionals(name)
+            .findProfessionalsByFilters(name, value)
             .map { item ->
                 professionalMapper.professionalToProfessionalResponse(
                     user = usersMapper.usersToUsersResponse(item.user),
