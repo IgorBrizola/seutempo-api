@@ -2,6 +2,7 @@ package br.com.seutempo.api.service.professional
 
 import br.com.seutempo.api.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.mapper.users.UsersMapper
+import br.com.seutempo.api.model.exception.ResourceNotFoundException
 import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
 import br.com.seutempo.api.model.professional.response.ProfessionalResponse
@@ -12,6 +13,7 @@ import br.com.seutempo.api.service.client.ClientService
 import br.com.seutempo.api.service.specialty.SpecialtyService
 import br.com.seutempo.api.service.users.UsersService
 import br.com.seutempo.api.util.AppUtil.removeAccents
+import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
@@ -26,6 +28,8 @@ class ProfessionalService(
     private val usersService: UsersService,
     private val clientService: ClientService,
 ) {
+    private val log = LogManager.getLogger(javaClass)
+
     private val baseUrlPerfil = "https://seutempo.com.br/st/"
 
     @Transactional
@@ -116,5 +120,12 @@ class ProfessionalService(
                 professional = item,
             )
         }
+    }
+
+    fun findProfessionalById(id: Int): ProfessionalResponse {
+        log.info("Buscando professional by id - $id")
+        val professional = professionalRepository.findById(id).orElseThrow { ResourceNotFoundException("Professional not found! - $id") }
+        val user = usersService.findUserById(professional.user.id!!)
+        return professionalMapper.professionalToProfessionalResponse(user, professional)
     }
 }

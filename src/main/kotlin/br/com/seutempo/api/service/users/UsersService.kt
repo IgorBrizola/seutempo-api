@@ -4,6 +4,7 @@ import br.com.seutempo.api.integration.GoogleMapsConfig
 import br.com.seutempo.api.integration.GoogleMapsIntegration
 import br.com.seutempo.api.integration.response.Geometry
 import br.com.seutempo.api.mapper.users.UsersMapper
+import br.com.seutempo.api.model.exception.ResourceNotFoundException
 import br.com.seutempo.api.model.users.response.UsersResponse
 import br.com.seutempo.api.repository.users.UsersRepository
 import org.locationtech.jts.geom.GeometryFactory
@@ -26,6 +27,13 @@ class UsersService(
             .map { user ->
                 usersMapper.usersToUsersResponse(user)
             }
+
+    fun findUserById(id: Int): UsersResponse =
+        usersMapper.usersToUsersResponse(
+            usersRepository.findById(id).orElseThrow {
+                ResourceNotFoundException("User not found! - $id")
+            },
+        )
 
     fun convertLocationGeo(address: String): Geometry {
         val results = googleMapsIntegration.getGeolocationUser(address, googleMapsConfig.apiKey)

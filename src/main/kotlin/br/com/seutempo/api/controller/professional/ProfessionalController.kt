@@ -49,4 +49,10 @@ class ProfessionalController(
     fun getProfessionalByCategory(
         @PathVariable id: Int,
     ): List<ProfessionalResponse> = professionalService.getProfessionalByCategoryId(id)
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun findProfessionalById(
+        @PathVariable id: Int,
+    ) = professionalService.findProfessionalById(id)
 }
