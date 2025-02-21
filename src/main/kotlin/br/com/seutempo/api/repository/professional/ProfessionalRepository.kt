@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.math.BigDecimal
 import java.util.Optional
 
 @Repository
@@ -17,10 +18,13 @@ interface ProfessionalRepository : JpaRepository<Professional, Int> {
     fun findProfessionalBySpecialtiesCategoryId(id: Int): List<Professional>
 
     @Query(
-        "SELECT p FROM Professional p WHERE :name IS NULL OR :name = '' OR p.user.name LIKE %:name%",
+        "SELECT p FROM Professional p " +
+            "WHERE (:name IS NULL OR :name = '' OR p.user.name LIKE %:name%) " +
+            "AND (:value IS NULL OR p.valueHour <= :value)",
     )
-    fun findByUserNameOrProfessionals(
+    fun findProfessionalsByFilters(
         @Param("name") name: String?,
+        @Param("value") value: BigDecimal?,
     ): List<Professional>
 
     @Query("SELECT p FROM Professional p WHERE ST_Distance(p.location, :point) <= p.serviceRadiusKm * 1000")
