@@ -1,10 +1,12 @@
 package br.com.seutempo.api.service.professional
 
+import br.com.seutempo.api.integration.response.GeoResponse
 import br.com.seutempo.api.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.mapper.users.UsersMapper
 import br.com.seutempo.api.model.exception.ResourceNotFoundException
 import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
+import br.com.seutempo.api.model.professional.request.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
 import br.com.seutempo.api.model.professional.response.ProfessionalResponse
 import br.com.seutempo.api.model.professional.response.UrlProfessional
@@ -48,25 +50,35 @@ class ProfessionalService(
 
         val specialtyEntity = specialtiesResponse.map { item -> specialtyMapper.toSpecialtyEntity(item) }
 
-        val geometry = usersService.convertLocationGeo(newUsersProfessionalRequest.cep)
-
-        val point = usersService.convertGeometryPoint(geometry)
-
         val urlProfessional = generateLink(user)
+
+        val geolocation = generateGeolocation(newUsersProfessionalRequest.cep)
 
         val professional =
             professionalMapper.newUsersProfessionalRequestToProfessional(
                 user = user,
                 newUsersProfessionalRequest = newUsersProfessionalRequest,
-                lat = geometry.location.lat,
-                lon = geometry.location.lng,
-                location = point,
+                lat = geolocation.latitude,
+                lon = geolocation.longitude,
+                location = geolocation.point,
                 linkNameProfessional = urlProfessional.linkNameProfessional,
                 urlProfessional = urlProfessional.urlProfessional,
                 specialties = specialtyEntity,
             )
 
         professionalRepository.save(professional)
+    }
+
+    private fun generateGeolocation(cep: String): GeoResponse {
+        val geometry = usersService.convertLocationGeo(cep)
+
+        val point = usersService.convertGeometryPoint(geometry)
+
+        return GeoResponse(
+            latitude = geometry.location.lat,
+            longitude = geometry.location.lng,
+            point = point,
+        )
     }
 
     private fun generateLink(user: Users): UrlProfessional {
@@ -157,5 +169,24 @@ class ProfessionalService(
             }
         val user = usersService.findUserById(professional.user.id!!)
         return professionalMapper.professionalToProfessionalResponse(user, professional)
+    }
+
+    fun updateAddress(
+        id: Int,
+        updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
+    ) {
+        val professional = professionalRepository.findById(id).orElseThrow { ResourceNotFoundException("Professional not found! - $id") }
+
+        val geolocation = generateGeolocation(updateAddressProfessionalRequest.cep)
+
+        val professionalUpdate =
+            professional.copy(
+                cep = updateAddressProfessionalRequest.cep,
+                lat = geolocation.latitude,
+                lon = geolocation.longitude,
+                location = geolocation.point,
+            )
+
+        professionalRepository.save(professionalUpdate)
     }
 }

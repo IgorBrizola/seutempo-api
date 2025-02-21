@@ -1,6 +1,7 @@
 package br.com.seutempo.api.controller.professional
 
 import br.com.seutempo.api.integration.GoogleMapsIntegration
+import br.com.seutempo.api.model.professional.request.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
 import br.com.seutempo.api.model.professional.response.ProfessionalResponse
 import br.com.seutempo.api.service.professional.ProfessionalService
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -39,6 +41,13 @@ class ProfessionalController(
     fun getProfessionalsWithRadius(
         @PathVariable id: Int,
     ): List<ProfessionalResponse> = professionalService.findProfessionalWithLocation(id)
+
+    @PutMapping("location/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun updateGeolocation(
+        @PathVariable id: Int,
+        @RequestBody updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
+    ) = professionalService.updateAddress(id, updateAddressProfessionalRequest)
 
     @GetMapping("specialty/{id}")
     @ResponseStatus(HttpStatus.OK)
