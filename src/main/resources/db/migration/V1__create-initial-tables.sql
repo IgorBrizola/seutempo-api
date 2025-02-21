@@ -34,6 +34,7 @@ CREATE TABLE users (
 
     CREATE TABLE professional (
     id INT IDENTITY PRIMARY KEY,
+    url_professional VARCHAR(255) NOT NULL,
     link_professional VARCHAR(255) NOT NULL,
     value_hour DECIMAL(10, 2) NOT NULL,
     cep VARCHAR(9) NOT NULL,

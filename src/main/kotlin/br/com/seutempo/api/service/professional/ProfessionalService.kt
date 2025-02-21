@@ -6,6 +6,7 @@ import br.com.seutempo.api.model.exception.ResourceNotFoundException
 import br.com.seutempo.api.model.exception.users.UserAlreadyExistsException
 import br.com.seutempo.api.model.professional.request.UsersProfessionalRequestNew
 import br.com.seutempo.api.model.professional.response.ProfessionalResponse
+import br.com.seutempo.api.model.professional.response.UrlProfessional
 import br.com.seutempo.api.model.users.Users
 import br.com.seutempo.api.repository.professional.ProfessionalRepository
 import br.com.seutempo.api.repository.users.UsersRepository
@@ -46,6 +47,8 @@ class ProfessionalService(
 
         val point = usersService.convertGeometryPoint(geometry)
 
+        val urlProfessional = generateLink(user)
+
         val professional =
             professionalMapper.newUsersProfessionalRequestToProfessional(
                 user = user,
@@ -53,23 +56,33 @@ class ProfessionalService(
                 lat = geometry.location.lat,
                 lon = geometry.location.lng,
                 location = point,
-                linkProfessional = generateLink(user),
+                linkNameProfessional = urlProfessional.linkNameProfessional,
+                urlProfessional = urlProfessional.urlProfessional,
                 specialties = specialties,
             )
 
         professionalRepository.save(professional)
     }
 
-    private fun generateLink(user: Users): String {
-        val nameUrl = "${user.name} ${user.lastName}"
+    private fun generateLink(user: Users): UrlProfessional {
+        val nameLink = removeAccents("${user.name} ${user.lastName}")
 
-        val urlProfessional = "$baseUrlPerfil${removeAccents(nameUrl)}"
+        val nameLinkRandom = "$nameLink-${Random.nextInt(999)}"
 
-        val urlProfessionalRandom = "$baseUrlPerfil${removeAccents(nameUrl)}-${Random.nextInt(999)}"
+        val urlProfessional = "$baseUrlPerfil$nameLink"
 
-        val existsUrlProfessional = professionalRepository.existsByLinkProfessional(urlProfessional)
+        val urlProfessionalRandom = "$baseUrlPerfil$nameLinkRandom"
 
-        return if (existsUrlProfessional) urlProfessionalRandom else urlProfessional
+        val existsUrlProfessional = professionalRepository.existsByLinkNameProfessional(nameLink)
+
+        return if (existsUrlProfessional) {
+            UrlProfessional(
+                nameLinkRandom,
+                urlProfessionalRandom,
+            )
+        } else {
+            UrlProfessional(nameLink, urlProfessional)
+        }
     }
 
     private fun verifyUserExists(newUsersProfessionalRequest: UsersProfessionalRequestNew) {

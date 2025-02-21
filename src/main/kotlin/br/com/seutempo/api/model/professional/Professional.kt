@@ -26,8 +26,10 @@ data class Professional(
     @OneToOne(cascade = [CascadeType.ALL], optional = false)
     @JoinColumn(name = "id_users")
     val user: Users,
+    @Column(name = "url_professional")
+    val urlProfessional: String,
     @Column(name = "link_professional")
-    val linkProfessional: String,
+    val linkNameProfessional: String,
     @Column(name = "value_hour")
     val valueHour: BigDecimal,
     @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
