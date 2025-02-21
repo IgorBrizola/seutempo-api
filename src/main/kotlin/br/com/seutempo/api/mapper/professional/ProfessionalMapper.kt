@@ -22,7 +22,8 @@ interface ProfessionalMapper {
 
     @Mapping(source = "user", target = "user")
     @Mapping(source = "newUsersProfessionalRequest.valueHour", target = "valueHour")
-    @Mapping(source = "linkProfessional", target = "linkProfessional")
+    @Mapping(source = "linkNameProfessional", target = "linkNameProfessional")
+    @Mapping(source = "urlProfessional", target = "urlProfessional")
     @Mapping(source = "specialties", target = "specialties")
     fun newUsersProfessionalRequestToProfessional(
         user: Users,
@@ -30,7 +31,8 @@ interface ProfessionalMapper {
         lat: Double,
         lon: Double,
         location: Point,
-        linkProfessional: String,
+        linkNameProfessional: String,
+        urlProfessional: String,
         specialties: List<Specialty>,
     ): Professional
 

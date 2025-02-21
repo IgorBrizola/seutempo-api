@@ -6,7 +6,8 @@ import java.math.BigDecimal
 
 data class ProfessionalResponse(
     val user: UsersResponse,
-    val linkProfessional: String,
+    val linkNameProfessional: String,
+    val urlProfessional: String,
     val valueHour: BigDecimal,
     val cep: String,
     val lat: BigDecimal,

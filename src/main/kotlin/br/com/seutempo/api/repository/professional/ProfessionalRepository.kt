@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ProfessionalRepository : JpaRepository<Professional, Int> {
-    fun existsByLinkProfessional(link: String): Boolean
+    fun existsByLinkNameProfessional(link: String): Boolean
 
     fun findProfessionalBySpecialtiesId(id: Int): List<Professional>
 
