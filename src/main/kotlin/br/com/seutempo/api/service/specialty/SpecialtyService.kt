@@ -1,11 +1,13 @@
 package br.com.seutempo.api.service.specialty
 
+import br.com.seutempo.api.model.exception.ResourceNotFoundException
 import br.com.seutempo.api.model.exception.category.CategoryNotFoundException
 import br.com.seutempo.api.model.exception.specialty.SpecialtyAlreadyExistsException
 import br.com.seutempo.api.model.specialty.Specialty
 import br.com.seutempo.api.model.specialty.request.SpecialtyNewRequest
 import br.com.seutempo.api.model.specialty.response.SpecialtyResponse
 import br.com.seutempo.api.repository.category.CategoryRepository
+import br.com.seutempo.api.repository.professional.ProfessionalRepository
 import br.com.seutempo.api.repository.specialty.SpecialtyRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class SpecialtyService(
     private val specialtyRepository: SpecialtyRepository,
     private val categoryRepository: CategoryRepository,
+    private val professionalRepository: ProfessionalRepository,
 ) {
     @Transactional
     fun createNewSpecialty(specialtyNewRequest: SpecialtyNewRequest) {
@@ -47,4 +50,18 @@ class SpecialtyService(
             .findByProfessionalsId(
                 id,
             ).map { item -> SpecialtyResponse(nameSpecialty = item.nameSpecialty, nameCategory = item.category.nameCategory) }
+
+    fun deleteSpecialtyById(id: Int) {
+        val specialty =
+            specialtyRepository
+                .findById(id)
+                .orElseThrow {
+                    ResourceNotFoundException("Specialty not found! - $id")
+                }
+        specialty.professionals.forEach { it.specialties.remove(specialty) }
+
+        professionalRepository.saveAll(specialty.professionals)
+
+        specialtyRepository.deleteById(id)
+    }
 }

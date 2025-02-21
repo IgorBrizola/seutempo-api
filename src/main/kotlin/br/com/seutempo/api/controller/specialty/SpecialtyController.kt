@@ -4,6 +4,7 @@ import br.com.seutempo.api.model.specialty.request.SpecialtyNewRequest
 import br.com.seutempo.api.model.specialty.response.SpecialtyResponse
 import br.com.seutempo.api.service.specialty.SpecialtyService
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -32,4 +33,10 @@ class SpecialtyController(
     fun getSpecialtyByProfessional(
         @PathVariable id: Int,
     ): List<SpecialtyResponse> = specialtyService.getSpecialtyByProfessional(id)
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteSpecialtyById(
+        @PathVariable id: Int,
+    ) = specialtyService.deleteSpecialtyById(id)
 }

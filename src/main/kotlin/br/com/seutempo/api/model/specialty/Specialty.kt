@@ -2,7 +2,6 @@ package br.com.seutempo.api.model.specialty
 
 import br.com.seutempo.api.model.category.Category
 import br.com.seutempo.api.model.professional.Professional
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -21,9 +20,9 @@ data class Specialty(
     val id: Int? = null,
     @Column(name = "name_specialty")
     val nameSpecialty: String,
-    @ManyToOne(cascade = [CascadeType.ALL], optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_category")
     val category: Category,
     @ManyToMany(mappedBy = "specialties")
-    val professionals: List<Professional> = listOf(),
+    val professionals: MutableList<Professional> = mutableListOf(),
 )
