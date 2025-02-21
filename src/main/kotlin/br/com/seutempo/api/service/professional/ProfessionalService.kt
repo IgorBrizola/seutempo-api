@@ -141,4 +141,13 @@ class ProfessionalService(
         val user = usersService.findUserById(professional.user.id!!)
         return professionalMapper.professionalToProfessionalResponse(user, professional)
     }
+
+    fun findProfessionalByLinkName(linkName: String): ProfessionalResponse {
+        val professional =
+            professionalRepository.findProfessionalByLinkNameProfessional(linkName).orElseThrow {
+                ResourceNotFoundException("Professional not found! - $linkName")
+            }
+        val user = usersService.findUserById(professional.user.id!!)
+        return professionalMapper.professionalToProfessionalResponse(user, professional)
+    }
 }

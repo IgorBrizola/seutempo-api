@@ -55,4 +55,10 @@ class ProfessionalController(
     fun findProfessionalById(
         @PathVariable id: Int,
     ) = professionalService.findProfessionalById(id)
+
+    @GetMapping("st")
+    @ResponseStatus(HttpStatus.OK)
+    fun findProfessionalByLinkName(
+        @RequestParam linkName: String,
+    ) = professionalService.findProfessionalByLinkName(linkName)
 }

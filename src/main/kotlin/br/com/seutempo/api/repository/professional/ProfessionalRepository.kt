@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.util.Optional
 
 @Repository
 interface ProfessionalRepository : JpaRepository<Professional, Int> {
@@ -26,4 +27,6 @@ interface ProfessionalRepository : JpaRepository<Professional, Int> {
     fun findProfessionalsWithinRadius(
         @Param("point") point: Point,
     ): List<Professional>
+
+    fun findProfessionalByLinkNameProfessional(linkName: String): Optional<Professional>
 }
