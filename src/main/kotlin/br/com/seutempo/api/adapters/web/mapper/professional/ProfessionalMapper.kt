@@ -1,0 +1,50 @@
+package br.com.seutempo.api.adapters.web.mapper.professional
+
+import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
+import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
+import br.com.seutempo.api.adapters.repository.model.Users
+import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
+import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
+import br.com.seutempo.api.adapters.web.model.response.users.UsersResponse
+import org.locationtech.jts.geom.Point
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.MappingConstants
+import org.mapstruct.ReportingPolicy
+
+@Mapper(
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
+    componentModel = MappingConstants.ComponentModel.SPRING,
+)
+interface ProfessionalMapper {
+    fun professionalToNewUsersProfessionalRequest(professionalEntity: ProfessionalEntity): NewProfessionalRequest
+
+    @Mapping(source = "user", target = "user")
+    @Mapping(source = "newUsersProfessionalRequest.valueHour", target = "valueHour")
+    @Mapping(source = "linkNameProfessional", target = "linkNameProfessional")
+    @Mapping(source = "urlProfessional", target = "urlProfessional")
+    @Mapping(source = "specialties", target = "specialties")
+    fun newUsersProfessionalRequestToProfessional(
+        user: Users,
+        newUsersProfessionalRequest: NewProfessionalRequest,
+        lat: Double,
+        lon: Double,
+        location: Point,
+        linkNameProfessional: String,
+        urlProfessional: String,
+        specialties: List<SpecialtyEntity>,
+    ): ProfessionalEntity
+
+    @Mapping(source = "categoryEntity.nameCategory", target = "nameCategory")
+    fun toSpecialtyResponse(specialties: SpecialtyEntity): SpecialtyResponse
+
+    fun toSpecialtyListResponse(specialties: List<SpecialtyEntity>): List<SpecialtyResponse>
+
+    fun professionalToProfessionalResponse(
+        user: UsersResponse,
+        professionalEntity: ProfessionalEntity,
+    ): ProfessionalResponse
+
+    fun professionalResponseToProfessional(professionalResponse: ProfessionalResponse): ProfessionalEntity
+}
