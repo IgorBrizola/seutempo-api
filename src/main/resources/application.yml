@@ -1,24 +1,49 @@
+server:
+  forward-headers-strategy: framework
 spring:
   application:
     name: seutempo
   datasource:
-    url: ${db-name}
-    username: ${db-username}
-    password: ${db-password}
+    url: ${app.datasource.db-name.host}
+    username: ${app.datasource.db-name.username}
+    password: ${app.datasource.db-name.password}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-  jpa:
-    hibernate:
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.SQLServerDialect
-service:
-  google:
-    maps:
-      url: ${GOOGLE_API_URL}
-      key: ${GOOGLE_API_KEY}
-feign:
-  client:
-    config:
-      default:
-        loggerLevel: full
+    hikari:
+      maximumPoolSize: 8
+      minimumIdle: 4
+
+  jackson:
+      deserialization:
+        FAIL_ON_UNKNOWN_PROPERTIES: true
+        FAIL_ON_IGNORED_PROPERTIES: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+    web:
+      resources:
+        add-mappings: false
+  logging:
+    pattern:
+      level: "%5p [${spring.application.name:},%X{trace_id:-},%X{span_id:-}]"
+    level:
+      org.zalando.logbook: TRACE
+  logbook:
+    exclude:
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /actuator/**
+  springdoc:
+      api-docs:
+        enabled: ${app.doc.enabled}
+      swagger-ui:
+        enabled: ${app.doc.enabled}
+        operations-sorter: method
+  service:
+    google:
+      maps:
+        url: ${app.service.google.maps.url}
+        key:  ${app.service.google.maps.key}
+  feign:
+    client:
+      config:
+        default:
+          loggerLevel: full

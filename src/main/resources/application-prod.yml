@@ -1,0 +1,22 @@
+logging:
+  level:
+    root: info
+logbook:
+  minimum-status: 400
+  obfuscate:
+    headers:
+      - Authorization
+    parameters:
+      - access_token
+      - password
+app:
+  doc:
+    enabled: false
+  datasource:
+    db-name:
+      host: ${db-name}
+      username: ${db-username}
+      password: ${db-password}
+  allowedOrigins:
+    - "https://allowed-origin.com"
+    - "https://second-allowed-origin.com"
