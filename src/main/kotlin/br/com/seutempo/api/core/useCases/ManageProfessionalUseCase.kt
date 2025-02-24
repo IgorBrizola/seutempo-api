@@ -1,0 +1,189 @@
+package br.com.seutempo.api.core.useCases
+
+import br.com.seutempo.api.adapters.integration.model.response.GeoResponse
+import br.com.seutempo.api.adapters.repository.jpa.professional.ProfessionalJpaRepository
+import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
+import br.com.seutempo.api.adapters.repository.model.Users
+import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
+import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
+import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
+import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
+import br.com.seutempo.api.adapters.web.model.response.professional.UrlProfessionalResponse
+import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
+import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.util.AppUtil.removeAccents
+import org.apache.logging.log4j.LogManager
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
+import kotlin.random.Random
+
+@Service
+class ManageProfessionalUseCase(
+    private val professionalJpaRepository: ProfessionalJpaRepository,
+    private val usersJpaRepository: UsersJpaRepository,
+    private val usersMapper: UsersMapper,
+    private val professionalMapper: ProfessionalMapper,
+    private val manageSpecialtyUseCase: ManageSpecialtyUseCase,
+    private val manageUsersUseCase: ManageUsersUseCase,
+    private val manageClientUseCase: ManageClientUseCase,
+    private val specialtyMapper: SpecialtyMapper,
+) {
+    private val log = LogManager.getLogger(javaClass)
+
+    private val baseUrlPerfil = "https://seutempo.com.br/st/"
+
+    @Transactional
+    fun createUsersProfessional(newUsersProfessionalRequest: NewProfessionalRequest) {
+        verifyUserExists(newUsersProfessionalRequest)
+
+        val user = usersMapper.usersProfessionalRequestToUsers(newUsersProfessionalRequest)
+
+        val specialtiesResponse =
+            manageSpecialtyUseCase
+                .findSpecialtyByIds(newUsersProfessionalRequest.specialtyIds)
+
+        val specialtyEntity = specialtiesResponse.map { item -> specialtyMapper.toSpecialtyEntity(item) }
+
+        val urlProfessional = generateLink(user)
+
+        val geolocation = generateGeolocation(newUsersProfessionalRequest.cep)
+
+        val professional =
+            professionalMapper.newUsersProfessionalRequestToProfessional(
+                user = user,
+                newUsersProfessionalRequest = newUsersProfessionalRequest,
+                lat = geolocation.latitude,
+                lon = geolocation.longitude,
+                location = geolocation.point,
+                linkNameProfessional = urlProfessional.linkNameProfessional,
+                urlProfessional = urlProfessional.urlProfessional,
+                specialties = specialtyEntity,
+            )
+
+        professionalJpaRepository.save(professional)
+    }
+
+    private fun generateGeolocation(cep: String): GeoResponse {
+        val geometry = manageUsersUseCase.convertLocationGeo(cep)
+
+        val point = manageUsersUseCase.convertGeometryPoint(geometry)
+
+        return GeoResponse(
+            latitude = geometry.location.lat,
+            longitude = geometry.location.lng,
+            point = point,
+        )
+    }
+
+    private fun generateLink(user: Users): UrlProfessionalResponse {
+        val nameLink = removeAccents("${user.name} ${user.lastName}")
+
+        val nameLinkRandom = "$nameLink-${Random.nextInt(999)}"
+
+        val urlProfessional = "$baseUrlPerfil$nameLink"
+
+        val urlProfessionalRandom = "$baseUrlPerfil$nameLinkRandom"
+
+        val existsUrlProfessional = professionalJpaRepository.existsByLinkNameProfessional(nameLink)
+
+        return if (existsUrlProfessional) {
+            UrlProfessionalResponse(
+                nameLinkRandom,
+                urlProfessionalRandom,
+            )
+        } else {
+            UrlProfessionalResponse(nameLink, urlProfessional)
+        }
+    }
+
+    private fun verifyUserExists(newUsersProfessionalRequest: NewProfessionalRequest) {
+        if (usersJpaRepository.existsByEmailAndActiveIsTrue(newUsersProfessionalRequest.email)) {
+            throw ResourceAlreadyExistsException("User with email '${newUsersProfessionalRequest.email}' already exists.")
+        }
+        if (usersJpaRepository.existsByCpfAndActiveIsTrue(newUsersProfessionalRequest.cpf)) {
+            throw ResourceAlreadyExistsException("User with cpf '${newUsersProfessionalRequest.cpf}' already exists.")
+        }
+    }
+
+    fun getProfessionalToClients(
+        name: String?,
+        value: BigDecimal?,
+    ): List<ProfessionalResponse> =
+        professionalJpaRepository
+            .findProfessionalsByFilters(name, value)
+            .map { item ->
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professionalEntity = item,
+                )
+            }
+
+    fun getProfessionalBySpecialtyId(id: Int): List<ProfessionalResponse> =
+        professionalJpaRepository
+            .findProfessionalEntityBySpecialtiesId(id)
+            .map { item ->
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professionalEntity = item,
+                )
+            }
+
+    fun getProfessionalByCategoryId(id: Int): List<ProfessionalResponse> =
+        professionalJpaRepository
+            .findProfessionalEntityBySpecialtiesCategoryEntityId(id)
+            .map { item ->
+                professionalMapper.professionalToProfessionalResponse(
+                    user = usersMapper.usersToUsersResponse(item.user),
+                    professionalEntity = item,
+                )
+            }
+
+    fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> {
+        val clientLocation = manageClientUseCase.findClientById(id).address.location
+
+        return professionalJpaRepository.findProfessionalsWithinRadius(clientLocation).map { item ->
+            professionalMapper.professionalToProfessionalResponse(
+                user = usersMapper.usersToUsersResponse(item.user),
+                professionalEntity = item,
+            )
+        }
+    }
+
+    fun findProfessionalById(id: Int): ProfessionalResponse {
+        log.info("Buscando professional by id - $id")
+        val professional = professionalJpaRepository.findById(id).orElseThrow { ResourceNotFoundException("Professional not found! - $id") }
+        val user = manageUsersUseCase.findUserById(professional.user.id!!)
+        return professionalMapper.professionalToProfessionalResponse(user, professional)
+    }
+
+    fun findProfessionalByLinkName(linkName: String): ProfessionalResponse {
+        val professional =
+            professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName).orElseThrow {
+                ResourceNotFoundException("Professional not found! - $linkName")
+            }
+        val user = manageUsersUseCase.findUserById(professional.user.id!!)
+        return professionalMapper.professionalToProfessionalResponse(user, professional)
+    }
+
+    fun updateAddress(
+        id: Int,
+        updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
+    ) {
+        val professional = professionalJpaRepository.findById(id).orElseThrow { ResourceNotFoundException("Professional not found! - $id") }
+
+        val geolocation = generateGeolocation(updateAddressProfessionalRequest.cep)
+
+        val professionalUpdate =
+            professional.copy(
+                cep = updateAddressProfessionalRequest.cep,
+                lat = geolocation.latitude,
+                lon = geolocation.longitude,
+                location = geolocation.point,
+            )
+
+        professionalJpaRepository.save(professionalUpdate)
+    }
+}
