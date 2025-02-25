@@ -1,5 +1,6 @@
 package br.com.seutempo.api.adapters.web
 
+import br.com.seutempo.api.adapters.web.doc.CategoryOpenAPI
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
 import br.com.seutempo.api.core.useCases.ManageCategoryUseCase
 import org.springframework.http.HttpStatus
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("category")
 class RestCategoryController(
     private val manageCategoryUseCase: ManageCategoryUseCase,
-) {
+) : CategoryOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    fun createCategory(
+    override fun createCategory(
         @RequestBody categoryRequestNew: NewCategoryRequest,
     ) = manageCategoryUseCase.createNewCategory(categoryRequestNew)
 }
