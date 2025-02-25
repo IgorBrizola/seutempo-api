@@ -8,5 +8,3 @@ import org.springframework.stereotype.Repository
 interface CategoryJpaRepository : JpaRepository<CategoryEntity, Int> {
     fun existsByNameCategory(nameCategory: String): Boolean
 }
-
-// TODO: configure outputPort category

@@ -1,15 +1,15 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.repository.jpa.category.CategoryJpaRepository
 import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
+import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ManageCategoryUseCase(
-    private val categoryJpaRepository: CategoryJpaRepository,
+    private val categoryJpaRepository: ManageCategoryOutputPort,
     private val categoryMapper: CategoryMapper,
 ) {
     @Transactional
