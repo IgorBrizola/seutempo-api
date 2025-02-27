@@ -11,6 +11,8 @@ import java.util.Optional
 
 @Repository
 interface ProfessionalJpaRepository : JpaRepository<ProfessionalEntity, Int> {
+    // TODO: add jpa specifications
+
     fun existsByLinkNameProfessional(link: String): Boolean
 
     fun findProfessionalEntityBySpecialtiesId(id: Int): List<ProfessionalEntity>

@@ -41,11 +41,9 @@ class ManageProfessionalUseCase(
 
         val user = usersMapper.usersProfessionalRequestToUsers(newUsersProfessionalRequest)
 
-        val specialtiesResponse =
+        val specialties =
             manageSpecialtyUseCase
-                .findSpecialtyByIds(newUsersProfessionalRequest.specialtyIds)
-
-        val specialtyEntity = specialtiesResponse.map { item -> specialtyMapper.toSpecialtyEntity(item) }
+                .findSpecialtyRegisterProfessional(newUsersProfessionalRequest.specialtyIds)
 
         val urlProfessional = generateLink(user)
 
@@ -60,7 +58,7 @@ class ManageProfessionalUseCase(
                 location = geolocation.point,
                 linkNameProfessional = urlProfessional.linkNameProfessional,
                 urlProfessional = urlProfessional.urlProfessional,
-                specialties = specialtyEntity,
+                specialties = specialties,
             )
 
         professionalJpaRepository.save(professional)
