@@ -17,7 +17,7 @@ class ManageUsersUseCase(
     private val usersJpaRepository: UsersJpaRepository,
     private val usersMapper: UsersMapper,
     private val googleMapsIntegration: GoogleMapsIntegration,
-    val googleMapsConfig: GoogleMapsConfig,
+    private val googleMapsConfig: GoogleMapsConfig,
 ) {
     private val geometryFactory = GeometryFactory(PrecisionModel(), 4326)
 

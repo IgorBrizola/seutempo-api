@@ -1,6 +1,6 @@
 package br.com.seutempo.api.adapters.web
 
-import br.com.seutempo.api.adapters.integration.GoogleMapsIntegration
+import br.com.seutempo.api.adapters.web.doc.ProfessionalOpenAPI
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
@@ -21,55 +21,54 @@ import java.math.BigDecimal
 @RequestMapping("professional")
 class RestProfessionalController(
     private val manageProfessionalUseCase: ManageProfessionalUseCase,
-    private val googleMapsIntegration: GoogleMapsIntegration,
-) {
+) : ProfessionalOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun registerUsersProfessional(
+    override fun registerUsersProfessional(
         @RequestBody professionalRequestNew: NewProfessionalRequest,
     ) = manageProfessionalUseCase.createUsersProfessional(professionalRequestNew)
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getProfessionalsToClient(
-        @RequestParam("name") name: String? = null,
-        @RequestParam("value") value: BigDecimal? = null,
+    override fun getProfessionalsToClient(
+        @RequestParam("name") name: String?,
+        @RequestParam("value") value: BigDecimal?,
     ): List<ProfessionalResponse> = manageProfessionalUseCase.getProfessionalToClients(name, value)
 
     @GetMapping("location/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getProfessionalsWithRadius(
+    override fun getProfessionalsWithRadius(
         @PathVariable id: Int,
     ): List<ProfessionalResponse> = manageProfessionalUseCase.findProfessionalWithLocation(id)
 
     @PutMapping("location/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateGeolocation(
+    override fun updateGeolocation(
         @PathVariable id: Int,
         @RequestBody updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
     ) = manageProfessionalUseCase.updateAddress(id, updateAddressProfessionalRequest)
 
     @GetMapping("specialty/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getProfessionalBySpecialty(
+    override fun getProfessionalBySpecialty(
         @PathVariable id: Int,
     ): List<ProfessionalResponse> = manageProfessionalUseCase.getProfessionalBySpecialtyId(id)
 
     @GetMapping("category/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getProfessionalByCategory(
+    override fun getProfessionalByCategory(
         @PathVariable id: Int,
     ): List<ProfessionalResponse> = manageProfessionalUseCase.getProfessionalByCategoryId(id)
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun findProfessionalById(
+    override fun findProfessionalById(
         @PathVariable id: Int,
     ) = manageProfessionalUseCase.findProfessionalById(id)
 
     @GetMapping("st")
     @ResponseStatus(HttpStatus.OK)
-    fun findProfessionalByLinkName(
+    override fun findProfessionalByLinkName(
         @RequestParam linkName: String,
     ) = manageProfessionalUseCase.findProfessionalByLinkName(linkName)
 }
