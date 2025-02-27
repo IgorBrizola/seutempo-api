@@ -10,7 +10,6 @@ import java.util.Optional
 class ManageProfessionalRepository(
     private val professionalJpaRepository: ProfessionalJpaRepository,
 ) : ManageProfessionalOutputPort {
-    // TODO: configure manage repository professional
     override fun existsByLinkNameProfessional(link: String): Boolean = professionalJpaRepository.existsByLinkNameProfessional(link)
 
     override fun findProfessionalEntityBySpecialtiesId(id: Int): List<ProfessionalEntity> =
