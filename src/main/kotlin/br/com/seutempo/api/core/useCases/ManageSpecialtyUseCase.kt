@@ -45,6 +45,8 @@ class ManageSpecialtyUseCase(
     fun findSpecialtyByIds(specialtyIds: List<Int>): List<SpecialtyResponse> =
         specialtyJpaRepository.findAllById(specialtyIds).map { item -> specialtyMapper.toSpecialtyResponse(item) }
 
+    fun findSpecialtyRegisterProfessional(specialtyIds: List<Int>): List<SpecialtyEntity> = specialtyJpaRepository.findAllById(specialtyIds)
+
     fun getAllSpecialty(): List<SpecialtyResponse> =
         specialtyJpaRepository
             .findAll()
