@@ -3,7 +3,7 @@ package br.com.seutempo.api.core.useCases
 import br.com.seutempo.api.adapters.integration.model.response.GeoResponse
 import br.com.seutempo.api.adapters.repository.jpa.professional.ProfessionalJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
-import br.com.seutempo.api.adapters.repository.model.Users
+import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
@@ -76,7 +76,7 @@ class ManageProfessionalUseCase(
         )
     }
 
-    private fun generateLink(user: Users): UrlProfessionalResponse {
+    private fun generateLink(user: UsersEntity): UrlProfessionalResponse {
         val nameLink = removeAccents("${user.name} ${user.lastName}")
 
         val nameLinkRandom = "$nameLink-${Random.nextInt(999)}"

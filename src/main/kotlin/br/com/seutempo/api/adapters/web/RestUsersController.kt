@@ -1,5 +1,6 @@
 package br.com.seutempo.api.adapters.web
 
+import br.com.seutempo.api.adapters.web.doc.UsersOpenAPI
 import br.com.seutempo.api.adapters.web.model.response.users.UsersResponse
 import br.com.seutempo.api.core.useCases.ManageUsersUseCase
 import org.springframework.http.HttpStatus
@@ -12,10 +13,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("users")
 class RestUsersController(
     private val manageUsersUseCase: ManageUsersUseCase,
-) {
+) : UsersOpenAPI {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun findAllUsers(): List<UsersResponse> = manageUsersUseCase.getUsers()
+    override fun findAllUsers(): List<UsersResponse> = manageUsersUseCase.getUsers()
 }
-
-// TODO: configure mapper to controller users
