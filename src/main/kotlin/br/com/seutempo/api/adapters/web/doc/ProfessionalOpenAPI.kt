@@ -3,30 +3,39 @@ package br.com.seutempo.api.adapters.web.doc
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import java.math.BigDecimal
 
-@Tag(name = "professional")
+@Tag(name = "professional controller")
 interface ProfessionalOpenAPI {
+    @Operation(summary = "Create new professional")
     fun registerUsersProfessional(professionalRequestNew: NewProfessionalRequest)
 
+    @Operation(summary = "Get professional to list client")
     fun getProfessionalsToClient(
         name: String? = null,
         value: BigDecimal? = null,
     ): List<ProfessionalResponse>
 
+    @Operation(summary = "Get professional by radius KM")
     fun getProfessionalsWithRadius(id: Int): List<ProfessionalResponse>
 
+    @Operation(summary = "Update CEP and GEOLOCATION")
     fun updateGeolocation(
         id: Int,
         updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
     )
 
+    @Operation(summary = "Get professional by specialty")
     fun getProfessionalBySpecialty(id: Int): List<ProfessionalResponse>
 
+    @Operation(summary = "Get professional by category")
     fun getProfessionalByCategory(id: Int): List<ProfessionalResponse>
 
+    @Operation(summary = "Find professional by id")
     fun findProfessionalById(id: Int): ProfessionalResponse
 
+    @Operation(summary = "Find professional by linkName")
     fun findProfessionalByLinkName(linkName: String): ProfessionalResponse
 }
