@@ -1,5 +1,12 @@
 package br.com.seutempo.api.core.ports.output
 
-class ManageSpecialtyOutputPort {
-    // TODO: create output specialty
+import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
+
+interface ManageSpecialtyOutputPort {
+    fun existsByNameSpecialtyAndCategoryEntityId(
+        nameSpecialty: String,
+        categoryId: Int,
+    ): Boolean
+
+    fun findByProfessionalEntitiesId(id: Int?): List<SpecialtyEntity>
 }
