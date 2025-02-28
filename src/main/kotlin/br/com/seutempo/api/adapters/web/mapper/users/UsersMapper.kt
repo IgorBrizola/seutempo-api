@@ -1,7 +1,7 @@
 package br.com.seutempo.api.adapters.web.mapper.users
 
 import br.com.seutempo.api.adapters.repository.model.ClientEntity
-import br.com.seutempo.api.adapters.repository.model.Users
+import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.users.UsersResponse
@@ -14,15 +14,15 @@ import org.mapstruct.ReportingPolicy
     componentModel = MappingConstants.ComponentModel.SPRING,
 )
 interface UsersMapper {
-    fun usersResponseToUsers(usersResponse: UsersResponse): Users
+    fun usersResponseToUsers(usersResponse: UsersResponse): UsersEntity
 
-    fun usersToUsersResponse(users: Users): UsersResponse
+    fun usersToUsersResponse(usersEntity: UsersEntity): UsersResponse
 
-    fun usersToProfessionalRequest(users: Users): NewProfessionalRequest
+    fun usersToProfessionalRequest(usersEntity: UsersEntity): NewProfessionalRequest
 
-    fun usersProfessionalRequestToUsers(newProfessionalRequest: NewProfessionalRequest): Users
+    fun usersProfessionalRequestToUsers(newProfessionalRequest: NewProfessionalRequest): UsersEntity
 
     fun clientToUsersClientRequest(clientEntity: ClientEntity): NewClientRequest
 
-    fun usersClientRequestToUsers(newClientRequest: NewClientRequest): Users
+    fun usersClientRequestToUsers(newClientRequest: NewClientRequest): UsersEntity
 }

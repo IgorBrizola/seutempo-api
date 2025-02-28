@@ -2,7 +2,7 @@ package br.com.seutempo.api.adapters.web.mapper.professional
 
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
-import br.com.seutempo.api.adapters.repository.model.Users
+import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
@@ -26,7 +26,7 @@ interface ProfessionalMapper {
     @Mapping(source = "urlProfessional", target = "urlProfessional")
     @Mapping(source = "specialties", target = "specialties")
     fun newUsersProfessionalRequestToProfessional(
-        user: Users,
+        user: UsersEntity,
         newUsersProfessionalRequest: NewProfessionalRequest,
         lat: Double,
         lon: Double,

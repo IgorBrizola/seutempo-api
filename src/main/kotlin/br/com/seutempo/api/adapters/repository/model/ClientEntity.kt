@@ -21,7 +21,7 @@ data class ClientEntity(
     val id: Int? = null,
     @OneToOne(cascade = [CascadeType.ALL], optional = false)
     @JoinColumn(name = "id_users")
-    val user: Users,
+    val user: UsersEntity,
     @Column(name = "surname")
     val surname: String? = null,
     @Column(name = "cep")

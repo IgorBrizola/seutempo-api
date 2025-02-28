@@ -1,7 +1,7 @@
 package br.com.seutempo.api.adapters.web.mapper.client
 
 import br.com.seutempo.api.adapters.repository.model.ClientEntity
-import br.com.seutempo.api.adapters.repository.model.Users
+import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.AddressClientResponse
 import org.locationtech.jts.geom.Point
@@ -15,9 +15,9 @@ import org.mapstruct.ReportingPolicy
     componentModel = MappingConstants.ComponentModel.SPRING,
 )
 interface ClientMapper {
-    fun usersToUsersClientRequest(users: Users): NewClientRequest
+    fun usersToUsersClientRequest(usersEntity: UsersEntity): NewClientRequest
 
-    fun usersClientRequestToUsers(newClientRequest: NewClientRequest): Users
+    fun usersClientRequestToUsers(newClientRequest: NewClientRequest): UsersEntity
 
     fun clientToUsersClientRequest(clientEntity: ClientEntity): NewClientRequest
 
@@ -36,7 +36,7 @@ interface ClientMapper {
     @Mapping(source = "lon", target = "longitude")
     @Mapping(source = "location", target = "location")
     fun usersClientRequestToClient(
-        user: Users,
+        user: UsersEntity,
         newUsersClientRequest: NewClientRequest,
         lat: Double,
         lon: Double,

@@ -23,7 +23,7 @@ data class ProfessionalEntity(
     val id: Int? = null,
     @OneToOne(cascade = [CascadeType.ALL], optional = false)
     @JoinColumn(name = "id_users")
-    val user: Users,
+    val user: UsersEntity,
     @Column(name = "url_professional")
     val urlProfessional: String,
     @Column(name = "link_professional")
