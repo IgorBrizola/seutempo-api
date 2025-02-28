@@ -1,6 +1,6 @@
 package br.com.seutempo.api.adapters.web.mapper.client
 
-import br.com.seutempo.api.adapters.repository.model.Client
+import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.Users
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.AddressClientResponse
@@ -19,7 +19,7 @@ interface ClientMapper {
 
     fun usersClientRequestToUsers(newClientRequest: NewClientRequest): Users
 
-    fun clientToUsersClientRequest(client: Client): NewClientRequest
+    fun clientToUsersClientRequest(clientEntity: ClientEntity): NewClientRequest
 
     @Mapping(source = "user", target = "user")
     @Mapping(source = "newUsersClientRequest.surname", target = "surname")
@@ -41,7 +41,7 @@ interface ClientMapper {
         lat: Double,
         lon: Double,
         location: Point,
-    ): Client
+    ): ClientEntity
 
-    fun toAddressResponse(client: Client): AddressClientResponse
+    fun toAddressResponse(clientEntity: ClientEntity): AddressClientResponse
 }
