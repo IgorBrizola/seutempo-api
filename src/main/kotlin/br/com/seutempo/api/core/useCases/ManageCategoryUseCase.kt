@@ -3,6 +3,7 @@ package br.com.seutempo.api.core.useCases
 import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
+import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional
 class ManageCategoryUseCase(
     private val categoryJpaRepository: ManageCategoryOutputPort,
     private val categoryMapper: CategoryMapper,
-) {
+) : ManageCategoryInputPort {
     @Transactional
-    fun createNewCategory(categoryRequestNew: NewCategoryRequest) {
+    override fun createNewCategory(categoryRequestNew: NewCategoryRequest) {
         if (categoryJpaRepository.existsByNameCategory(
                 categoryRequestNew.name,
             )

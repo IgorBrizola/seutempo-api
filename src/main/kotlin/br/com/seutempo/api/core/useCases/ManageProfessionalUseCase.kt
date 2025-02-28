@@ -12,6 +12,7 @@ import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
+import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
@@ -28,7 +29,7 @@ class ManageProfessionalUseCase(
     private val usersJpaRepository: ManageUsersOutputPort,
     private val usersMapper: UsersMapper,
     private val professionalMapper: ProfessionalMapper,
-    private val manageSpecialtyUseCase: ManageSpecialtyUseCase,
+    private val manageSpecialtyUseCase: ManageSpecialtyInputPort,
     private val manageUsersUseCase: ManageUsersInputPort,
     private val manageClientUseCase: ManageClientInputPort,
 ) : ManageProfessionalInputPort {
