@@ -6,7 +6,7 @@ import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyRespon
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 
-@Tag(name = "specialty")
+@Tag(name = "specialty controller")
 interface SpecialtyOpenAPI {
     @Operation(summary = "Create new specialty")
     fun createSpecialty(newSpecialtyRequest: NewSpecialtyRequest)
