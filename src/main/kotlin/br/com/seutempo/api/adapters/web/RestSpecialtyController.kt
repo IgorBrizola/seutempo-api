@@ -1,5 +1,6 @@
 package br.com.seutempo.api.adapters.web
 
+import br.com.seutempo.api.adapters.web.doc.SpecialtyOpenAPI
 import br.com.seutempo.api.adapters.web.model.request.specialty.NewSpecialtyRequest
 import br.com.seutempo.api.adapters.web.model.request.specialty.UpdateSpecialtyRequest
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
@@ -19,41 +20,39 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("specialty")
 class RestSpecialtyController(
     private val manageSpecialtyUseCase: ManageSpecialtyUseCase,
-) {
+) : SpecialtyOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    fun createSpecialty(
+    override fun createSpecialty(
         @RequestBody newSpecialtyRequest: NewSpecialtyRequest,
     ) = manageSpecialtyUseCase.createNewSpecialty(newSpecialtyRequest)
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getAllSpecialty(): List<SpecialtyResponse> = manageSpecialtyUseCase.getAllSpecialty()
+    override fun getAllSpecialty(): List<SpecialtyResponse> = manageSpecialtyUseCase.getAllSpecialty()
 
     @GetMapping("professional/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getSpecialtyByProfessional(
+    override fun getSpecialtyByProfessional(
         @PathVariable id: Int,
     ): List<SpecialtyResponse> = manageSpecialtyUseCase.getSpecialtyByProfessional(id)
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteSpecialtyById(
+    override fun deleteSpecialtyById(
         @PathVariable id: Int,
     ) = manageSpecialtyUseCase.deleteSpecialtyById(id)
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateSpecialty(
+    override fun updateSpecialty(
         @PathVariable id: Int,
         @RequestBody updateSpecialtyRequest: UpdateSpecialtyRequest,
     ) = manageSpecialtyUseCase.updateSpecialty(id, updateSpecialtyRequest)
 
     @GetMapping("{ids}")
     @ResponseStatus(HttpStatus.OK)
-    fun getSpecialtyByIds(
+    override fun getSpecialtyByIds(
         @PathVariable ids: List<Int>,
     ): List<SpecialtyResponse> = manageSpecialtyUseCase.findSpecialtyByIds(ids)
 }
-
-// TODO: configure mapper to controller specialty

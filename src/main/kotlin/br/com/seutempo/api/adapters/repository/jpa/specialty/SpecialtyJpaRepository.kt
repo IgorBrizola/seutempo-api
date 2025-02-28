@@ -13,5 +13,3 @@ interface SpecialtyJpaRepository : JpaRepository<SpecialtyEntity, Int> {
 
     fun findByProfessionalEntitiesId(id: Int?): List<SpecialtyEntity>
 }
-
-// TODO: configure outputPort category
