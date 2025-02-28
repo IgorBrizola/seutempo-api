@@ -20,4 +20,8 @@ interface ManageProfessionalOutputPort {
     fun findProfessionalsWithinRadius(point: Point): List<ProfessionalEntity>
 
     fun findProfessionalEntityByLinkNameProfessional(linkName: String): Optional<ProfessionalEntity>
+
+    fun findById(id: Int): Optional<ProfessionalEntity>
+
+    fun save(professionalEntity: ProfessionalEntity): ProfessionalEntity
 }

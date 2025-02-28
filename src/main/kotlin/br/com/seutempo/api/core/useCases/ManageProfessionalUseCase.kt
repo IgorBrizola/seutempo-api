@@ -1,11 +1,8 @@
 package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.adapters.integration.model.response.GeoResponse
-import br.com.seutempo.api.adapters.repository.jpa.professional.ProfessionalJpaRepository
-import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
-import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
@@ -13,6 +10,10 @@ import br.com.seutempo.api.adapters.web.model.response.professional.Professional
 import br.com.seutempo.api.adapters.web.model.response.professional.UrlProfessionalResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
+import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
+import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
+import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import br.com.seutempo.api.util.AppUtil.removeAccents
 import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Service
@@ -22,21 +23,20 @@ import kotlin.random.Random
 
 @Service
 class ManageProfessionalUseCase(
-    private val professionalJpaRepository: ProfessionalJpaRepository,
-    private val usersJpaRepository: UsersJpaRepository,
+    private val professionalJpaRepository: ManageProfessionalOutputPort,
+    private val usersJpaRepository: ManageUsersOutputPort,
     private val usersMapper: UsersMapper,
     private val professionalMapper: ProfessionalMapper,
     private val manageSpecialtyUseCase: ManageSpecialtyUseCase,
-    private val manageUsersUseCase: ManageUsersUseCase,
+    private val manageUsersUseCase: ManageUsersInputPort,
     private val manageClientUseCase: ManageClientUseCase,
-    private val specialtyMapper: SpecialtyMapper,
-) {
+) : ManageProfessionalInputPort {
     private val log = LogManager.getLogger(javaClass)
 
     private val baseUrlPerfil = "https://seutempo.com.br/st/"
 
     @Transactional
-    fun createUsersProfessional(newUsersProfessionalRequest: NewProfessionalRequest) {
+    override fun createUsersProfessional(newUsersProfessionalRequest: NewProfessionalRequest) {
         verifyUserExists(newUsersProfessionalRequest)
 
         val user = usersMapper.usersProfessionalRequestToUsers(newUsersProfessionalRequest)
@@ -106,7 +106,7 @@ class ManageProfessionalUseCase(
         }
     }
 
-    fun getProfessionalToClients(
+    override fun getProfessionalToClients(
         name: String?,
         value: BigDecimal?,
     ): List<ProfessionalResponse> =
@@ -119,7 +119,7 @@ class ManageProfessionalUseCase(
                 )
             }
 
-    fun getProfessionalBySpecialtyId(id: Int): List<ProfessionalResponse> =
+    override fun getProfessionalBySpecialtyId(id: Int): List<ProfessionalResponse> =
         professionalJpaRepository
             .findProfessionalEntityBySpecialtiesId(id)
             .map { item ->
@@ -129,7 +129,7 @@ class ManageProfessionalUseCase(
                 )
             }
 
-    fun getProfessionalByCategoryId(id: Int): List<ProfessionalResponse> =
+    override fun getProfessionalByCategoryId(id: Int): List<ProfessionalResponse> =
         professionalJpaRepository
             .findProfessionalEntityBySpecialtiesCategoryEntityId(id)
             .map { item ->
@@ -139,7 +139,7 @@ class ManageProfessionalUseCase(
                 )
             }
 
-    fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> {
+    override fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> {
         val clientLocation = manageClientUseCase.findClientById(id).address.location
 
         return professionalJpaRepository.findProfessionalsWithinRadius(clientLocation).map { item ->
@@ -150,14 +150,14 @@ class ManageProfessionalUseCase(
         }
     }
 
-    fun findProfessionalById(id: Int): ProfessionalResponse {
+    override fun findProfessionalById(id: Int): ProfessionalResponse {
         log.info("Buscando professional by id - $id")
         val professional = professionalJpaRepository.findById(id).orElseThrow { ResourceNotFoundException("Professional not found! - $id") }
         val user = manageUsersUseCase.findUserById(professional.user.id!!)
         return professionalMapper.professionalToProfessionalResponse(user, professional)
     }
 
-    fun findProfessionalByLinkName(linkName: String): ProfessionalResponse {
+    override fun findProfessionalByLinkName(linkName: String): ProfessionalResponse {
         val professional =
             professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName).orElseThrow {
                 ResourceNotFoundException("Professional not found! - $linkName")
@@ -166,7 +166,7 @@ class ManageProfessionalUseCase(
         return professionalMapper.professionalToProfessionalResponse(user, professional)
     }
 
-    fun updateAddress(
+    override fun updateAddress(
         id: Int,
         updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
     ) {
