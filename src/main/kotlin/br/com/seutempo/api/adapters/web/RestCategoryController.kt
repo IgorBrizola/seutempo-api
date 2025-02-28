@@ -2,7 +2,7 @@ package br.com.seutempo.api.adapters.web
 
 import br.com.seutempo.api.adapters.web.doc.CategoryOpenAPI
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
-import br.com.seutempo.api.core.useCases.ManageCategoryUseCase
+import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("category")
 class RestCategoryController(
-    private val manageCategoryUseCase: ManageCategoryUseCase,
+    private val manageCategoryUseCase: ManageCategoryInputPort,
 ) : CategoryOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)

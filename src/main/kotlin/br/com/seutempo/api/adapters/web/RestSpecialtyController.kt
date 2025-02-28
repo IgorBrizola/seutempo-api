@@ -4,7 +4,7 @@ import br.com.seutempo.api.adapters.web.doc.SpecialtyOpenAPI
 import br.com.seutempo.api.adapters.web.model.request.specialty.NewSpecialtyRequest
 import br.com.seutempo.api.adapters.web.model.request.specialty.UpdateSpecialtyRequest
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
-import br.com.seutempo.api.core.useCases.ManageSpecialtyUseCase
+import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("specialty")
 class RestSpecialtyController(
-    private val manageSpecialtyUseCase: ManageSpecialtyUseCase,
+    private val manageSpecialtyUseCase: ManageSpecialtyInputPort,
 ) : SpecialtyOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
