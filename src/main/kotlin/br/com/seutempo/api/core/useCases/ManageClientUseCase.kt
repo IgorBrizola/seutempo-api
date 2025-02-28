@@ -1,6 +1,5 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.repository.jpa.client.ClientJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
 import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
@@ -8,12 +7,13 @@ import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ManageClientUseCase(
-    private val clientJpaRepository: ClientJpaRepository,
+    private val clientJpaRepository: ManageClientOutputPort,
     private val usersJpaRepository: UsersJpaRepository,
     private val clientMapper: ClientMapper,
     private val usersMapper: UsersMapper,
