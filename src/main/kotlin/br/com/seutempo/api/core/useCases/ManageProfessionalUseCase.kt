@@ -10,6 +10,7 @@ import br.com.seutempo.api.adapters.web.model.response.professional.Professional
 import br.com.seutempo.api.adapters.web.model.response.professional.UrlProfessionalResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
@@ -29,7 +30,7 @@ class ManageProfessionalUseCase(
     private val professionalMapper: ProfessionalMapper,
     private val manageSpecialtyUseCase: ManageSpecialtyUseCase,
     private val manageUsersUseCase: ManageUsersInputPort,
-    private val manageClientUseCase: ManageClientUseCase,
+    private val manageClientUseCase: ManageClientInputPort,
 ) : ManageProfessionalInputPort {
     private val log = LogManager.getLogger(javaClass)
 

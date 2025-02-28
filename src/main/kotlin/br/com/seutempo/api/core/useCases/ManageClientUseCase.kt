@@ -1,26 +1,28 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
 import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.ports.input.ManageClientInputPort
+import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
+import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ManageClientUseCase(
     private val clientJpaRepository: ManageClientOutputPort,
-    private val usersJpaRepository: UsersJpaRepository,
+    private val usersJpaRepository: ManageUsersOutputPort,
     private val clientMapper: ClientMapper,
     private val usersMapper: UsersMapper,
-    private val manageUsersUseCase: ManageUsersUseCase,
-) {
+    private val manageUsersUseCase: ManageUsersInputPort,
+) : ManageClientInputPort {
     @Transactional
-    fun createUsersClient(newUsersClientRequest: NewClientRequest) {
+    override fun createUsersClient(newUsersClientRequest: NewClientRequest) {
         if (usersJpaRepository.existsByEmailAndActiveIsTrue(newUsersClientRequest.email)) {
             throw ResourceAlreadyExistsException("User with email '${newUsersClientRequest.email}' already exists.")
         }
@@ -46,7 +48,7 @@ class ManageClientUseCase(
         clientJpaRepository.save(client)
     }
 
-    fun findClientById(id: Int): ClientResponse {
+    override fun findClientById(id: Int): ClientResponse {
         val client = clientJpaRepository.findById(id).orElseThrow { throw ResourceNotFoundException("Client not found!") }
         return ClientResponse(
             id = client.id,
