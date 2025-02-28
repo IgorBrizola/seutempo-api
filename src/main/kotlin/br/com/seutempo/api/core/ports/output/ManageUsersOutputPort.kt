@@ -17,4 +17,6 @@ interface ManageUsersOutputPort {
     fun save(usersEntity: UsersEntity): UsersEntity
 
     fun findById(id: Int): Optional<UsersEntity>
+
+    fun findAll(): List<UsersEntity>
 }

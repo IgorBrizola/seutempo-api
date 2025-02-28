@@ -21,4 +21,6 @@ class ManageUsersRepository(
     override fun save(usersEntity: UsersEntity): UsersEntity = usersJpaRepository.save(usersEntity)
 
     override fun findById(id: Int): Optional<UsersEntity> = usersJpaRepository.findById(id)
+
+    override fun findAll(): List<UsersEntity> = usersJpaRepository.findAll()
 }
