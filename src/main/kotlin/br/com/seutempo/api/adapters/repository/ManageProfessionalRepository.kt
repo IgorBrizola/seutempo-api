@@ -32,4 +32,7 @@ class ManageProfessionalRepository(
     override fun findById(id: Int): Optional<ProfessionalEntity> = professionalJpaRepository.findById(id)
 
     override fun save(professionalEntity: ProfessionalEntity): ProfessionalEntity = professionalJpaRepository.save(professionalEntity)
+
+    override fun saveAll(professionalEntity: List<ProfessionalEntity>): List<ProfessionalEntity> =
+        professionalJpaRepository.saveAll(professionalEntity)
 }
