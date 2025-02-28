@@ -1,6 +1,6 @@
 package br.com.seutempo.api.adapters.web.mapper.users
 
-import br.com.seutempo.api.adapters.repository.model.Client
+import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.Users
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
@@ -22,7 +22,7 @@ interface UsersMapper {
 
     fun usersProfessionalRequestToUsers(newProfessionalRequest: NewProfessionalRequest): Users
 
-    fun clientToUsersClientRequest(client: Client): NewClientRequest
+    fun clientToUsersClientRequest(clientEntity: ClientEntity): NewClientRequest
 
     fun usersClientRequestToUsers(newClientRequest: NewClientRequest): Users
 }

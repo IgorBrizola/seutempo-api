@@ -15,7 +15,7 @@ import org.locationtech.jts.geom.Point
 
 @Entity
 @Table(name = "client")
-data class Client(
+data class ClientEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
