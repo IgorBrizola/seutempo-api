@@ -17,7 +17,7 @@ class HexagonalTest {
             .layer(DOMAIN_MODEL_LAYER)
             .definedBy("..domain.model..")
             .layer(USECASE_LAYER)
-            .definedBy("..usecases..")
+            .definedBy("..useCases..")
             .layer(ADAPTER_LAYER)
             .definedBy("..adapters..")
             .layer(PORT_LAYER)
@@ -33,7 +33,7 @@ class HexagonalTest {
 
     companion object {
         private const val DOMAIN_MODEL_LAYER: String = "DomainModel"
-        private const val USECASE_LAYER: String = "Usecases"
+        private const val USECASE_LAYER: String = "UseCases"
         private const val ADAPTER_LAYER: String = "Adapters"
         private const val PORT_LAYER: String = "Ports"
         private const val CONFIG_LAYER: String = "Config"
