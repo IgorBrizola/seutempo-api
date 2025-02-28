@@ -21,5 +21,3 @@ class RestCategoryController(
         @RequestBody categoryRequestNew: NewCategoryRequest,
     ) = manageCategoryUseCase.createNewCategory(categoryRequestNew)
 }
-
-// TODO: configure mapper to controller category

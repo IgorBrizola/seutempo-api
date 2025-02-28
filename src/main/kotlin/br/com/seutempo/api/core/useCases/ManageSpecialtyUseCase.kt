@@ -1,8 +1,5 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.repository.jpa.category.CategoryJpaRepository
-import br.com.seutempo.api.adapters.repository.jpa.professional.ProfessionalJpaRepository
-import br.com.seutempo.api.adapters.repository.jpa.specialty.SpecialtyJpaRepository
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
 import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.adapters.web.model.request.specialty.NewSpecialtyRequest
@@ -10,18 +7,22 @@ import br.com.seutempo.api.adapters.web.model.request.specialty.UpdateSpecialtyR
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
+import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
+import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
+import br.com.seutempo.api.core.ports.output.ManageSpecialtyOutputPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ManageSpecialtyUseCase(
-    private val specialtyJpaRepository: SpecialtyJpaRepository,
-    private val categoryJpaRepository: CategoryJpaRepository,
-    private val professionalJpaRepository: ProfessionalJpaRepository,
+    private val specialtyJpaRepository: ManageSpecialtyOutputPort,
+    private val categoryJpaRepository: ManageCategoryOutputPort,
+    private val professionalJpaRepository: ManageProfessionalOutputPort,
     private val specialtyMapper: SpecialtyMapper,
-) {
+) : ManageSpecialtyInputPort {
     @Transactional
-    fun createNewSpecialty(newSpecialtyRequest: NewSpecialtyRequest) {
+    override fun createNewSpecialty(newSpecialtyRequest: NewSpecialtyRequest) {
         val category =
             categoryJpaRepository
                 .findById(
@@ -42,23 +43,24 @@ class ManageSpecialtyUseCase(
         )
     }
 
-    fun findSpecialtyByIds(specialtyIds: List<Int>): List<SpecialtyResponse> =
+    override fun findSpecialtyByIds(specialtyIds: List<Int>): List<SpecialtyResponse> =
         specialtyJpaRepository.findAllById(specialtyIds).map { item -> specialtyMapper.toSpecialtyResponse(item) }
 
-    fun findSpecialtyRegisterProfessional(specialtyIds: List<Int>): List<SpecialtyEntity> = specialtyJpaRepository.findAllById(specialtyIds)
+    override fun findSpecialtyRegisterProfessional(specialtyIds: List<Int>): List<SpecialtyEntity> =
+        specialtyJpaRepository.findAllById(specialtyIds)
 
-    fun getAllSpecialty(): List<SpecialtyResponse> =
+    override fun getAllSpecialty(): List<SpecialtyResponse> =
         specialtyJpaRepository
             .findAll()
             .map { item -> SpecialtyResponse(item.categoryEntity.nameCategory, item.nameSpecialty) }
 
-    fun getSpecialtyByProfessional(id: Int?): List<SpecialtyResponse> =
+    override fun getSpecialtyByProfessional(id: Int?): List<SpecialtyResponse> =
         specialtyJpaRepository
             .findByProfessionalEntitiesId(
                 id,
             ).map { item -> SpecialtyResponse(nameSpecialty = item.nameSpecialty, nameCategory = item.categoryEntity.nameCategory) }
 
-    fun deleteSpecialtyById(id: Int) {
+    override fun deleteSpecialtyById(id: Int) {
         val specialty =
             specialtyJpaRepository
                 .findById(id)
@@ -72,7 +74,7 @@ class ManageSpecialtyUseCase(
         specialtyJpaRepository.deleteById(id)
     }
 
-    fun updateSpecialty(
+    override fun updateSpecialty(
         id: Int,
         updateSpecialtyRequest: UpdateSpecialtyRequest,
     ) {

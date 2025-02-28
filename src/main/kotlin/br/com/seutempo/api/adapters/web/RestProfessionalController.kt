@@ -4,7 +4,7 @@ import br.com.seutempo.api.adapters.web.doc.ProfessionalOpenAPI
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
-import br.com.seutempo.api.core.useCases.ManageProfessionalUseCase
+import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,7 +20,7 @@ import java.math.BigDecimal
 @RestController
 @RequestMapping("professional")
 class RestProfessionalController(
-    private val manageProfessionalUseCase: ManageProfessionalUseCase,
+    private val manageProfessionalUseCase: ManageProfessionalInputPort,
 ) : ProfessionalOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -72,5 +72,3 @@ class RestProfessionalController(
         @RequestParam linkName: String,
     ) = manageProfessionalUseCase.findProfessionalByLinkName(linkName)
 }
-
-// TODO: configure mapper to controller professional
