@@ -1,11 +1,12 @@
 package br.com.seutempo.api.arch
 
 import br.com.seutempo.api.ApiApplication
+import com.tngtech.archunit.core.importer.ImportOption
 import com.tngtech.archunit.junit.AnalyzeClasses
 import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.library.Architectures
 
-@AnalyzeClasses(packagesOf = [ApiApplication::class])
+@AnalyzeClasses(packagesOf = [ApiApplication::class], importOptions = [ImportOption.DoNotIncludeTests::class])
 class HexagonalTest {
     @ArchTest
     var archTest =
