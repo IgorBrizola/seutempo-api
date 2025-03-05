@@ -5,7 +5,6 @@ import java.time.LocalDate
 import java.time.Period
 
 data class UsersResponse(
-    val id: Int?,
     val name: String,
     val email: String,
     val phone: String,

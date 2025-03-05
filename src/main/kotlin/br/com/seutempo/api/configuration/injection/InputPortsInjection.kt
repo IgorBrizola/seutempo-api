@@ -28,13 +28,11 @@ class InputPortsInjection {
     @Bean
     fun manageUsersInputPort(
         usersJpaRepository: ManageUsersOutputPort,
-        usersMapper: UsersMapper,
         googleMapsIntegration: GoogleMapsIntegration,
         googleMapsConfig: GoogleMapsConfig,
     ): ManageUsersInputPort =
         ManageUsersUseCase(
             usersJpaRepository,
-            usersMapper,
             googleMapsIntegration,
             googleMapsConfig,
         )

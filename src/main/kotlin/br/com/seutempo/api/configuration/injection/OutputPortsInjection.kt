@@ -45,5 +45,8 @@ class OutputPortsInjection {
     ): ManageClientOutputPort = ManageClientRepository(clientJpaRepository, usersMapper, clientMapper)
 
     @Bean
-    fun manageUsersOutputPort(usersJpaRepository: UsersJpaRepository): ManageUsersOutputPort = ManageUsersRepository(usersJpaRepository)
+    fun manageUsersOutputPort(
+        usersJpaRepository: UsersJpaRepository,
+        usersMapper: UsersMapper,
+    ): ManageUsersOutputPort = ManageUsersRepository(usersJpaRepository, usersMapper)
 }

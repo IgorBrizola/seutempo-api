@@ -27,5 +27,11 @@ interface UsersMapper {
 
     fun usersClientRequestToUsers(newClientRequest: NewClientRequest): UsersEntity
 
+    fun toUsers(usersEntity: UsersEntity): Users
+
     fun toUserEntity(users: Users): UsersEntity
+
+    fun toListUsers(usersEntity: List<UsersEntity>): List<Users>
+
+    fun toListUsersResponse(users: List<Users>): List<UsersResponse>
 }

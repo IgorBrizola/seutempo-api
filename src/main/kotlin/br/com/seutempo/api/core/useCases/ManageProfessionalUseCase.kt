@@ -116,7 +116,7 @@ class ManageProfessionalUseCase(
             .findProfessionalsByFilters(name, value)
             .map { item ->
                 professionalMapper.professionalToProfessionalResponse(
-                    user = usersMapper.usersToUsersResponse(item.user),
+                    user = usersMapper.toUsers(item.user),
                     professionalEntity = item,
                 )
             }
@@ -126,7 +126,7 @@ class ManageProfessionalUseCase(
             .findProfessionalEntityBySpecialtiesId(id)
             .map { item ->
                 professionalMapper.professionalToProfessionalResponse(
-                    user = usersMapper.usersToUsersResponse(item.user),
+                    user = usersMapper.toUsers(item.user),
                     professionalEntity = item,
                 )
             }
@@ -136,7 +136,7 @@ class ManageProfessionalUseCase(
             .findProfessionalEntityBySpecialtiesCategoryEntityId(id)
             .map { item ->
                 professionalMapper.professionalToProfessionalResponse(
-                    user = usersMapper.usersToUsersResponse(item.user),
+                    user = usersMapper.toUsers(item.user),
                     professionalEntity = item,
                 )
             }
@@ -146,7 +146,7 @@ class ManageProfessionalUseCase(
 
         return professionalJpaRepository.findProfessionalsWithinRadius(clientLocation).map { item ->
             professionalMapper.professionalToProfessionalResponse(
-                user = usersMapper.usersToUsersResponse(item.user),
+                user = usersMapper.toUsers(item.user),
                 professionalEntity = item,
             )
         }

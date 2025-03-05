@@ -6,7 +6,7 @@ import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
-import br.com.seutempo.api.adapters.web.model.response.users.UsersResponse
+import br.com.seutempo.api.core.domain.model.Users
 import org.locationtech.jts.geom.Point
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -41,8 +41,9 @@ interface ProfessionalMapper {
 
     fun toSpecialtyListResponse(specialties: List<SpecialtyEntity>): List<SpecialtyResponse>
 
+    @Mapping(source = "user", target = "user")
     fun professionalToProfessionalResponse(
-        user: UsersResponse,
+        user: Users,
         professionalEntity: ProfessionalEntity,
     ): ProfessionalResponse
 

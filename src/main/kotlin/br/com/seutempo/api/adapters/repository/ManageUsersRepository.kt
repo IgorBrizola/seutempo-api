@@ -2,11 +2,15 @@ package br.com.seutempo.api.adapters.repository
 
 import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
+import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
+import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.domain.model.Users
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import java.util.Optional
 
 class ManageUsersRepository(
     private val usersJpaRepository: UsersJpaRepository,
+    private val usersMapper: UsersMapper,
 ) : ManageUsersOutputPort {
     override fun existsByEmailAndActiveIsTrue(email: String): Boolean = usersJpaRepository.existsByEmailAndActiveIsTrue(email)
 
@@ -20,7 +24,12 @@ class ManageUsersRepository(
 
     override fun save(usersEntity: UsersEntity): UsersEntity = usersJpaRepository.save(usersEntity)
 
-    override fun findById(id: Int): Optional<UsersEntity> = usersJpaRepository.findById(id)
+    override fun findById(id: Int): Users =
+        usersMapper.toUsers(
+            usersJpaRepository.findById(id).orElseThrow {
+                throw ResourceNotFoundException("User not found! - $id")
+            },
+        )
 
-    override fun findAll(): List<UsersEntity> = usersJpaRepository.findAll()
+    override fun findAll(): List<Users> = usersMapper.toListUsers(usersJpaRepository.findAll())
 }
