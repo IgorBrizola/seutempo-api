@@ -10,6 +10,7 @@ import br.com.seutempo.api.adapters.repository.jpa.client.ClientJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.professional.ProfessionalJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.specialty.SpecialtyJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
+import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
@@ -23,8 +24,10 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class OutputPortsInjection {
     @Bean
-    fun manageCategoryOutputPort(categoryJpaRepository: CategoryJpaRepository): ManageCategoryOutputPort =
-        ManageCategoryRepository(categoryJpaRepository)
+    fun manageCategoryOutputPort(
+        categoryJpaRepository: CategoryJpaRepository,
+        categoryMapper: CategoryMapper,
+    ): ManageCategoryOutputPort = ManageCategoryRepository(categoryJpaRepository, categoryMapper)
 
     @Bean
     fun manageProfessionalOutputPort(professionalJpaRepository: ProfessionalJpaRepository): ManageProfessionalOutputPort =

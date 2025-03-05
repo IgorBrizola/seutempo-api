@@ -1,8 +1,7 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
-import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
+import br.com.seutempo.api.core.domain.model.Category
 import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import org.springframework.stereotype.Service
@@ -11,18 +10,15 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ManageCategoryUseCase(
     private val categoryJpaRepository: ManageCategoryOutputPort,
-    private val categoryMapper: CategoryMapper,
 ) : ManageCategoryInputPort {
     @Transactional
-    override fun createNewCategory(categoryRequestNew: NewCategoryRequest) {
+    override fun createNewCategory(newCategoryRequest: Category) {
         if (categoryJpaRepository.existsByNameCategory(
-                categoryRequestNew.name,
+                newCategoryRequest.nameCategory,
             )
         ) {
-            throw ResourceAlreadyExistsException("Category (${categoryRequestNew.name}) already exist")
+            throw ResourceAlreadyExistsException("Category (${newCategoryRequest.nameCategory}) already exist")
         }
-
-        val category = categoryMapper.categoryNewRequestToCategory(categoryRequestNew)
-        categoryJpaRepository.save(category)
+        categoryJpaRepository.save(newCategoryRequest)
     }
 }
