@@ -22,5 +22,5 @@ data class SpecialtyEntity(
     @JoinColumn(name = "id_category")
     val categoryEntity: CategoryEntity,
     @ManyToMany(mappedBy = "specialties")
-    val professionalEntities: MutableList<ProfessionalEntity>? = mutableListOf(),
+    val professionalEntities: MutableList<ProfessionalEntity> = mutableListOf(),
 )

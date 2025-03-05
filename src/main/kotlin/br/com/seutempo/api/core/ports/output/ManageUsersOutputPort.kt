@@ -1,7 +1,7 @@
 package br.com.seutempo.api.core.ports.output
 
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
-import br.com.seutempo.api.core.domain.model.users.Users
+import br.com.seutempo.api.core.domain.model.Users
 import java.util.Optional
 
 interface ManageUsersOutputPort {

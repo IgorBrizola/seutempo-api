@@ -1,7 +1,7 @@
 package br.com.seutempo.api.core.ports.output
 
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
-import br.com.seutempo.api.core.domain.model.specialty.Specialty
+import java.util.Optional
 
 interface ManageSpecialtyOutputPort {
     fun existsByNameSpecialtyAndCategoryEntityId(
@@ -9,15 +9,15 @@ interface ManageSpecialtyOutputPort {
         categoryId: Int,
     ): Boolean
 
-    fun findByProfessionalEntitiesId(id: Int?): List<Specialty>
+    fun findByProfessionalEntitiesId(id: Int?): List<SpecialtyEntity>
 
-    fun save(specialty: Specialty): SpecialtyEntity
+    fun save(specialtyEntity: SpecialtyEntity): SpecialtyEntity
 
-    fun findById(id: Int): Specialty
+    fun findById(id: Int): Optional<SpecialtyEntity>
 
-    fun findAllById(ids: List<Int>): List<Specialty>
+    fun findAllById(ids: List<Int>): List<SpecialtyEntity>
 
-    fun findAll(): List<Specialty>
+    fun findAll(): List<SpecialtyEntity>
 
     fun deleteById(id: Int)
 }

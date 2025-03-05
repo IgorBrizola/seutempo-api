@@ -1,7 +1,6 @@
-package br.com.seutempo.api.core.domain.model.client
+package br.com.seutempo.api.core.domain.model
 
 import br.com.seutempo.api.adapters.repository.model.TypeAddress
-import br.com.seutempo.api.core.domain.model.users.Users
 import org.locationtech.jts.geom.Point
 
 data class Client(

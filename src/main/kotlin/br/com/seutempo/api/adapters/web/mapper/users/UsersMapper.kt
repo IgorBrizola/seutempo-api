@@ -5,7 +5,7 @@ import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.users.UsersResponse
-import br.com.seutempo.api.core.domain.model.users.Users
+import br.com.seutempo.api.core.domain.model.Users
 import org.mapstruct.Mapper
 import org.mapstruct.MappingConstants
 import org.mapstruct.ReportingPolicy

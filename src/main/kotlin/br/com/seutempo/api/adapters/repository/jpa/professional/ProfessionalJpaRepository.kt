@@ -15,7 +15,7 @@ interface ProfessionalJpaRepository : JpaRepository<ProfessionalEntity, Int> {
 
     fun existsByLinkNameProfessional(link: String): Boolean
 
-    fun findProfessionalEntityBySpecialtiesId(id: Int): MutableList<ProfessionalEntity>
+    fun findProfessionalEntityBySpecialtiesId(id: Int): List<ProfessionalEntity>
 
     fun findProfessionalEntityBySpecialtiesCategoryEntityId(id: Int): List<ProfessionalEntity>
 
