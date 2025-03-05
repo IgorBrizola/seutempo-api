@@ -5,7 +5,7 @@ import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
-import br.com.seutempo.api.core.domain.model.Client
+import br.com.seutempo.api.core.domain.model.client.Client
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
 
 class ManageClientRepository(

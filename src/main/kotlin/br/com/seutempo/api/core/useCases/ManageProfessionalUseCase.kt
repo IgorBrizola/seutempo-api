@@ -9,7 +9,6 @@ import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddress
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.adapters.web.model.response.professional.UrlProfessionalResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
-import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
@@ -117,7 +116,7 @@ class ManageProfessionalUseCase(
             .map { item ->
                 professionalMapper.professionalToProfessionalResponse(
                     user = usersMapper.toUsers(item.user),
-                    professionalEntity = item,
+                    professional = item,
                 )
             }
 
@@ -127,7 +126,7 @@ class ManageProfessionalUseCase(
             .map { item ->
                 professionalMapper.professionalToProfessionalResponse(
                     user = usersMapper.toUsers(item.user),
-                    professionalEntity = item,
+                    professional = item,
                 )
             }
 
@@ -137,7 +136,7 @@ class ManageProfessionalUseCase(
             .map { item ->
                 professionalMapper.professionalToProfessionalResponse(
                     user = usersMapper.toUsers(item.user),
-                    professionalEntity = item,
+                    professional = item,
                 )
             }
 
@@ -147,23 +146,21 @@ class ManageProfessionalUseCase(
         return professionalJpaRepository.findProfessionalsWithinRadius(clientLocation).map { item ->
             professionalMapper.professionalToProfessionalResponse(
                 user = usersMapper.toUsers(item.user),
-                professionalEntity = item,
+                professional = item,
             )
         }
     }
 
     override fun findProfessionalById(id: Int): ProfessionalResponse {
         log.info("Buscando professional by id - $id")
-        val professional = professionalJpaRepository.findById(id).orElseThrow { ResourceNotFoundException("Professional not found! - $id") }
+        val professional = professionalJpaRepository.findById(id)
         val user = manageUsersUseCase.findUserById(professional.user.id!!)
         return professionalMapper.professionalToProfessionalResponse(user, professional)
     }
 
     override fun findProfessionalByLinkName(linkName: String): ProfessionalResponse {
         val professional =
-            professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName).orElseThrow {
-                ResourceNotFoundException("Professional not found! - $linkName")
-            }
+            professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName)
         val user = manageUsersUseCase.findUserById(professional.user.id!!)
         return professionalMapper.professionalToProfessionalResponse(user, professional)
     }
@@ -172,7 +169,7 @@ class ManageProfessionalUseCase(
         id: Int,
         updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
     ) {
-        val professional = professionalJpaRepository.findById(id).orElseThrow { ResourceNotFoundException("Professional not found! - $id") }
+        val professional = professionalJpaRepository.findById(id)
 
         val geolocation = generateGeolocation(updateAddressProfessionalRequest.cep)
 
