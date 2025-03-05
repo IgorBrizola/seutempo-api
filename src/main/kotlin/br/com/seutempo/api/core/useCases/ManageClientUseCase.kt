@@ -2,7 +2,7 @@ package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
-import br.com.seutempo.api.core.domain.model.Client
+import br.com.seutempo.api.core.domain.model.client.Client
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort

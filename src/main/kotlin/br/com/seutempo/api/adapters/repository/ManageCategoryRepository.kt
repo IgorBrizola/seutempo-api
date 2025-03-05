@@ -3,9 +3,9 @@ package br.com.seutempo.api.adapters.repository
 import br.com.seutempo.api.adapters.repository.jpa.category.CategoryJpaRepository
 import br.com.seutempo.api.adapters.repository.model.CategoryEntity
 import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
-import br.com.seutempo.api.core.domain.model.Category
+import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.domain.model.category.Category
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
-import java.util.Optional
 
 class ManageCategoryRepository(
     private val categoryJpaRepository: CategoryJpaRepository,
@@ -18,5 +18,10 @@ class ManageCategoryRepository(
         return categoryJpaRepository.save(categoryEntity)
     }
 
-    override fun findById(id: Int): Optional<CategoryEntity> = categoryJpaRepository.findById(id)
+    override fun findById(id: Int): Category =
+        categoryMapper.toDomain(
+            categoryJpaRepository.findById(id).orElseThrow {
+                throw ResourceNotFoundException("Category not found! - $id")
+            },
+        )
 }
