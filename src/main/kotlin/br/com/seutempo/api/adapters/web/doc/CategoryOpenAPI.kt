@@ -7,5 +7,5 @@ import io.swagger.v3.oas.annotations.tags.Tag
 @Tag(name = "category controller")
 interface CategoryOpenAPI {
     @Operation(summary = "Create new category")
-    fun createCategory(categoryRequestNew: NewCategoryRequest)
+    fun createCategory(newCategoryRequest: NewCategoryRequest)
 }

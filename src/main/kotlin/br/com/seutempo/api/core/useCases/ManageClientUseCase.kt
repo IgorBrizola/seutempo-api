@@ -1,13 +1,9 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
-import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
-import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
-import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
+import br.com.seutempo.api.core.domain.model.Client
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
-import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import org.springframework.stereotype.Service
@@ -17,43 +13,19 @@ import org.springframework.transaction.annotation.Transactional
 class ManageClientUseCase(
     private val clientJpaRepository: ManageClientOutputPort,
     private val usersJpaRepository: ManageUsersOutputPort,
-    private val clientMapper: ClientMapper,
-    private val usersMapper: UsersMapper,
-    private val manageUsersUseCase: ManageUsersInputPort,
 ) : ManageClientInputPort {
     @Transactional
-    override fun createUsersClient(newUsersClientRequest: NewClientRequest) {
-        if (usersJpaRepository.existsByEmailAndActiveIsTrue(newUsersClientRequest.email)) {
-            throw ResourceAlreadyExistsException("User with email '${newUsersClientRequest.email}' already exists.")
+    override fun createUsersClient(client: Client) {
+        if (usersJpaRepository.existsByEmailAndActiveIsTrue(client.user.email)) {
+            throw ResourceAlreadyExistsException("User with email '${client.user.email}' already exists.")
         }
 
-        if (usersJpaRepository.existsByCpfAndActiveIsTrue(newUsersClientRequest.cpf)) {
-            throw ResourceAlreadyExistsException("User with cpf '${newUsersClientRequest.cpf}' already exists.")
+        if (usersJpaRepository.existsByCpfAndActiveIsTrue(client.user.cpf)) {
+            throw ResourceAlreadyExistsException("User with cpf '${client.user.cpf}' already exists.")
         }
 
-        val user = clientMapper.usersClientRequestToUsers(newUsersClientRequest)
-
-        val geometry = manageUsersUseCase.convertLocationGeo(newUsersClientRequest.address.cep)
-
-        val point = manageUsersUseCase.convertGeometryPoint(geometry)
-
-        val client =
-            clientMapper.usersClientRequestToClient(
-                user,
-                newUsersClientRequest,
-                lat = geometry.location.lat,
-                lon = geometry.location.lng,
-                location = point,
-            )
         clientJpaRepository.save(client)
     }
 
-    override fun findClientById(id: Int): ClientResponse {
-        val client = clientJpaRepository.findById(id).orElseThrow { throw ResourceNotFoundException("Client not found!") }
-        return ClientResponse(
-            id = client.id,
-            user = usersMapper.usersToUsersResponse(client.user),
-            address = clientMapper.toAddressResponse(client),
-        )
-    }
+    override fun findClientById(id: Int): ClientResponse = clientJpaRepository.findById(id)
 }
