@@ -1,12 +1,11 @@
 package br.com.seutempo.api.core.domain.model
 
 import br.com.seutempo.api.adapters.repository.model.TypeAddress
-import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import org.locationtech.jts.geom.Point
 
 data class Client(
     val id: Int,
-    val user: UsersEntity,
+    val user: Users,
     val surname: String,
     val cep: String,
     val state: String,

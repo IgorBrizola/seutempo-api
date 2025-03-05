@@ -4,6 +4,8 @@ import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.AddressClientResponse
+import br.com.seutempo.api.core.domain.model.Client
+import br.com.seutempo.api.core.domain.model.Users
 import org.locationtech.jts.geom.Point
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -17,7 +19,9 @@ import org.mapstruct.ReportingPolicy
 interface ClientMapper {
     fun usersToUsersClientRequest(usersEntity: UsersEntity): NewClientRequest
 
-    fun usersClientRequestToUsers(newClientRequest: NewClientRequest): UsersEntity
+    fun usersClientRequestToUsers(newClientRequest: NewClientRequest): Users
+
+    fun toUserEntity(user: Users): UsersEntity
 
     fun clientToUsersClientRequest(clientEntity: ClientEntity): NewClientRequest
 
@@ -36,12 +40,15 @@ interface ClientMapper {
     @Mapping(source = "lon", target = "longitude")
     @Mapping(source = "location", target = "location")
     fun usersClientRequestToClient(
-        user: UsersEntity,
+        user: Users,
         newUsersClientRequest: NewClientRequest,
         lat: Double,
         lon: Double,
         location: Point,
-    ): ClientEntity
+    ): Client
+
+    @Mapping(source = "user", target = "user")
+    fun toClientEntity(client: Client): ClientEntity
 
     fun toAddressResponse(clientEntity: ClientEntity): AddressClientResponse
 }
