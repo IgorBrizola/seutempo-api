@@ -14,6 +14,7 @@ data class NewClientRequest(
     val lastName: String,
     val email: String,
     val password: String,
+    val photoUser: String? = null,
     val cpf: String,
     val phone: String,
     val dateAnniversary: LocalDate,

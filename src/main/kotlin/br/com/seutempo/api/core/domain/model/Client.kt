@@ -4,9 +4,8 @@ import br.com.seutempo.api.adapters.repository.model.TypeAddress
 import org.locationtech.jts.geom.Point
 
 data class Client(
-    val id: Int,
     val user: Users,
-    val surname: String,
+    val surname: String? = null,
     val cep: String,
     val state: String,
     val city: String,
@@ -14,7 +13,7 @@ data class Client(
     val street: String,
     val number: Int,
     val complement: String,
-    val additionalAddress: String,
+    val additionalAddress: String? = null,
     val typeAddress: TypeAddress,
     val latitude: Double,
     val longitude: Double,
