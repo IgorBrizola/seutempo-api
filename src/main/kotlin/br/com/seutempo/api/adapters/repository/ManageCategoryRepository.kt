@@ -13,9 +13,9 @@ class ManageCategoryRepository(
 ) : ManageCategoryOutputPort {
     override fun existsByNameCategory(nameCategory: String): Boolean = categoryJpaRepository.existsByNameCategory(nameCategory)
 
-    override fun save(category: Category) {
+    override fun save(category: Category): CategoryEntity {
         val categoryEntity = categoryMapper.toCategoryEntity(category)
-        categoryJpaRepository.save(categoryEntity)
+        return categoryJpaRepository.save(categoryEntity)
     }
 
     override fun findById(id: Int): Optional<CategoryEntity> = categoryJpaRepository.findById(id)

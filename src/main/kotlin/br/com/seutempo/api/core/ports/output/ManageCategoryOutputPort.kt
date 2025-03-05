@@ -7,7 +7,7 @@ import java.util.Optional
 interface ManageCategoryOutputPort {
     fun existsByNameCategory(nameCategory: String): Boolean
 
-    fun save(category: Category)
+    fun save(category: Category): CategoryEntity
 
     fun findById(id: Int): Optional<CategoryEntity>
 }
