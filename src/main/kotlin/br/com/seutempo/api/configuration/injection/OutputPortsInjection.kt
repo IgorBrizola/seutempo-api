@@ -10,6 +10,8 @@ import br.com.seutempo.api.adapters.repository.jpa.client.ClientJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.professional.ProfessionalJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.specialty.SpecialtyJpaRepository
 import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
+import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
+import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
@@ -33,8 +35,11 @@ class OutputPortsInjection {
         ManageSpecialtyRepository(specialtyJpaRepository)
 
     @Bean
-    fun manageClientOutputPort(clientJpaRepository: ClientJpaRepository): ManageClientOutputPort =
-        ManageClientRepository(clientJpaRepository)
+    fun manageClientOutputPort(
+        clientJpaRepository: ClientJpaRepository,
+        clientMapper: ClientMapper,
+        usersMapper: UsersMapper,
+    ): ManageClientOutputPort = ManageClientRepository(clientJpaRepository, usersMapper, clientMapper)
 
     @Bean
     fun manageUsersOutputPort(usersJpaRepository: UsersJpaRepository): ManageUsersOutputPort = ManageUsersRepository(usersJpaRepository)

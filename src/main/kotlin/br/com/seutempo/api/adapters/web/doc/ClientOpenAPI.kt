@@ -7,5 +7,5 @@ import io.swagger.v3.oas.annotations.tags.Tag
 @Tag(name = "client controller")
 interface ClientOpenAPI {
     @Operation(summary = "Create new client")
-    fun registerUsersClient(clientRequestNew: NewClientRequest)
+    fun registerUsersClient(newClientRequest: NewClientRequest)
 }
