@@ -2,7 +2,7 @@ package br.com.seutempo.api.adapters.web.mapper.category
 
 import br.com.seutempo.api.adapters.repository.model.CategoryEntity
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
-import br.com.seutempo.api.core.domain.model.category.Category
+import br.com.seutempo.api.core.domain.model.Category
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
@@ -19,9 +19,6 @@ interface CategoryMapper {
     fun toCategoryDomain(newCategoryRequest: NewCategoryRequest): Category
 
     fun toCategoryEntity(category: Category): CategoryEntity
-
-    @Mapping(source = "id", target = "categoryId")
-    fun toDomain(categoryEntity: CategoryEntity): Category
 
     @Mapping(source = "newCategoryRequest.name", target = "nameCategory")
     fun categoryNewRequestToCategory(newCategoryRequest: NewCategoryRequest): CategoryEntity

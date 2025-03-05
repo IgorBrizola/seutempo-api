@@ -4,7 +4,7 @@ import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
-import br.com.seutempo.api.core.domain.model.users.Users
+import br.com.seutempo.api.core.domain.model.Users
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import java.util.Optional
 
