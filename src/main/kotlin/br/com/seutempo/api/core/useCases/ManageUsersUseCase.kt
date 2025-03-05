@@ -3,7 +3,7 @@ package br.com.seutempo.api.core.useCases
 import br.com.seutempo.api.adapters.integration.GoogleMapsIntegration
 import br.com.seutempo.api.adapters.integration.model.response.Geometry
 import br.com.seutempo.api.configuration.web.GoogleMapsConfig
-import br.com.seutempo.api.core.domain.model.Users
+import br.com.seutempo.api.core.domain.model.users.Users
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import org.locationtech.jts.geom.GeometryFactory

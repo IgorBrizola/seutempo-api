@@ -12,6 +12,8 @@ import br.com.seutempo.api.adapters.repository.jpa.specialty.SpecialtyJpaReposit
 import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
 import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
+import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
+import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
@@ -30,12 +32,16 @@ class OutputPortsInjection {
     ): ManageCategoryOutputPort = ManageCategoryRepository(categoryJpaRepository, categoryMapper)
 
     @Bean
-    fun manageProfessionalOutputPort(professionalJpaRepository: ProfessionalJpaRepository): ManageProfessionalOutputPort =
-        ManageProfessionalRepository(professionalJpaRepository)
+    fun manageProfessionalOutputPort(
+        professionalJpaRepository: ProfessionalJpaRepository,
+        professionalMapper: ProfessionalMapper,
+    ): ManageProfessionalOutputPort = ManageProfessionalRepository(professionalJpaRepository, professionalMapper)
 
     @Bean
-    fun manageSpecialtyOutputPort(specialtyJpaRepository: SpecialtyJpaRepository): ManageSpecialtyOutputPort =
-        ManageSpecialtyRepository(specialtyJpaRepository)
+    fun manageSpecialtyOutputPort(
+        specialtyJpaRepository: SpecialtyJpaRepository,
+        specialtyMapper: SpecialtyMapper,
+    ): ManageSpecialtyOutputPort = ManageSpecialtyRepository(specialtyJpaRepository, specialtyMapper)
 
     @Bean
     fun manageClientOutputPort(

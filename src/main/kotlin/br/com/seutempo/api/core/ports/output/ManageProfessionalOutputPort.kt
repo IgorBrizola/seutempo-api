@@ -1,29 +1,29 @@
 package br.com.seutempo.api.core.ports.output
 
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
+import br.com.seutempo.api.core.domain.model.professional.Professional
 import org.locationtech.jts.geom.Point
 import java.math.BigDecimal
-import java.util.Optional
 
 interface ManageProfessionalOutputPort {
     fun existsByLinkNameProfessional(link: String): Boolean
 
-    fun findProfessionalEntityBySpecialtiesId(id: Int): List<ProfessionalEntity>
+    fun findProfessionalEntityBySpecialtiesId(id: Int): MutableList<Professional>
 
-    fun findProfessionalEntityBySpecialtiesCategoryEntityId(id: Int): List<ProfessionalEntity>
+    fun findProfessionalEntityBySpecialtiesCategoryEntityId(id: Int): List<Professional>
 
     fun findProfessionalsByFilters(
         name: String?,
         value: BigDecimal?,
-    ): List<ProfessionalEntity>
+    ): List<Professional>
 
-    fun findProfessionalsWithinRadius(point: Point): List<ProfessionalEntity>
+    fun findProfessionalsWithinRadius(point: Point): List<Professional>
 
-    fun findProfessionalEntityByLinkNameProfessional(linkName: String): Optional<ProfessionalEntity>
+    fun findProfessionalEntityByLinkNameProfessional(linkName: String): Professional
 
-    fun findById(id: Int): Optional<ProfessionalEntity>
+    fun findById(id: Int): Professional
 
-    fun save(professionalEntity: ProfessionalEntity): ProfessionalEntity
+    fun save(professional: Professional): ProfessionalEntity
 
-    fun saveAll(professionalEntity: List<ProfessionalEntity>): List<ProfessionalEntity>
+    fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity>
 }

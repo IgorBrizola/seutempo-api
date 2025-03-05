@@ -4,8 +4,8 @@ import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.AddressClientResponse
-import br.com.seutempo.api.core.domain.model.Client
-import br.com.seutempo.api.core.domain.model.Users
+import br.com.seutempo.api.core.domain.model.client.Client
+import br.com.seutempo.api.core.domain.model.users.Users
 import org.locationtech.jts.geom.Point
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping

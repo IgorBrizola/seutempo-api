@@ -1,4 +1,4 @@
-package br.com.seutempo.api.core.domain.model
+package br.com.seutempo.api.core.domain.model.users
 
 import br.com.seutempo.api.adapters.repository.model.TypeUser
 import java.time.LocalDate

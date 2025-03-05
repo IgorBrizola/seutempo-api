@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 data class NewSpecialtyRequest(
     @Schema(defaultValue = "Pedreiro")
-    val name: String,
+    val nameSpecialty: String,
     @Schema(defaultValue = "1")
     val categoryId: Int,
 )
