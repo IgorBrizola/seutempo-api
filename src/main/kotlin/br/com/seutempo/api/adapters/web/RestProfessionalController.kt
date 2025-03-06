@@ -51,20 +51,25 @@ class RestProfessionalController(
     override fun getProfessionalsToClient(
         @RequestParam("name") name: String?,
         @RequestParam("value") value: BigDecimal?,
-    ): List<ProfessionalResponse> = manageProfessionalUseCase.getProfessionalToClients(name, value)
+    ): List<ProfessionalResponse> =
+        professionalMapper.toListProfessionalResponse(manageProfessionalUseCase.getProfessionalToClients(name, value))
 
     @GetMapping("location/{id}")
     @ResponseStatus(HttpStatus.OK)
     override fun getProfessionalsWithRadius(
         @PathVariable id: Int,
-    ): List<ProfessionalResponse> = manageProfessionalUseCase.findProfessionalWithLocation(id)
+    ): List<ProfessionalResponse> =
+        professionalMapper.toListProfessionalResponse(manageProfessionalUseCase.findProfessionalWithLocation(id))
 
     @PutMapping("location/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     override fun updateGeolocation(
         @PathVariable id: Int,
         @RequestBody updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
-    ) = manageProfessionalUseCase.updateAddress(id, updateAddressProfessionalRequest)
+    ) {
+        val updateLocation = professionalMapper.toUpdateLocation(updateAddressProfessionalRequest, id)
+        manageProfessionalUseCase.updateAddress(updateLocation)
+    }
 
     @GetMapping("specialty/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -77,7 +82,7 @@ class RestProfessionalController(
     @ResponseStatus(HttpStatus.OK)
     override fun getProfessionalByCategory(
         @PathVariable id: Int,
-    ): List<ProfessionalResponse> = manageProfessionalUseCase.getProfessionalByCategoryId(id)
+    ): List<ProfessionalResponse> = professionalMapper.toListProfessionalResponse(manageProfessionalUseCase.getProfessionalByCategoryId(id))
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -89,5 +94,5 @@ class RestProfessionalController(
     @ResponseStatus(HttpStatus.OK)
     override fun findProfessionalByLinkName(
         @RequestParam linkName: String,
-    ) = manageProfessionalUseCase.findProfessionalByLinkName(linkName)
+    ) = professionalMapper.toResponse(manageProfessionalUseCase.findProfessionalByLinkName(linkName))
 }

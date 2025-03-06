@@ -14,6 +14,7 @@ import br.com.seutempo.api.adapters.repository.jpa.specialty.SpecialtyJpaReposit
 import br.com.seutempo.api.adapters.repository.jpa.users.UsersJpaRepository
 import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
+import br.com.seutempo.api.adapters.web.mapper.googleMaps.GoogleMapper
 import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
@@ -50,8 +51,7 @@ class OutputPortsInjection {
     fun manageClientOutputPort(
         clientJpaRepository: ClientJpaRepository,
         clientMapper: ClientMapper,
-        usersMapper: UsersMapper,
-    ): ManageClientOutputPort = ManageClientRepository(clientJpaRepository, usersMapper, clientMapper)
+    ): ManageClientOutputPort = ManageClientRepository(clientJpaRepository, clientMapper)
 
     @Bean
     fun manageUsersOutputPort(
@@ -60,6 +60,8 @@ class OutputPortsInjection {
     ): ManageUsersOutputPort = ManageUsersRepository(usersJpaRepository, usersMapper)
 
     @Bean
-    fun manageGoogleMapsOutputPort(googleMapsIntegration: GoogleMapsClient): ManageGoogleMapsIntegrationOutputPort =
-        GoogleMapsIntegration(googleMapsIntegration)
+    fun manageGoogleMapsOutputPort(
+        googleMapsIntegration: GoogleMapsClient,
+        googleMapper: GoogleMapper,
+    ): ManageGoogleMapsIntegrationOutputPort = GoogleMapsIntegration(googleMapsIntegration, googleMapper)
 }

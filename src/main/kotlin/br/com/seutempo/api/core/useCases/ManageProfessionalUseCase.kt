@@ -1,11 +1,10 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.integration.model.response.GeoResponse
-import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
-import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
-import br.com.seutempo.api.adapters.web.model.response.professional.UrlProfessionalResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
+import br.com.seutempo.api.core.domain.model.googleMaps.response.GeoDomainResponse
 import br.com.seutempo.api.core.domain.model.professional.Professional
+import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
+import br.com.seutempo.api.core.domain.model.professional.response.UrlProfessionalResponse
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
@@ -38,12 +37,12 @@ class ManageProfessionalUseCase(
         professionalJpaRepository.save(buildProfessional)
     }
 
-    private fun generateGeolocation(cep: String): GeoResponse {
+    private fun generateGeolocation(cep: String): GeoDomainResponse {
         val geometry = manageUsersUseCase.convertLocationGeo(cep)
 
         val point = manageUsersUseCase.convertGeometryPoint(geometry)
 
-        return GeoResponse(
+        return GeoDomainResponse(
             latitude = geometry.location.lat,
             longitude = geometry.location.lng,
             point = point,
@@ -98,7 +97,7 @@ class ManageProfessionalUseCase(
     override fun getProfessionalToClients(
         name: String?,
         value: BigDecimal?,
-    ): List<ProfessionalResponse> =
+    ): List<Professional> =
         professionalJpaRepository
             .findProfessionalsByFilters(name, value)
 
@@ -106,42 +105,45 @@ class ManageProfessionalUseCase(
         professionalJpaRepository
             .findProfessionalEntityBySpecialtiesId(id)
 
-    override fun getProfessionalByCategoryId(id: Int): List<ProfessionalResponse> =
+    override fun getProfessionalByCategoryId(id: Int): List<Professional> =
         professionalJpaRepository
             .findProfessionalEntityBySpecialtiesCategoryEntityId(id)
 
-    override fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> =
-        professionalJpaRepository.findProfessionalsWithinRadius(manageClientUseCase.findClientById(id).address.location)
+    override fun findProfessionalWithLocation(id: Int): List<Professional> =
+        professionalJpaRepository.findProfessionalsWithinRadius(manageClientUseCase.findClientById(id).location)
 
     override fun findProfessionalById(id: Int): Professional {
         log.info("Buscando professional by id - $id")
         return professionalJpaRepository.findById(id)
     }
 
-    override fun findProfessionalByLinkName(linkName: String): ProfessionalResponse =
+    override fun findProfessionalByLinkName(linkName: String): Professional =
         professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName)
 
-    override fun updateAddress(
-        id: Int,
-        updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
-    ) {
-        val professional = professionalJpaRepository.findById(id)
-
-        val geolocation = generateGeolocation(updateAddressProfessionalRequest.cep)
-
-        updateAddressProfessionalRequest.lon = geolocation.longitude
-        updateAddressProfessionalRequest.lat = geolocation.latitude
-        updateAddressProfessionalRequest.location = geolocation.point
+    override fun updateAddress(updateLocation: UpdateLocation) {
+        val professional = buildLocationProfessional(updateLocation)
 
         val professionalUpdate =
             professional.copy(
-                id = id,
-                cep = updateAddressProfessionalRequest.cep,
-                lat = updateAddressProfessionalRequest.lat,
-                lon = updateAddressProfessionalRequest.lon,
-                location = updateAddressProfessionalRequest.location,
+                id = updateLocation.id,
+                cep = updateLocation.cep,
+                lat = updateLocation.lat,
+                lon = updateLocation.lon,
+                location = updateLocation.location,
             )
 
         professionalJpaRepository.save(professionalUpdate)
+    }
+
+    private fun buildLocationProfessional(updateLocation: UpdateLocation): Professional {
+        val professional = professionalJpaRepository.findById(updateLocation.id)
+
+        val geolocation = generateGeolocation(updateLocation.cep)
+
+        updateLocation.lon = geolocation.longitude
+        updateLocation.lat = geolocation.latitude
+        updateLocation.location = geolocation.point
+
+        return professional
     }
 }

@@ -1,20 +1,10 @@
-package br.com.seutempo.api.adapters.integration.model.response
+package br.com.seutempo.api.core.domain.model.googleMaps.response
 
-import br.com.seutempo.api.core.domain.model.googleMaps.response.AddressComponent
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Bounds
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Geometry
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Location
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Northeast
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Northeast2
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Result
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Southwest
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Southwest2
-import br.com.seutempo.api.core.domain.model.googleMaps.response.Viewport
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class GeolocationResponse(
+data class GeolocationDomainResponse(
     val results: List<Result>,
     val status: String,
 )

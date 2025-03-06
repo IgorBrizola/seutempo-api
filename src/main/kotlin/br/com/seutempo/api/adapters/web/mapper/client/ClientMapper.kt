@@ -51,4 +51,6 @@ interface ClientMapper {
     fun toClientEntity(client: Client): ClientEntity
 
     fun toAddressResponse(clientEntity: ClientEntity): AddressClientResponse
+
+    fun toDomain(clientEntity: ClientEntity): Client
 }

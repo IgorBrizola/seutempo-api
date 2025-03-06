@@ -1,6 +1,6 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.integration.model.response.Geometry
+import br.com.seutempo.api.core.domain.model.googleMaps.response.Geometry
 import br.com.seutempo.api.core.domain.model.users.Users
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageGoogleMapsIntegrationOutputPort

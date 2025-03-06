@@ -1,6 +1,5 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.model.client.Client
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
@@ -27,5 +26,5 @@ class ManageClientUseCase(
         clientJpaRepository.save(client)
     }
 
-    override fun findClientById(id: Int): ClientResponse = clientJpaRepository.findById(id)
+    override fun findClientById(id: Int): Client = clientJpaRepository.findById(id)
 }
