@@ -1,7 +1,5 @@
 package br.com.seutempo.api.configuration.injection
 
-import br.com.seutempo.api.adapters.integration.GoogleMapsIntegration
-import br.com.seutempo.api.configuration.web.GoogleMapsConfig
 import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
@@ -9,6 +7,7 @@ import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
+import br.com.seutempo.api.core.ports.output.ManageGoogleMapsIntegrationOutputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import br.com.seutempo.api.core.ports.output.ManageSpecialtyOutputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
@@ -25,13 +24,11 @@ class InputPortsInjection {
     @Bean
     fun manageUsersInputPort(
         usersJpaRepository: ManageUsersOutputPort,
-        googleMapsIntegration: GoogleMapsIntegration,
-        googleMapsConfig: GoogleMapsConfig,
+        googleMapsIntegration: ManageGoogleMapsIntegrationOutputPort,
     ): ManageUsersInputPort =
         ManageUsersUseCase(
             usersJpaRepository,
             googleMapsIntegration,
-            googleMapsConfig,
         )
 
     @Bean
