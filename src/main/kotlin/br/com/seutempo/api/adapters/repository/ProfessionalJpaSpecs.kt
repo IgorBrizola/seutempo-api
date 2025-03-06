@@ -1,16 +1,16 @@
 package br.com.seutempo.api.adapters.repository
 
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
-import br.com.seutempo.api.core.domain.model.users.Users
+import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import org.springframework.data.jpa.domain.Specification
 import java.math.BigDecimal
 
 object ProfessionalJpaSpecs {
     fun containsNameProfessional(providedName: String): Specification<ProfessionalEntity> =
         Specification { root, _, criteriaBuilder ->
-            val userJoin = root.join<ProfessionalEntity, Users>("user")
+            val userJoin = root.join<ProfessionalEntity, UsersEntity>("user")
             criteriaBuilder.like(
-                criteriaBuilder.lower(userJoin.get("user")),
+                criteriaBuilder.lower(userJoin.get("name")),
                 "%${providedName.lowercase()}%",
             )
         }
