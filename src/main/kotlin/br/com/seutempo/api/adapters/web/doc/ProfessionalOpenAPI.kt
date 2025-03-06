@@ -27,7 +27,7 @@ interface ProfessionalOpenAPI {
     fun updateGeolocation(
         id: Int,
         updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
-    )
+    ): ProfessionalResponse
 
     @Operation(summary = "Get professional by specialty")
     fun getProfessionalBySpecialty(id: Int): List<ProfessionalResponse>

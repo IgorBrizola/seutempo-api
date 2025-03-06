@@ -24,7 +24,7 @@ interface ManageProfessionalInputPort {
 
     fun findProfessionalByLinkName(linkName: String): Professional
 
-    fun updateAddress(updateLocation: UpdateLocation)
+    fun updateAddress(updateLocation: UpdateLocation): Professional
 
     fun updateProfessionalById(professionalInput: UpdateProfessionalInput): Professional
 }

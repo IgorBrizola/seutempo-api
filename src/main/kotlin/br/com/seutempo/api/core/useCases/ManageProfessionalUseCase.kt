@@ -122,29 +122,33 @@ class ManageProfessionalUseCase(
     override fun findProfessionalByLinkName(linkName: String): Professional =
         professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName)
 
-    override fun updateAddress(updateLocation: UpdateLocation) {
+    override fun updateAddress(updateLocation: UpdateLocation): Professional {
         val professional = buildLocationProfessional(updateLocation)
 
         val professionalUpdate =
             professional.copy(
                 id = updateLocation.id,
-                cep = updateLocation.cep,
-                lat = updateLocation.lat,
-                lon = updateLocation.lon,
-                location = updateLocation.location,
+                cep = updateLocation.cep ?: professional.cep,
+                serviceRadiusKm = updateLocation.serviceRadiusKm ?: professional.serviceRadiusKm,
+                lat = updateLocation.lat ?: professional.lat,
+                lon = updateLocation.lon ?: professional.lon,
+                location = updateLocation.location ?: professional.location,
             )
-
         professionalJpaRepository.save(professionalUpdate)
+
+        return professionalUpdate
     }
 
     private fun buildLocationProfessional(updateLocation: UpdateLocation): Professional {
         val professional = professionalJpaRepository.findById(updateLocation.id)
 
-        val geolocation = generateGeolocation(updateLocation.cep)
+        if (updateLocation.cep != null) {
+            val geolocation = generateGeolocation(updateLocation.cep)
 
-        updateLocation.lon = geolocation.longitude
-        updateLocation.lat = geolocation.latitude
-        updateLocation.location = geolocation.point
+            updateLocation.lon = geolocation.longitude
+            updateLocation.lat = geolocation.latitude
+            updateLocation.location = geolocation.point
+        }
 
         return professional
     }

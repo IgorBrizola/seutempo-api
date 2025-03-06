@@ -68,9 +68,9 @@ class RestProfessionalController(
     override fun updateGeolocation(
         @PathVariable id: Int,
         @RequestBody updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
-    ) {
+    ): ProfessionalResponse {
         val updateLocation = professionalMapper.toUpdateLocation(updateAddressProfessionalRequest, id)
-        manageProfessionalUseCase.updateAddress(updateLocation)
+        return professionalMapper.toResponse(manageProfessionalUseCase.updateAddress(updateLocation))
     }
 
     @GetMapping("specialty/{id}")
