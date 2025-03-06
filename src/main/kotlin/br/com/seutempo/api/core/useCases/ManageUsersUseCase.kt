@@ -1,22 +1,24 @@
 package br.com.seutempo.api.core.useCases
 
-import br.com.seutempo.api.adapters.integration.GoogleMapsIntegration
 import br.com.seutempo.api.adapters.integration.model.response.Geometry
-import br.com.seutempo.api.configuration.web.GoogleMapsConfig
 import br.com.seutempo.api.core.domain.model.users.Users
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
+import br.com.seutempo.api.core.ports.output.ManageGoogleMapsIntegrationOutputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
 import org.locationtech.jts.geom.PrecisionModel
-import org.springframework.context.annotation.Primary
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
 
-@Primary
+@Service
 class ManageUsersUseCase(
     private val usersJpaRepository: ManageUsersOutputPort,
-    private val googleMapsIntegration: GoogleMapsIntegration,
-    private val googleMapsConfig: GoogleMapsConfig,
+    private val googleMapsIntegration: ManageGoogleMapsIntegrationOutputPort,
 ) : ManageUsersInputPort {
+    @Value("\${app.service.google.maps.key}")
+    lateinit var apiKey: String
+
     private val geometryFactory = GeometryFactory(PrecisionModel(), 4326)
 
     override fun getUsers(): List<Users> =
@@ -26,7 +28,7 @@ class ManageUsersUseCase(
     override fun findUserById(id: Int): Users = usersJpaRepository.findById(id)
 
     override fun convertLocationGeo(address: String): Geometry {
-        val results = googleMapsIntegration.getGeolocationUser(address, googleMapsConfig.apiKey)
+        val results = googleMapsIntegration.getGeolocationUser(address, apiKey)
         return results.results.map { item -> item.geometry }.first()
     }
 
