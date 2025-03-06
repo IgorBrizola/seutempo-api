@@ -4,6 +4,7 @@ import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.model.googleMaps.response.GeoDomainResponse
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
+import br.com.seutempo.api.core.domain.model.professional.request.UpdateProfessionalInput
 import br.com.seutempo.api.core.domain.model.professional.response.UrlProfessionalResponse
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
@@ -146,5 +147,23 @@ class ManageProfessionalUseCase(
         updateLocation.location = geolocation.point
 
         return professional
+    }
+
+    override fun updateProfessionalById(professionalInput: UpdateProfessionalInput): Professional {
+        val professional = professionalJpaRepository.findById(professionalInput.id)
+
+        val updatedProfessional =
+            professional.copy(
+                id = professionalInput.id,
+                valueHour = professionalInput.valueHour ?: professional.valueHour,
+                user =
+                    professional.user.copy(
+                        photoUser = professionalInput.photoUser ?: professional.user.photoUser,
+                    ),
+            )
+
+        professionalJpaRepository.save(updatedProfessional)
+
+        return updatedProfessional
     }
 }

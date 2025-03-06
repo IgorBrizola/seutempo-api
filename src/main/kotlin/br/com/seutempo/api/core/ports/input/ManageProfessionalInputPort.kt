@@ -2,6 +2,7 @@ package br.com.seutempo.api.core.ports.input
 
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
+import br.com.seutempo.api.core.domain.model.professional.request.UpdateProfessionalInput
 import java.math.BigDecimal
 
 interface ManageProfessionalInputPort {
@@ -24,4 +25,6 @@ interface ManageProfessionalInputPort {
     fun findProfessionalByLinkName(linkName: String): Professional
 
     fun updateAddress(updateLocation: UpdateLocation)
+
+    fun updateProfessionalById(professionalInput: UpdateProfessionalInput): Professional
 }

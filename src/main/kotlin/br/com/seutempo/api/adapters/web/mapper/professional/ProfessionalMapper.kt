@@ -4,11 +4,13 @@ import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.request.professional.UpdateProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.professional.request.CreateProfessional
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
+import br.com.seutempo.api.core.domain.model.professional.request.UpdateProfessionalInput
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
 import br.com.seutempo.api.core.domain.model.users.Users
 import org.mapstruct.Mapper
@@ -82,4 +84,9 @@ interface ProfessionalMapper {
         updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
         id: Int,
     ): UpdateLocation
+
+    fun updateRequestToUpdateInput(
+        id: Int,
+        updateProfessionalRequest: UpdateProfessionalRequest,
+    ): UpdateProfessionalInput
 }
