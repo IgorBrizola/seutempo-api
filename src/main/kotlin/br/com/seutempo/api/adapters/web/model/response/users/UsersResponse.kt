@@ -8,6 +8,7 @@ data class UsersResponse(
     val name: String,
     val email: String,
     val phone: String,
+    val photoUser: String? = null,
     val dateAnniversary: LocalDate,
     val typeUser: TypeUser,
 ) {
