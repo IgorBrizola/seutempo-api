@@ -9,7 +9,7 @@ interface ManageSpecialtyOutputPort {
         categoryId: Int,
     ): Boolean
 
-    fun findByProfessionalEntitiesId(id: Int?): List<Specialty>
+    fun findSpecialtyWithProfessional(id: Int): Specialty
 
     fun save(specialty: Specialty): SpecialtyEntity
 

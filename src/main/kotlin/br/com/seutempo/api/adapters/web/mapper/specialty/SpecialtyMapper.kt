@@ -8,6 +8,7 @@ import br.com.seutempo.api.core.domain.model.category.Category
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
 import br.com.seutempo.api.core.domain.model.specialty.request.CreateSpecialty
 import br.com.seutempo.api.core.domain.model.specialty.request.UpdateSpecialty
+import br.com.seutempo.api.core.domain.model.specialty.response.SpecialtyProfessionalResponse
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
@@ -21,23 +22,17 @@ interface SpecialtyMapper {
     @Mapping(source = "categoryEntity", target = "category")
     @Mapping(source = "categoryEntity.id", target = "category.categoryId")
     @Mapping(source = "professionalEntities", target = "professionals")
-    @Mapping(target = "id", ignore = true)
     fun toSpecialty(specialtyEntity: SpecialtyEntity): Specialty
 
     @Mapping(source = "category", target = "categoryEntity")
     @Mapping(source = "category.categoryId", target = "categoryEntity.id")
-    @Mapping(source = "professionals", target = "professionalEntities")
     fun toEntity(specialty: Specialty): SpecialtyEntity
-
-    @Mapping(source = "category.nameCategory", target = "nameCategory")
-    fun toResponse(specialty: Specialty): SpecialtyResponse
-
-    fun toListSpecialty(specialty: List<SpecialtyEntity>): List<Specialty>
-
-    fun toListSpecialtyResponse(specialty: List<Specialty>): List<SpecialtyResponse>
 
     @Mapping(source = "categoryEntity.nameCategory", target = "nameCategory")
     fun toSpecialtyResponse(specialtyEntity: SpecialtyEntity): SpecialtyResponse
+
+    @Mapping(source = "category.nameCategory", target = "nameCategory")
+    fun toResponse(specialty: Specialty): SpecialtyResponse
 
     fun toSpecialtyEntity(specialtyResponse: SpecialtyResponse): SpecialtyEntity
 
@@ -55,9 +50,16 @@ interface SpecialtyMapper {
 
     @Mapping(source = "category", target = "category")
     @Mapping(source = "createSpecialty.nameSpecialty", target = "nameSpecialty")
-    @Mapping(target = "id", ignore = true)
     fun createToDomain(
         createSpecialty: CreateSpecialty,
         category: Category,
     ): Specialty
+
+    fun toListSpecialty(specialty: MutableList<SpecialtyEntity>): List<Specialty>
+
+    fun toListSpecialtyResponse(specialty: List<Specialty>): List<SpecialtyResponse>
+
+    fun toSpecialtyProfessionalResponse(specialty: Specialty): SpecialtyProfessionalResponse
+
+    fun toListSpecialtyProfessionalResponse(specialty: List<Specialty>): List<SpecialtyProfessionalResponse>
 }

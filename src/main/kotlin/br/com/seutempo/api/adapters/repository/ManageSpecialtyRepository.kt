@@ -16,8 +16,12 @@ class ManageSpecialtyRepository(
         categoryId: Int,
     ): Boolean = specialtyJpaRepository.existsByNameSpecialtyAndCategoryEntityId(nameSpecialty, categoryId)
 
-    override fun findByProfessionalEntitiesId(id: Int?): List<Specialty> =
-        specialtyMapper.toListSpecialty(specialtyJpaRepository.findByProfessionalEntitiesId(id))
+    override fun findSpecialtyWithProfessional(id: Int): Specialty =
+        specialtyMapper.toSpecialty(
+            specialtyJpaRepository.findById(id).orElseThrow {
+                throw ResourceNotFoundException("Specialty not found! - $id")
+            },
+        )
 
     override fun save(specialty: Specialty): SpecialtyEntity = specialtyJpaRepository.save(specialtyMapper.toEntity(specialty))
 
@@ -28,7 +32,11 @@ class ManageSpecialtyRepository(
 
     override fun findAllById(ids: List<Int>): List<Specialty> = specialtyMapper.toListSpecialty(specialtyJpaRepository.findAllById(ids))
 
-    override fun findAll(): List<Specialty> = specialtyMapper.toListSpecialty(specialtyJpaRepository.findAll())
+    override fun findAll(): List<Specialty> {
+        val specialty = specialtyMapper.toListSpecialty(specialtyJpaRepository.findAll())
+        println(specialty)
+        return specialty
+    }
 
     override fun deleteById(id: Int) {
         val specialty = specialtyJpaRepository.findById(id).orElseThrow { throw ResourceNotFoundException("Specialty not found! - $id") }

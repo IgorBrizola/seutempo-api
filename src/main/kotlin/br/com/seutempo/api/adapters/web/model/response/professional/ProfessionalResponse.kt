@@ -10,8 +10,8 @@ data class ProfessionalResponse(
     val urlProfessional: String,
     val valueHour: BigDecimal,
     val cep: String,
-    val lat: BigDecimal,
-    val lon: BigDecimal,
+    val lat: Double,
+    val lon: Double,
     val serviceRadiusKm: Int,
     val specialties: List<SpecialtyResponse>,
 )

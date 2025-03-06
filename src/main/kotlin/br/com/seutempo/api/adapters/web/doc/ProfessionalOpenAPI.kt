@@ -10,7 +10,7 @@ import java.math.BigDecimal
 @Tag(name = "professional controller")
 interface ProfessionalOpenAPI {
     @Operation(summary = "Create new professional")
-    fun registerUsersProfessional(professionalRequestNew: NewProfessionalRequest)
+    fun registerUsersProfessional(newProfessionalRequest: NewProfessionalRequest)
 
     @Operation(summary = "Get professional to list client")
     fun getProfessionalsToClient(

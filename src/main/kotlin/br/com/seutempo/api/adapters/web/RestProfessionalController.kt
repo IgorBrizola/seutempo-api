@@ -1,10 +1,12 @@
 package br.com.seutempo.api.adapters.web
 
 import br.com.seutempo.api.adapters.web.doc.ProfessionalOpenAPI
+import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
+import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,12 +23,28 @@ import java.math.BigDecimal
 @RequestMapping("professional")
 class RestProfessionalController(
     private val manageProfessionalUseCase: ManageProfessionalInputPort,
+    private val manageSpecialtyUseCase: ManageSpecialtyInputPort,
+    private val professionalMapper: ProfessionalMapper,
 ) : ProfessionalOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     override fun registerUsersProfessional(
-        @RequestBody professionalRequestNew: NewProfessionalRequest,
-    ) = manageProfessionalUseCase.createUsersProfessional(professionalRequestNew)
+        @RequestBody newProfessionalRequest: NewProfessionalRequest,
+    ) {
+        val createProfessional = professionalMapper.toCreate(newProfessionalRequest)
+
+        val specialties =
+            manageSpecialtyUseCase
+                .findSpecialtyRegisterProfessional(createProfessional.specialtyIds)
+
+        val professional =
+            professionalMapper.createToProfessional(
+                createProfessional = createProfessional,
+                specialties = specialties,
+            )
+
+        manageProfessionalUseCase.createUsersProfessional(professional)
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -52,7 +70,8 @@ class RestProfessionalController(
     @ResponseStatus(HttpStatus.OK)
     override fun getProfessionalBySpecialty(
         @PathVariable id: Int,
-    ): List<ProfessionalResponse> = manageProfessionalUseCase.getProfessionalBySpecialtyId(id)
+    ): List<ProfessionalResponse> =
+        professionalMapper.toListProfessionalResponse(manageProfessionalUseCase.getProfessionalBySpecialtyId(id))
 
     @GetMapping("category/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -64,7 +83,7 @@ class RestProfessionalController(
     @ResponseStatus(HttpStatus.OK)
     override fun findProfessionalById(
         @PathVariable id: Int,
-    ) = manageProfessionalUseCase.findProfessionalById(id)
+    ) = professionalMapper.toResponse(manageProfessionalUseCase.findProfessionalById(id))
 
     @GetMapping("st")
     @ResponseStatus(HttpStatus.OK)
