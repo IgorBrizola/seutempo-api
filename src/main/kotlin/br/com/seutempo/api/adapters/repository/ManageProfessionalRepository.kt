@@ -7,6 +7,7 @@ import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import org.locationtech.jts.geom.Point
+import org.springframework.data.jpa.domain.Specification
 import java.math.BigDecimal
 
 class ManageProfessionalRepository(
@@ -23,8 +24,37 @@ class ManageProfessionalRepository(
 
     override fun findProfessionalsByFilters(
         name: String?,
-        value: BigDecimal?,
-    ): List<Professional> = professionalMapper.toListDomain(professionalJpaRepository.findProfessionalsByFilters(name, value))
+        maxValue: BigDecimal?,
+        minValue: BigDecimal?,
+    ): List<Professional> {
+        val spec = buildSpecFilter(name, maxValue, minValue)
+        return professionalMapper.toListDomain(
+            professionalJpaRepository.findAll(spec),
+        )
+    }
+
+    private fun buildSpecFilter(
+        name: String?,
+        maxValue: BigDecimal?,
+        minValue: BigDecimal?,
+    ): Specification<ProfessionalEntity> {
+        var spec: Specification<ProfessionalEntity> = Specification.where(null)
+
+        name?.let {
+            spec = spec.and(ProfessionalJpaSpecs.containsNameProfessional(name))
+        }
+        if (minValue != null && maxValue != null) {
+            spec = spec.and(ProfessionalJpaSpecs.containsMinValueAndMaxProfessional(minValue, maxValue))
+        } else {
+            minValue?.let {
+                spec = spec.and(ProfessionalJpaSpecs.containsMinValueProfessional(minValue))
+            }
+            maxValue?.let {
+                spec = spec.and(ProfessionalJpaSpecs.containsMaxValueProfessional(maxValue))
+            }
+        }
+        return spec
+    }
 
     override fun findProfessionalsWithinRadius(point: Point): List<Professional> =
         professionalMapper.toListDomain(professionalJpaRepository.findProfessionalsWithinRadius(point))

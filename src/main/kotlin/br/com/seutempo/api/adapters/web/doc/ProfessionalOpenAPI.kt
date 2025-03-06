@@ -13,9 +13,10 @@ interface ProfessionalOpenAPI {
     fun registerUsersProfessional(newProfessionalRequest: NewProfessionalRequest)
 
     @Operation(summary = "Get professional to list client")
-    fun getProfessionalsToClient(
+    fun getProfessionals(
         name: String? = null,
-        value: BigDecimal? = null,
+        maxValue: BigDecimal? = null,
+        minValue: BigDecimal? = null,
     ): List<ProfessionalResponse>
 
     @Operation(summary = "Get professional by radius KM")
