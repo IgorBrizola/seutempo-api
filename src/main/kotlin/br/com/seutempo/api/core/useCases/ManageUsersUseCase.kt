@@ -9,9 +9,9 @@ import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
 import org.locationtech.jts.geom.PrecisionModel
-import org.springframework.stereotype.Service
+import org.springframework.context.annotation.Primary
 
-@Service
+@Primary
 class ManageUsersUseCase(
     private val usersJpaRepository: ManageUsersOutputPort,
     private val googleMapsIntegration: GoogleMapsIntegration,

@@ -21,7 +21,7 @@ interface UsersMapper {
 
     fun usersToProfessionalRequest(usersEntity: UsersEntity): NewProfessionalRequest
 
-    fun usersProfessionalRequestToUsers(newProfessionalRequest: NewProfessionalRequest): UsersEntity
+    fun usersProfessionalRequestToUsers(newProfessionalRequest: NewProfessionalRequest): Users
 
     fun clientToUsersClientRequest(clientEntity: ClientEntity): NewClientRequest
 

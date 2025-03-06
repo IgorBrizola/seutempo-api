@@ -1,9 +1,6 @@
 package br.com.seutempo.api.configuration.injection
 
 import br.com.seutempo.api.adapters.integration.GoogleMapsIntegration
-import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
-import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
-import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.configuration.web.GoogleMapsConfig
 import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
@@ -41,18 +38,12 @@ class InputPortsInjection {
     fun manageProfessionalInputPort(
         professionalJpaRepository: ManageProfessionalOutputPort,
         usersJpaRepository: ManageUsersOutputPort,
-        usersMapper: UsersMapper,
-        professionalMapper: ProfessionalMapper,
-        manageSpecialtyUseCase: ManageSpecialtyUseCase,
         manageUsersUseCase: ManageUsersInputPort,
         manageClientUseCase: ManageClientInputPort,
     ): ManageProfessionalInputPort =
         ManageProfessionalUseCase(
             professionalJpaRepository,
             usersJpaRepository,
-            usersMapper,
-            professionalMapper,
-            manageSpecialtyUseCase,
             manageUsersUseCase,
             manageClientUseCase,
         )
@@ -80,12 +71,8 @@ class InputPortsInjection {
         )
 
     @Bean
-    fun manageCategoryInputPort(
-        categoryJpaRepository: ManageCategoryOutputPort,
-        categoryMapper: CategoryMapper,
-    ): ManageCategoryInputPort =
+    fun manageCategoryInputPort(categoryJpaRepository: ManageCategoryOutputPort): ManageCategoryInputPort =
         ManageCategoryUseCase(
             categoryJpaRepository,
-            categoryMapper,
         )
 }

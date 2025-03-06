@@ -12,7 +12,7 @@ interface ManageSpecialtyInputPort {
 
     fun getAllSpecialty(): List<Specialty>
 
-    fun getSpecialtyByProfessional(id: Int?): List<Specialty>
+    fun getSpecialtyWithProfessional(id: Int): Specialty
 
     fun deleteSpecialtyById(id: Int)
 

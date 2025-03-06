@@ -1,17 +1,13 @@
 package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.adapters.integration.model.response.GeoResponse
-import br.com.seutempo.api.adapters.repository.model.UsersEntity
-import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
-import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
-import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.adapters.web.model.response.professional.UrlProfessionalResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
+import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
-import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
@@ -26,9 +22,6 @@ import kotlin.random.Random
 class ManageProfessionalUseCase(
     private val professionalJpaRepository: ManageProfessionalOutputPort,
     private val usersJpaRepository: ManageUsersOutputPort,
-    private val usersMapper: UsersMapper,
-    private val professionalMapper: ProfessionalMapper,
-    private val manageSpecialtyUseCase: ManageSpecialtyInputPort,
     private val manageUsersUseCase: ManageUsersInputPort,
     private val manageClientUseCase: ManageClientInputPort,
 ) : ManageProfessionalInputPort {
@@ -37,32 +30,12 @@ class ManageProfessionalUseCase(
     private val baseUrlPerfil = "https://seutempo.com.br/st/"
 
     @Transactional
-    override fun createUsersProfessional(newUsersProfessionalRequest: NewProfessionalRequest) {
-        verifyUserExists(newUsersProfessionalRequest)
+    override fun createUsersProfessional(professional: Professional) {
+        verifyUserExists(professional)
 
-        val user = usersMapper.usersProfessionalRequestToUsers(newUsersProfessionalRequest)
+        val buildProfessional = buildProfessional(professional)
 
-        val specialties =
-            manageSpecialtyUseCase
-                .findSpecialtyRegisterProfessional(newUsersProfessionalRequest.specialtyIds)
-
-        val urlProfessional = generateLink(user)
-
-        val geolocation = generateGeolocation(newUsersProfessionalRequest.cep)
-
-        val professional =
-            professionalMapper.newUsersProfessionalRequestToProfessional(
-                user = user,
-                newUsersProfessionalRequest = newUsersProfessionalRequest,
-                lat = geolocation.latitude,
-                lon = geolocation.longitude,
-                location = geolocation.point,
-                linkNameProfessional = urlProfessional.linkNameProfessional,
-                urlProfessional = urlProfessional.urlProfessional,
-                specialties = specialties,
-            )
-
-        professionalJpaRepository.save(professional)
+        professionalJpaRepository.save(buildProfessional)
     }
 
     private fun generateGeolocation(cep: String): GeoResponse {
@@ -77,8 +50,8 @@ class ManageProfessionalUseCase(
         )
     }
 
-    private fun generateLink(user: UsersEntity): UrlProfessionalResponse {
-        val nameLink = removeAccents("${user.name} ${user.lastName}")
+    private fun generateLink(professional: Professional): UrlProfessionalResponse {
+        val nameLink = removeAccents("${professional.user.name} ${professional.user.lastName}")
 
         val nameLinkRandom = "$nameLink-${Random.nextInt(999)}"
 
@@ -98,12 +71,27 @@ class ManageProfessionalUseCase(
         }
     }
 
-    private fun verifyUserExists(newUsersProfessionalRequest: NewProfessionalRequest) {
-        if (usersJpaRepository.existsByEmailAndActiveIsTrue(newUsersProfessionalRequest.email)) {
-            throw ResourceAlreadyExistsException("User with email '${newUsersProfessionalRequest.email}' already exists.")
+    private fun buildProfessional(professional: Professional): Professional {
+        val geolocation = generateGeolocation(professional.cep)
+
+        val urlProfessional = generateLink(professional)
+
+        professional.urlProfessional = urlProfessional.urlProfessional
+        professional.linkNameProfessional = urlProfessional.linkNameProfessional
+
+        professional.lat = geolocation.latitude
+        professional.lon = geolocation.longitude
+        professional.location = geolocation.point
+
+        return professional
+    }
+
+    private fun verifyUserExists(professional: Professional) {
+        if (usersJpaRepository.existsByEmailAndActiveIsTrue(professional.user.email)) {
+            throw ResourceAlreadyExistsException("User with email '${professional.user.email}' already exists.")
         }
-        if (usersJpaRepository.existsByCpfAndActiveIsTrue(newUsersProfessionalRequest.cpf)) {
-            throw ResourceAlreadyExistsException("User with cpf '${newUsersProfessionalRequest.cpf}' already exists.")
+        if (usersJpaRepository.existsByCpfAndActiveIsTrue(professional.user.cpf)) {
+            throw ResourceAlreadyExistsException("User with cpf '${professional.user.cpf}' already exists.")
         }
     }
 
@@ -113,57 +101,25 @@ class ManageProfessionalUseCase(
     ): List<ProfessionalResponse> =
         professionalJpaRepository
             .findProfessionalsByFilters(name, value)
-            .map { item ->
-                professionalMapper.professionalToProfessionalResponse(
-                    user = usersMapper.toUsers(item.user),
-                    professional = item,
-                )
-            }
 
-    override fun getProfessionalBySpecialtyId(id: Int): List<ProfessionalResponse> =
+    override fun getProfessionalBySpecialtyId(id: Int): MutableList<Professional> =
         professionalJpaRepository
             .findProfessionalEntityBySpecialtiesId(id)
-            .map { item ->
-                professionalMapper.professionalToProfessionalResponse(
-                    user = usersMapper.toUsers(item.user),
-                    professional = item,
-                )
-            }
 
     override fun getProfessionalByCategoryId(id: Int): List<ProfessionalResponse> =
         professionalJpaRepository
             .findProfessionalEntityBySpecialtiesCategoryEntityId(id)
-            .map { item ->
-                professionalMapper.professionalToProfessionalResponse(
-                    user = usersMapper.toUsers(item.user),
-                    professional = item,
-                )
-            }
 
-    override fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> {
-        val clientLocation = manageClientUseCase.findClientById(id).address.location
+    override fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse> =
+        professionalJpaRepository.findProfessionalsWithinRadius(manageClientUseCase.findClientById(id).address.location)
 
-        return professionalJpaRepository.findProfessionalsWithinRadius(clientLocation).map { item ->
-            professionalMapper.professionalToProfessionalResponse(
-                user = usersMapper.toUsers(item.user),
-                professional = item,
-            )
-        }
-    }
-
-    override fun findProfessionalById(id: Int): ProfessionalResponse {
+    override fun findProfessionalById(id: Int): Professional {
         log.info("Buscando professional by id - $id")
-        val professional = professionalJpaRepository.findById(id)
-        val user = manageUsersUseCase.findUserById(professional.user.id!!)
-        return professionalMapper.professionalToProfessionalResponse(user, professional)
+        return professionalJpaRepository.findById(id)
     }
 
-    override fun findProfessionalByLinkName(linkName: String): ProfessionalResponse {
-        val professional =
-            professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName)
-        val user = manageUsersUseCase.findUserById(professional.user.id!!)
-        return professionalMapper.professionalToProfessionalResponse(user, professional)
-    }
+    override fun findProfessionalByLinkName(linkName: String): ProfessionalResponse =
+        professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName)
 
     override fun updateAddress(
         id: Int,
@@ -173,12 +129,17 @@ class ManageProfessionalUseCase(
 
         val geolocation = generateGeolocation(updateAddressProfessionalRequest.cep)
 
+        updateAddressProfessionalRequest.lon = geolocation.longitude
+        updateAddressProfessionalRequest.lat = geolocation.latitude
+        updateAddressProfessionalRequest.location = geolocation.point
+
         val professionalUpdate =
             professional.copy(
+                id = id,
                 cep = updateAddressProfessionalRequest.cep,
-                lat = geolocation.latitude,
-                lon = geolocation.longitude,
-                location = geolocation.point,
+                lat = updateAddressProfessionalRequest.lat,
+                lon = updateAddressProfessionalRequest.lon,
+                location = updateAddressProfessionalRequest.location,
             )
 
         professionalJpaRepository.save(professionalUpdate)

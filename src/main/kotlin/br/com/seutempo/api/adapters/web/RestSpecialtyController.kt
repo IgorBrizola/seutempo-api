@@ -5,6 +5,7 @@ import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.adapters.web.model.request.specialty.NewSpecialtyRequest
 import br.com.seutempo.api.adapters.web.model.request.specialty.UpdateSpecialtyRequest
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
+import br.com.seutempo.api.core.domain.model.specialty.response.SpecialtyProfessionalResponse
 import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
 import org.springframework.http.HttpStatus
@@ -44,11 +45,12 @@ class RestSpecialtyController(
     override fun getAllSpecialty(): List<SpecialtyResponse> =
         specialtyMapper.toListSpecialtyResponse(manageSpecialtyUseCase.getAllSpecialty())
 
-    @GetMapping("professional/{id}")
+    @GetMapping("{id}/professional")
     @ResponseStatus(HttpStatus.OK)
     override fun getSpecialtyByProfessional(
         @PathVariable id: Int,
-    ): List<SpecialtyResponse> = specialtyMapper.toListSpecialtyResponse(manageSpecialtyUseCase.getSpecialtyByProfessional(id))
+    ): SpecialtyProfessionalResponse =
+        specialtyMapper.toSpecialtyProfessionalResponse(manageSpecialtyUseCase.getSpecialtyWithProfessional(id))
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

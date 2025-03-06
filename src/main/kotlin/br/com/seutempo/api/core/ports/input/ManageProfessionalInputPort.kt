@@ -1,25 +1,25 @@
 package br.com.seutempo.api.core.ports.input
 
-import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
+import br.com.seutempo.api.core.domain.model.professional.Professional
 import java.math.BigDecimal
 
 interface ManageProfessionalInputPort {
-    fun createUsersProfessional(newUsersProfessionalRequest: NewProfessionalRequest)
+    fun createUsersProfessional(professional: Professional)
 
     fun getProfessionalToClients(
         name: String?,
         value: BigDecimal?,
     ): List<ProfessionalResponse>
 
-    fun getProfessionalBySpecialtyId(id: Int): List<ProfessionalResponse>
+    fun getProfessionalBySpecialtyId(id: Int): MutableList<Professional>
 
     fun getProfessionalByCategoryId(id: Int): List<ProfessionalResponse>
 
     fun findProfessionalWithLocation(id: Int): List<ProfessionalResponse>
 
-    fun findProfessionalById(id: Int): ProfessionalResponse
+    fun findProfessionalById(id: Int): Professional
 
     fun findProfessionalByLinkName(linkName: String): ProfessionalResponse
 

@@ -36,9 +36,9 @@ class ManageSpecialtyUseCase(
         specialtyJpaRepository
             .findAll()
 
-    override fun getSpecialtyByProfessional(id: Int?): List<Specialty> =
+    override fun getSpecialtyWithProfessional(id: Int): Specialty =
         specialtyJpaRepository
-            .findByProfessionalEntitiesId(
+            .findSpecialtyWithProfessional(
                 id,
             )
 

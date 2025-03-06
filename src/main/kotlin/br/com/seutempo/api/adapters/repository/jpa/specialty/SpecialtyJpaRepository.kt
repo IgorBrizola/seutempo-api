@@ -10,6 +10,4 @@ interface SpecialtyJpaRepository : JpaRepository<SpecialtyEntity, Int> {
         nameSpecialty: String,
         categoryId: Int,
     ): Boolean
-
-    fun findByProfessionalEntitiesId(id: Int?): List<SpecialtyEntity>
 }

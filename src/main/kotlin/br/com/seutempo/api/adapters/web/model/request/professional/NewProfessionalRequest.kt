@@ -19,6 +19,8 @@ data class NewProfessionalRequest(
     val cpf: String,
     @Schema(defaultValue = "11 95059-2234")
     val phone: String,
+    @Schema(defaultValue = "https://")
+    val photoUser: String? = null,
     @Schema(defaultValue = "2005-12-23")
     val dateAnniversary: LocalDate,
     @Schema(defaultValue = "34.50")
