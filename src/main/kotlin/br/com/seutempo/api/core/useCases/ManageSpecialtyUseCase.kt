@@ -18,7 +18,7 @@ class ManageSpecialtyUseCase(
 ) : ManageSpecialtyInputPort {
     @Transactional
     override fun createNewSpecialty(specialty: Specialty) {
-        if (specialtyJpaRepository.existsByNameSpecialtyAndCategoryEntityId(specialty.nameSpecialty, specialty.category.categoryId)) {
+        if (specialtyJpaRepository.existsByNameSpecialtyAndCategoryEntityId(specialty.nameSpecialty, specialty.category.categoryId!!)) {
             throw ResourceAlreadyExistsException(
                 "Specialty (specialty - ${specialty.nameSpecialty}) already exist to is category",
             )
@@ -56,7 +56,7 @@ class ManageSpecialtyUseCase(
         val category =
             categoryJpaRepository
                 .findById(
-                    updateSpecialty.categoryId ?: specialty.category.categoryId,
+                    updateSpecialty.categoryId ?: specialty.category.categoryId!!,
                 )
 
         val specialtyUpdate =

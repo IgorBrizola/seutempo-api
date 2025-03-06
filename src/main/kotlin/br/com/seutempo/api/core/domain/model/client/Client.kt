@@ -5,6 +5,7 @@ import br.com.seutempo.api.core.domain.model.users.Users
 import org.locationtech.jts.geom.Point
 
 data class Client(
+    val id: Int?,
     val user: Users,
     val surname: String? = null,
     val cep: String,

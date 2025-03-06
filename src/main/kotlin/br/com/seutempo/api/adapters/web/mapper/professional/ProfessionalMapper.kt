@@ -3,10 +3,12 @@ package br.com.seutempo.api.adapters.web.mapper.professional
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.professional.request.CreateProfessional
+import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
 import br.com.seutempo.api.core.domain.model.users.Users
 import org.mapstruct.Mapper
@@ -75,4 +77,9 @@ interface ProfessionalMapper {
     fun toListDomain(professionalEntity: List<ProfessionalEntity>): MutableList<Professional>
 
     fun toListProfessionalResponse(professional: List<Professional>): List<ProfessionalResponse>
+
+    fun toUpdateLocation(
+        updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
+        id: Int,
+    ): UpdateLocation
 }

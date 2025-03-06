@@ -3,7 +3,6 @@ package br.com.seutempo.api.adapters.repository
 import br.com.seutempo.api.adapters.repository.jpa.professional.ProfessionalJpaRepository
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
 import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
-import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
@@ -19,31 +18,22 @@ class ManageProfessionalRepository(
     override fun findProfessionalEntityBySpecialtiesId(id: Int): MutableList<Professional> =
         professionalMapper.toListDomain(professionalJpaRepository.findProfessionalEntityBySpecialtiesId(id))
 
-    override fun findProfessionalEntityBySpecialtiesCategoryEntityId(id: Int): List<ProfessionalResponse> =
-        professionalMapper.toListProfessionalResponse(
-            professionalMapper.toListDomain(professionalJpaRepository.findProfessionalEntityBySpecialtiesCategoryEntityId(id)),
-        )
+    override fun findProfessionalEntityBySpecialtiesCategoryEntityId(id: Int): List<Professional> =
+        professionalMapper.toListDomain(professionalJpaRepository.findProfessionalEntityBySpecialtiesCategoryEntityId(id))
 
     override fun findProfessionalsByFilters(
         name: String?,
         value: BigDecimal?,
-    ): List<ProfessionalResponse> =
-        professionalMapper.toListProfessionalResponse(
-            professionalMapper.toListDomain(professionalJpaRepository.findProfessionalsByFilters(name, value)),
-        )
+    ): List<Professional> = professionalMapper.toListDomain(professionalJpaRepository.findProfessionalsByFilters(name, value))
 
-    override fun findProfessionalsWithinRadius(point: Point): List<ProfessionalResponse> =
-        professionalMapper.toListProfessionalResponse(
-            professionalMapper.toListDomain(professionalJpaRepository.findProfessionalsWithinRadius(point)),
-        )
+    override fun findProfessionalsWithinRadius(point: Point): List<Professional> =
+        professionalMapper.toListDomain(professionalJpaRepository.findProfessionalsWithinRadius(point))
 
-    override fun findProfessionalEntityByLinkNameProfessional(linkName: String): ProfessionalResponse =
-        professionalMapper.toResponse(
-            professionalMapper.toDomain(
-                professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName).orElseThrow {
-                    throw ResourceNotFoundException("professional linkName not found! - $linkName")
-                },
-            ),
+    override fun findProfessionalEntityByLinkNameProfessional(linkName: String): Professional =
+        professionalMapper.toDomain(
+            professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName).orElseThrow {
+                throw ResourceNotFoundException("professional linkName not found! - $linkName")
+            },
         )
 
     override fun findById(id: Int): Professional =
