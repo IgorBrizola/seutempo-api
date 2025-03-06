@@ -14,7 +14,8 @@ interface ManageProfessionalOutputPort {
 
     fun findProfessionalsByFilters(
         name: String?,
-        value: BigDecimal?,
+        maxValue: BigDecimal?,
+        minValue: BigDecimal?,
     ): List<Professional>
 
     fun findProfessionalsWithinRadius(point: Point): List<Professional>

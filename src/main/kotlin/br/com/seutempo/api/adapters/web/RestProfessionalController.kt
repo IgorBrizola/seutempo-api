@@ -48,11 +48,12 @@ class RestProfessionalController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    override fun getProfessionalsToClient(
+    override fun getProfessionals(
         @RequestParam("name") name: String?,
-        @RequestParam("value") value: BigDecimal?,
+        @RequestParam("maxValue") maxValue: BigDecimal?,
+        @RequestParam("minValue") minValue: BigDecimal?,
     ): List<ProfessionalResponse> =
-        professionalMapper.toListProfessionalResponse(manageProfessionalUseCase.getProfessionalToClients(name, value))
+        professionalMapper.toListProfessionalResponse(manageProfessionalUseCase.getProfessionals(name, maxValue, minValue))
 
     @GetMapping("location/{id}")
     @ResponseStatus(HttpStatus.OK)

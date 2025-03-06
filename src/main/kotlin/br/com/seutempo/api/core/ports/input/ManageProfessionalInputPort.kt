@@ -7,9 +7,10 @@ import java.math.BigDecimal
 interface ManageProfessionalInputPort {
     fun createUsersProfessional(professional: Professional)
 
-    fun getProfessionalToClients(
+    fun getProfessionals(
         name: String?,
-        value: BigDecimal?,
+        maxValue: BigDecimal?,
+        minValue: BigDecimal?,
     ): List<Professional>
 
     fun getProfessionalBySpecialtyId(id: Int): MutableList<Professional>

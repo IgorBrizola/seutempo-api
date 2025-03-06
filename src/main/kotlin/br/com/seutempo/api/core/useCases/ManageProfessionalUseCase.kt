@@ -94,12 +94,13 @@ class ManageProfessionalUseCase(
         }
     }
 
-    override fun getProfessionalToClients(
+    override fun getProfessionals(
         name: String?,
-        value: BigDecimal?,
+        maxValue: BigDecimal?,
+        minValue: BigDecimal?,
     ): List<Professional> =
         professionalJpaRepository
-            .findProfessionalsByFilters(name, value)
+            .findProfessionalsByFilters(name, maxValue, minValue)
 
     override fun getProfessionalBySpecialtyId(id: Int): MutableList<Professional> =
         professionalJpaRepository
