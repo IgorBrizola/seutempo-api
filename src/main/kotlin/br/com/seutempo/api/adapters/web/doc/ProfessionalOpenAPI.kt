@@ -2,6 +2,7 @@ package br.com.seutempo.api.adapters.web.doc
 
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.request.professional.UpdateProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -26,7 +27,7 @@ interface ProfessionalOpenAPI {
     fun updateGeolocation(
         id: Int,
         updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
-    )
+    ): ProfessionalResponse
 
     @Operation(summary = "Get professional by specialty")
     fun getProfessionalBySpecialty(id: Int): List<ProfessionalResponse>
@@ -39,4 +40,10 @@ interface ProfessionalOpenAPI {
 
     @Operation(summary = "Find professional by linkName")
     fun findProfessionalByLinkName(linkName: String): ProfessionalResponse
+
+    @Operation(summary = "Update information's basic professional")
+    fun updateProfessionalById(
+        id: Int,
+        updateProfessionalRequest: UpdateProfessionalRequest,
+    ): ProfessionalResponse
 }

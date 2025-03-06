@@ -4,7 +4,8 @@ import org.locationtech.jts.geom.Point
 
 data class UpdateLocation(
     val id: Int,
-    val cep: String,
+    val cep: String?,
+    val serviceRadiusKm: Int?,
     var lat: Double? = null,
     var lon: Double? = null,
     var location: Point? = null,

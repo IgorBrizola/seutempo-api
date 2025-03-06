@@ -4,6 +4,7 @@ import br.com.seutempo.api.adapters.web.doc.ProfessionalOpenAPI
 import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.request.professional.UpdateProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
@@ -67,9 +68,9 @@ class RestProfessionalController(
     override fun updateGeolocation(
         @PathVariable id: Int,
         @RequestBody updateAddressProfessionalRequest: UpdateAddressProfessionalRequest,
-    ) {
+    ): ProfessionalResponse {
         val updateLocation = professionalMapper.toUpdateLocation(updateAddressProfessionalRequest, id)
-        manageProfessionalUseCase.updateAddress(updateLocation)
+        return professionalMapper.toResponse(manageProfessionalUseCase.updateAddress(updateLocation))
     }
 
     @GetMapping("specialty/{id}")
@@ -96,4 +97,14 @@ class RestProfessionalController(
     override fun findProfessionalByLinkName(
         @RequestParam linkName: String,
     ) = professionalMapper.toResponse(manageProfessionalUseCase.findProfessionalByLinkName(linkName))
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    override fun updateProfessionalById(
+        @PathVariable id: Int,
+        @RequestBody updateProfessionalRequest: UpdateProfessionalRequest,
+    ): ProfessionalResponse {
+        val professionalInput = professionalMapper.updateRequestToUpdateInput(id, updateProfessionalRequest)
+        return professionalMapper.toResponse(manageProfessionalUseCase.updateProfessionalById(professionalInput))
+    }
 }
