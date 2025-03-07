@@ -11,6 +11,7 @@ data class UsersResponse(
     val photoUser: String? = null,
     val dateAnniversary: LocalDate,
     val typeUser: TypeUser,
+    val active: Boolean,
 ) {
     val age: Int = calcAge(dateAnniversary)
 

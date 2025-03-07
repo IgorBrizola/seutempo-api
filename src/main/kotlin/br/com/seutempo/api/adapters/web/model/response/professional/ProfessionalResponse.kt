@@ -14,5 +14,4 @@ data class ProfessionalResponse(
     val lon: Double,
     val serviceRadiusKm: Int,
     val specialties: List<SpecialtyResponse>,
-    val active: Boolean,
 )
