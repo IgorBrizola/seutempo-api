@@ -175,4 +175,10 @@ class ManageProfessionalUseCase(
         val professional = professionalJpaRepository.findById(id)
         professionalJpaRepository.disableProfessional(professional)
     }
+
+    @Transactional
+    override fun activeProfessionalById(id: Int) {
+        val professional = professionalJpaRepository.findById(id)
+        professionalJpaRepository.activeProfessional(professional)
+    }
 }

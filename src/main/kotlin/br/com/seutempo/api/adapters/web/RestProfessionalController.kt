@@ -109,9 +109,15 @@ class RestProfessionalController(
         return professionalMapper.toResponse(manageProfessionalUseCase.updateProfessionalById(professionalInput))
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("disable/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     override fun disableProfessionalById(
         @PathVariable id: Int,
     ) = manageProfessionalUseCase.disableProfessionalById(id)
+
+    @PutMapping("active/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    override fun activeProfessionalById(
+        @PathVariable id: Int,
+    ) = manageProfessionalUseCase.activeProfessionalById(id)
 }

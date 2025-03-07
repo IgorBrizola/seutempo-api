@@ -29,4 +29,6 @@ interface ManageProfessionalInputPort {
     fun updateProfessionalById(professionalInput: UpdateProfessionalInput): Professional
 
     fun disableProfessionalById(id: Int)
+
+    fun activeProfessionalById(id: Int)
 }

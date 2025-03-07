@@ -87,6 +87,14 @@ class ManageProfessionalRepository(
         professionalJpaRepository.save(professionalEntity)
     }
 
+    override fun activeProfessional(professional: Professional) {
+        val professionalEntity = professionalMapper.toEntity(professional)
+        professionalEntity.user?.active = true
+
+        log.info("Active professional - ${professional.id} and user - ${professional.user.id}")
+        professionalJpaRepository.save(professionalEntity)
+    }
+
     override fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity> =
         professionalJpaRepository.saveAll(professionalMapper.toListEntity(professionals))
 }
