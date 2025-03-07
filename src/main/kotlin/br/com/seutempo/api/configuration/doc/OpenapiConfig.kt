@@ -30,7 +30,7 @@ class OpenapiConfig {
                 listOf(localServer, devServer),
             ).info(
                 Info()
-                    .title("Generated API")
+                    .title("Seu tempo API")
                     .description("Generated API from default seutempo kotlin archetype")
                     .version(this.apiVersion),
             ).components(
