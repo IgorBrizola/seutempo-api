@@ -2,6 +2,7 @@ package br.com.seutempo.api.core.ports.output
 
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
 import br.com.seutempo.api.core.domain.model.professional.Professional
+import br.com.seutempo.api.core.domain.model.professional.request.UpdateProfessionalInput
 import org.locationtech.jts.geom.Point
 import java.math.BigDecimal
 
@@ -31,4 +32,9 @@ interface ManageProfessionalOutputPort {
     fun disableProfessional(professional: Professional)
 
     fun activeProfessional(professional: Professional)
+
+    fun updateProfessional(
+        professional: Professional,
+        professionalInput: UpdateProfessionalInput,
+    ): Professional
 }

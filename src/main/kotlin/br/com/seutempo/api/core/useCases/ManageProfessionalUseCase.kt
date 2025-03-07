@@ -153,21 +153,10 @@ class ManageProfessionalUseCase(
         return professional
     }
 
+    @Transactional
     override fun updateProfessionalById(professionalInput: UpdateProfessionalInput): Professional {
         val professional = professionalJpaRepository.findById(professionalInput.id)
-
-        val updatedProfessional =
-            professional.copy(
-                valueHour = professionalInput.valueHour ?: professional.valueHour,
-                user =
-                    professional.user.copy(
-                        photoUser = professionalInput.photoUser ?: professional.user.photoUser,
-                    ),
-            )
-
-        professionalJpaRepository.save(updatedProfessional)
-
-        return updatedProfessional
+        return professionalJpaRepository.updateProfessional(professional, professionalInput)
     }
 
     @Transactional

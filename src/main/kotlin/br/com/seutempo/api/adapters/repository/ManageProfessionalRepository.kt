@@ -5,6 +5,7 @@ import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
 import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.professional.Professional
+import br.com.seutempo.api.core.domain.model.professional.request.UpdateProfessionalInput
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import org.apache.logging.log4j.LogManager
 import org.locationtech.jts.geom.Point
@@ -93,6 +94,26 @@ class ManageProfessionalRepository(
 
         log.info("Active professional - ${professional.id} and user - ${professional.user.id}")
         professionalJpaRepository.save(professionalEntity)
+    }
+
+    override fun updateProfessional(
+        professional: Professional,
+        professionalInput: UpdateProfessionalInput,
+    ): Professional {
+        val professionalEntity = professionalMapper.toEntity(professional)
+
+        professionalInput.valueHour?.let {
+            professionalEntity.valueHour = it
+        }
+
+        professionalInput.photoUser?.let {
+            professionalEntity.user?.photoUser = it
+        }
+
+        log.info("Update professional - ${professional.id} and user - ${professional.user.id}")
+        professionalJpaRepository.save(professionalEntity)
+
+        return professionalMapper.toDomain(professionalEntity)
     }
 
     override fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity> =

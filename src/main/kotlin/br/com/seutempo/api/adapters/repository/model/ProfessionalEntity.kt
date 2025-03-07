@@ -24,7 +24,7 @@ open class ProfessionalEntity {
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
-    @OneToOne(cascade = [CascadeType.ALL], optional = false)
+    @OneToOne(cascade = [CascadeType.ALL], optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_users", nullable = false)
     open var user: UsersEntity? = null
 
