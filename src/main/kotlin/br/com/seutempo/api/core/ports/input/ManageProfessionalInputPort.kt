@@ -27,4 +27,6 @@ interface ManageProfessionalInputPort {
     fun updateAddress(updateLocation: UpdateLocation): Professional
 
     fun updateProfessionalById(professionalInput: UpdateProfessionalInput): Professional
+
+    fun disableProfessionalById(id: Int)
 }
