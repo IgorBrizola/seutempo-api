@@ -46,4 +46,10 @@ interface ProfessionalOpenAPI {
         id: Int,
         updateProfessionalRequest: UpdateProfessionalRequest,
     ): ProfessionalResponse
+
+    @Operation(summary = "Disable professional by id")
+    fun disableProfessionalById(id: Int)
+
+    @Operation(summary = "Active professional by id")
+    fun activeProfessionalById(id: Int)
 }

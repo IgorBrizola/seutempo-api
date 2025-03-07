@@ -33,7 +33,6 @@ interface ProfessionalMapper {
     @Mapping(source = "categoryEntity.id", target = "category.categoryId")
     fun specialtyToSpecialtyEntity(specialty: SpecialtyEntity): Specialty
 
-    @Mapping(target = "user.id", ignore = true)
     @Mapping(source = "user", target = "user")
     fun toEntity(professional: Professional): ProfessionalEntity
 

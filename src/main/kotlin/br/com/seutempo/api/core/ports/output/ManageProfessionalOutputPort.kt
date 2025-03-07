@@ -27,4 +27,8 @@ interface ManageProfessionalOutputPort {
     fun save(professional: Professional): ProfessionalEntity
 
     fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity>
+
+    fun disableProfessional(professional: Professional)
+
+    fun activeProfessional(professional: Professional)
 }
