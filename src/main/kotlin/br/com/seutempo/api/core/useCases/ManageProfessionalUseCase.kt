@@ -122,6 +122,7 @@ class ManageProfessionalUseCase(
     override fun findProfessionalByLinkName(linkName: String): Professional =
         professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName)
 
+    @Transactional
     override fun updateAddress(updateLocation: UpdateLocation): Professional {
         val professional = buildLocationProfessional(updateLocation)
 
@@ -169,5 +170,17 @@ class ManageProfessionalUseCase(
     override fun activeProfessionalById(id: Int) {
         val professional = professionalJpaRepository.findById(id)
         professionalJpaRepository.activeProfessional(professional)
+    }
+
+    @Transactional
+    override fun removeSpecialtyProfessional(
+        id: Int,
+        specialitiesIds: List<Int>,
+    ) {
+        val professional = professionalJpaRepository.findById(id)
+
+        professional.specialties.removeIf { it.id in specialitiesIds }
+
+        professionalJpaRepository.save(professional)
     }
 }

@@ -31,4 +31,9 @@ interface ManageProfessionalInputPort {
     fun disableProfessionalById(id: Int)
 
     fun activeProfessionalById(id: Int)
+
+    fun removeSpecialtyProfessional(
+        id: Int,
+        specialitiesIds: List<Int>,
+    )
 }

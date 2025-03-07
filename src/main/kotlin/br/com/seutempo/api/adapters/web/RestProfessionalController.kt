@@ -120,4 +120,11 @@ class RestProfessionalController(
     override fun activeProfessionalById(
         @PathVariable id: Int,
     ) = manageProfessionalUseCase.activeProfessionalById(id)
+
+    @DeleteMapping("specialty/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    override fun removeSpecialtyProfessional(
+        @PathVariable id: Int,
+        @RequestBody specialtiesIds: List<Int>,
+    ) = manageProfessionalUseCase.removeSpecialtyProfessional(id, specialtiesIds)
 }
