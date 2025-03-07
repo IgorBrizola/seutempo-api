@@ -127,4 +127,11 @@ class RestProfessionalController(
         @PathVariable id: Int,
         @RequestBody specialtiesIds: List<Int>,
     ) = manageProfessionalUseCase.removeSpecialtyProfessional(id, specialtiesIds)
+
+    @PostMapping("specialty/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    override fun addSpecialtyProfessional(
+        @PathVariable id: Int,
+        @RequestBody specialtiesIds: List<Int>,
+    ) = manageProfessionalUseCase.addSpecialtyProfessional(id, specialtiesIds)
 }

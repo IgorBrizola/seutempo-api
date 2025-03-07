@@ -36,4 +36,9 @@ interface ManageProfessionalInputPort {
         id: Int,
         specialitiesIds: List<Int>,
     )
+
+    fun addSpecialtyProfessional(
+        id: Int,
+        specialitiesIds: List<Int>,
+    )
 }

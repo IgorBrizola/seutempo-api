@@ -1,5 +1,6 @@
 package br.com.seutempo.api.core.useCases
 
+import br.com.seutempo.api.core.domain.exceptions.BusinessException
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.model.googleMaps.response.GeoDomainResponse
 import br.com.seutempo.api.core.domain.model.professional.Professional
@@ -24,6 +25,7 @@ class ManageProfessionalUseCase(
     private val usersJpaRepository: ManageUsersOutputPort,
     private val manageUsersUseCase: ManageUsersInputPort,
     private val manageClientUseCase: ManageClientInputPort,
+    private val specialtyJpaRepository: ManageSpecialtyUseCase,
 ) : ManageProfessionalInputPort {
     private val log = LogManager.getLogger(javaClass)
 
@@ -180,6 +182,31 @@ class ManageProfessionalUseCase(
         val professional = professionalJpaRepository.findById(id)
 
         professional.specialties.removeIf { it.id in specialitiesIds }
+
+        professionalJpaRepository.save(professional)
+    }
+
+    override fun addSpecialtyProfessional(
+        id: Int,
+        specialitiesIds: List<Int>,
+    ) {
+        val professional = professionalJpaRepository.findById(id)
+
+        if (professional.specialties.size >= 5) {
+            throw BusinessException("Already limit max (5) specialities register!")
+        }
+
+        val newSpecialities = specialtyJpaRepository.findSpecialtyByIds(specialitiesIds)
+
+        val existingSpecialities = professional.specialties.map { it.id }.toSet()
+
+        val specialitiesToAdd = newSpecialities.filterNot { it.id in existingSpecialities }
+
+        if (specialitiesToAdd.isEmpty()) {
+            throw BusinessException("Specialities already register!")
+        }
+
+        professional.specialties.addAll(specialitiesToAdd)
 
         professionalJpaRepository.save(professional)
     }

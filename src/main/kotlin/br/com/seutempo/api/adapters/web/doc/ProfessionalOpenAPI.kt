@@ -58,4 +58,10 @@ interface ProfessionalOpenAPI {
         id: Int,
         specialtiesIds: List<Int>,
     )
+
+    @Operation(summary = "Add specialty professional")
+    fun addSpecialtyProfessional(
+        id: Int,
+        specialtiesIds: List<Int>,
+    )
 }
