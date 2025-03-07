@@ -9,6 +9,7 @@ import br.com.seutempo.api.adapters.web.model.response.professional.Professional
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -107,4 +108,10 @@ class RestProfessionalController(
         val professionalInput = professionalMapper.updateRequestToUpdateInput(id, updateProfessionalRequest)
         return professionalMapper.toResponse(manageProfessionalUseCase.updateProfessionalById(professionalInput))
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    override fun disableProfessionalById(
+        @PathVariable id: Int,
+    ) = manageProfessionalUseCase.disableProfessionalById(id)
 }

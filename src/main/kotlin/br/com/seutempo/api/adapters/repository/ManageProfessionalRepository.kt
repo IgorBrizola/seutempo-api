@@ -6,6 +6,7 @@ import br.com.seutempo.api.adapters.web.mapper.professional.ProfessionalMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
+import org.apache.logging.log4j.LogManager
 import org.locationtech.jts.geom.Point
 import org.springframework.data.jpa.domain.Specification
 import java.math.BigDecimal
@@ -14,6 +15,8 @@ class ManageProfessionalRepository(
     private val professionalJpaRepository: ProfessionalJpaRepository,
     private val professionalMapper: ProfessionalMapper,
 ) : ManageProfessionalOutputPort {
+    private val log = LogManager.getLogger(javaClass)
+
     override fun existsByLinkNameProfessional(link: String): Boolean = professionalJpaRepository.existsByLinkNameProfessional(link)
 
     override fun findProfessionalEntityBySpecialtiesId(id: Int): MutableList<Professional> =
@@ -75,6 +78,14 @@ class ManageProfessionalRepository(
 
     override fun save(professional: Professional): ProfessionalEntity =
         professionalJpaRepository.save(professionalMapper.toEntity(professional))
+
+    override fun disableProfessional(professional: Professional) {
+        val professionalEntity = professionalMapper.toEntity(professional)
+        professionalEntity.user?.active = false
+
+        log.info("Disable professional - ${professional.id} and user - ${professional.user.id}")
+        professionalJpaRepository.save(professionalEntity)
+    }
 
     override fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity> =
         professionalJpaRepository.saveAll(professionalMapper.toListEntity(professionals))

@@ -158,7 +158,6 @@ class ManageProfessionalUseCase(
 
         val updatedProfessional =
             professional.copy(
-                id = professionalInput.id,
                 valueHour = professionalInput.valueHour ?: professional.valueHour,
                 user =
                     professional.user.copy(
@@ -169,5 +168,11 @@ class ManageProfessionalUseCase(
         professionalJpaRepository.save(updatedProfessional)
 
         return updatedProfessional
+    }
+
+    @Transactional
+    override fun disableProfessionalById(id: Int) {
+        val professional = professionalJpaRepository.findById(id)
+        professionalJpaRepository.disableProfessional(professional)
     }
 }
