@@ -52,4 +52,16 @@ interface ProfessionalOpenAPI {
 
     @Operation(summary = "Active professional by id")
     fun activeProfessionalById(id: Int)
+
+    @Operation(summary = "Remove specialty professional")
+    fun removeSpecialtyProfessional(
+        id: Int,
+        specialtiesIds: List<Int>,
+    )
+
+    @Operation(summary = "Add specialty professional")
+    fun addSpecialtyProfessional(
+        id: Int,
+        specialtiesIds: List<Int>,
+    )
 }
