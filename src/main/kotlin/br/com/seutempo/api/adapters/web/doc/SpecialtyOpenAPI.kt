@@ -25,7 +25,7 @@ interface SpecialtyOpenAPI {
     fun updateSpecialty(
         id: Int,
         updateSpecialtyRequest: UpdateSpecialtyRequest,
-    )
+    ): SpecialtyResponse
 
     @Operation(summary = "Get specialty by id")
     fun getSpecialtyByIds(ids: List<Int>): List<SpecialtyResponse>

@@ -2,14 +2,17 @@ package br.com.seutempo.api.adapters.repository
 
 import br.com.seutempo.api.adapters.repository.jpa.specialty.SpecialtyJpaRepository
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
+import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
+import br.com.seutempo.api.core.domain.model.specialty.request.UpdateSpecialty
 import br.com.seutempo.api.core.ports.output.ManageSpecialtyOutputPort
 
 class ManageSpecialtyRepository(
     private val specialtyJpaRepository: SpecialtyJpaRepository,
     private val specialtyMapper: SpecialtyMapper,
+    private val categoryMapper: CategoryMapper,
 ) : ManageSpecialtyOutputPort {
     override fun existsByNameSpecialtyAndCategoryEntityId(
         nameSpecialty: String,
@@ -42,5 +45,23 @@ class ManageSpecialtyRepository(
         val specialty = specialtyJpaRepository.findById(id).orElseThrow { throw ResourceNotFoundException("Specialty not found! - $id") }
         specialty.professionalEntities?.forEach { it.specialties?.remove(specialty) }
         specialtyJpaRepository.deleteById(id)
+    }
+
+    override fun updateSpecialty(
+        specialty: Specialty,
+        updateSpecialty: UpdateSpecialty,
+    ): Specialty {
+        val specialtyEntity = specialtyMapper.toEntity(specialty)
+
+        updateSpecialty.categoryId?.let {
+            specialtyEntity.categoryEntity?.id = it
+        }
+        updateSpecialty.nameSpecialty?.let {
+            specialtyEntity.nameSpecialty = it
+        }
+
+        return specialtyMapper.toSpecialty(
+            specialtyJpaRepository.save(specialtyEntity),
+        )
     }
 }
