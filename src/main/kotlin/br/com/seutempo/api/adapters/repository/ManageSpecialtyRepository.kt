@@ -40,7 +40,7 @@ class ManageSpecialtyRepository(
 
     override fun deleteById(id: Int) {
         val specialty = specialtyJpaRepository.findById(id).orElseThrow { throw ResourceNotFoundException("Specialty not found! - $id") }
-        specialty.professionalEntities?.forEach { it.specialties.remove(specialty) }
+        specialty.professionalEntities?.forEach { it.specialties?.remove(specialty) }
         specialtyJpaRepository.deleteById(id)
     }
 }
