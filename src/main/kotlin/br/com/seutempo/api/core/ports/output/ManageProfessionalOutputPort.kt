@@ -25,7 +25,7 @@ interface ManageProfessionalOutputPort {
 
     fun findById(id: Int): Professional
 
-    fun save(professional: Professional): ProfessionalEntity
+    fun save(professional: Professional): Professional
 
     fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity>
 

@@ -10,8 +10,10 @@ import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import org.apache.logging.log4j.LogManager
 import org.locationtech.jts.geom.Point
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
+@Repository
 class ManageProfessionalRepository(
     private val professionalJpaRepository: ProfessionalJpaRepository,
     private val professionalMapper: ProfessionalMapper,
@@ -77,8 +79,8 @@ class ManageProfessionalRepository(
             },
         )
 
-    override fun save(professional: Professional): ProfessionalEntity =
-        professionalJpaRepository.save(professionalMapper.toEntity(professional))
+    override fun save(professional: Professional): Professional =
+        professionalMapper.toDomain(professionalJpaRepository.save(professionalMapper.toEntity(professional)))
 
     override fun disableProfessional(professional: Professional) {
         val professionalEntity = professionalMapper.toEntity(professional)

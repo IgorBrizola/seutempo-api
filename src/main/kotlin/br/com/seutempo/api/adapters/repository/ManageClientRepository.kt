@@ -5,7 +5,9 @@ import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.client.Client
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
+import org.springframework.stereotype.Repository
 
+@Repository
 class ManageClientRepository(
     private val clientJpaRepository: ClientJpaRepository,
     private val clientMapper: ClientMapper,

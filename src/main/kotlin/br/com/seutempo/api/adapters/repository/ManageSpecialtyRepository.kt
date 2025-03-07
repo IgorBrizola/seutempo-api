@@ -8,7 +8,9 @@ import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
 import br.com.seutempo.api.core.domain.model.specialty.request.UpdateSpecialty
 import br.com.seutempo.api.core.ports.output.ManageSpecialtyOutputPort
+import org.springframework.stereotype.Repository
 
+@Repository
 class ManageSpecialtyRepository(
     private val specialtyJpaRepository: SpecialtyJpaRepository,
     private val specialtyMapper: SpecialtyMapper,

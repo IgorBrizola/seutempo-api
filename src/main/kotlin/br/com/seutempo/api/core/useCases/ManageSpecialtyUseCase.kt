@@ -4,7 +4,6 @@ import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
 import br.com.seutempo.api.core.domain.model.specialty.request.UpdateSpecialty
 import br.com.seutempo.api.core.ports.input.ManageSpecialtyInputPort
-import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import br.com.seutempo.api.core.ports.output.ManageSpecialtyOutputPort
 import org.springframework.stereotype.Service
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ManageSpecialtyUseCase(
     private val specialtyJpaRepository: ManageSpecialtyOutputPort,
-    private val categoryJpaRepository: ManageCategoryOutputPort,
     private val professionalJpaRepository: ManageProfessionalOutputPort,
 ) : ManageSpecialtyInputPort {
     @Transactional
