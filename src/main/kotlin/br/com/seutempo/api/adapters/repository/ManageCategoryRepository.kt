@@ -6,7 +6,9 @@ import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.category.Category
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
+import org.springframework.stereotype.Repository
 
+@Repository
 class ManageCategoryRepository(
     private val categoryJpaRepository: CategoryJpaRepository,
     private val categoryMapper: CategoryMapper,

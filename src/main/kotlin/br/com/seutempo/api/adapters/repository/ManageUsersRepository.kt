@@ -6,8 +6,10 @@ import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.users.Users
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
+import org.springframework.stereotype.Repository
 import java.util.Optional
 
+@Repository
 class ManageUsersRepository(
     private val usersJpaRepository: UsersJpaRepository,
     private val usersMapper: UsersMapper,
