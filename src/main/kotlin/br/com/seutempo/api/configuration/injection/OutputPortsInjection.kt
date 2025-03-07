@@ -45,7 +45,8 @@ class OutputPortsInjection {
     fun manageSpecialtyOutputPort(
         specialtyJpaRepository: SpecialtyJpaRepository,
         specialtyMapper: SpecialtyMapper,
-    ): ManageSpecialtyOutputPort = ManageSpecialtyRepository(specialtyJpaRepository, specialtyMapper)
+        categoryMapper: CategoryMapper,
+    ): ManageSpecialtyOutputPort = ManageSpecialtyRepository(specialtyJpaRepository, specialtyMapper, categoryMapper)
 
     @Bean
     fun manageClientOutputPort(

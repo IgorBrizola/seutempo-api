@@ -2,6 +2,7 @@ package br.com.seutempo.api.core.ports.output
 
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
+import br.com.seutempo.api.core.domain.model.specialty.request.UpdateSpecialty
 
 interface ManageSpecialtyOutputPort {
     fun existsByNameSpecialtyAndCategoryEntityId(
@@ -20,4 +21,9 @@ interface ManageSpecialtyOutputPort {
     fun findAll(): List<Specialty>
 
     fun deleteById(id: Int)
+
+    fun updateSpecialty(
+        specialty: Specialty,
+        updateSpecialty: UpdateSpecialty,
+    ): Specialty
 }

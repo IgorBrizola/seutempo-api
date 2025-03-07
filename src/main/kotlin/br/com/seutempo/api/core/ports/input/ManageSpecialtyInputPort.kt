@@ -16,5 +16,5 @@ interface ManageSpecialtyInputPort {
 
     fun deleteSpecialtyById(id: Int)
 
-    fun updateSpecialty(updateSpecialty: UpdateSpecialty)
+    fun updateSpecialty(updateSpecialty: UpdateSpecialty): Specialty
 }

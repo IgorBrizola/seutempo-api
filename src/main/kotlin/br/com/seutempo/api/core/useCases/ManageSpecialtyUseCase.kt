@@ -50,22 +50,8 @@ class ManageSpecialtyUseCase(
         }
     }
 
-    override fun updateSpecialty(updateSpecialty: UpdateSpecialty) {
+    override fun updateSpecialty(updateSpecialty: UpdateSpecialty): Specialty {
         val specialty = specialtyJpaRepository.findById(updateSpecialty.id)
-
-        val category =
-            categoryJpaRepository
-                .findById(
-                    updateSpecialty.categoryId ?: specialty.category.categoryId!!,
-                )
-
-        val specialtyUpdate =
-            specialty.copy(
-                id = updateSpecialty.id,
-                nameSpecialty = updateSpecialty.nameSpecialty ?: specialty.nameSpecialty,
-                category = category,
-            )
-
-        specialtyJpaRepository.save(specialtyUpdate)
+        return specialtyJpaRepository.updateSpecialty(specialty, updateSpecialty)
     }
 }

@@ -21,11 +21,13 @@ import org.mapstruct.ReportingPolicy
 interface SpecialtyMapper {
     @Mapping(source = "categoryEntity", target = "category")
     @Mapping(source = "categoryEntity.id", target = "category.categoryId")
+    @Mapping(source = "categoryEntity.nameCategory", target = "category.nameCategory")
     @Mapping(source = "professionalEntities", target = "professionals")
     fun toSpecialty(specialtyEntity: SpecialtyEntity): Specialty
 
     @Mapping(source = "category", target = "categoryEntity")
     @Mapping(source = "category.categoryId", target = "categoryEntity.id")
+    @Mapping(source = "category.nameCategory", target = "categoryEntity.nameCategory")
     fun toEntity(specialty: Specialty): SpecialtyEntity
 
     @Mapping(source = "categoryEntity.nameCategory", target = "nameCategory")
