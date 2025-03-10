@@ -19,6 +19,8 @@ class ManageUsersRepository(
 
     override fun existsByCpfAndActiveIsTrue(cpf: String): Boolean = usersJpaRepository.existsByCpfAndActiveIsTrue(cpf)
 
+    override fun existsByPhoneAndActiveIsTrue(phone: String): Boolean = usersJpaRepository.existsByPhoneAndActiveIsTrue(phone)
+
     override fun findByIdAndActiveIsTrue(id: Int): Optional<UsersEntity> = usersJpaRepository.findByIdAndActiveIsTrue(id)
 
     override fun findAllByActiveIsTrue(): List<UsersEntity> = usersJpaRepository.findAllByActiveIsTrue()
