@@ -5,6 +5,7 @@ import br.com.seutempo.api.adapters.web.model.response.users.UsersResponse
 import java.math.BigDecimal
 
 data class ProfessionalResponse(
+    val id: Int?,
     val user: UsersResponse,
     val linkNameProfessional: String,
     val urlProfessional: String,

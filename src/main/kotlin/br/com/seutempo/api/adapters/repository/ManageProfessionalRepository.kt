@@ -23,10 +23,14 @@ class ManageProfessionalRepository(
     override fun existsByLinkNameProfessional(link: String): Boolean = professionalJpaRepository.existsByLinkNameProfessional(link)
 
     override fun findProfessionalEntityBySpecialtiesId(id: Int): MutableList<Professional> =
-        professionalMapper.toListDomain(professionalJpaRepository.findProfessionalEntityBySpecialtiesId(id))
+        professionalMapper.toListDomain(
+            professionalJpaRepository.findProfessionalEntityBySpecialtiesIdAndUserActiveIsTrue(id),
+        )
 
     override fun findProfessionalEntityBySpecialtiesCategoryEntityId(id: Int): List<Professional> =
-        professionalMapper.toListDomain(professionalJpaRepository.findProfessionalEntityBySpecialtiesCategoryEntityId(id))
+        professionalMapper.toListDomain(
+            professionalJpaRepository.findProfessionalEntityBySpecialtiesCategoryEntityIdAndUserActiveIsTrue(id),
+        )
 
     override fun findProfessionalsByFilters(
         name: String?,
@@ -35,7 +39,7 @@ class ManageProfessionalRepository(
     ): List<Professional> {
         val spec = buildSpecFilter(name, maxValue, minValue)
         return professionalMapper.toListDomain(
-            professionalJpaRepository.findAll(spec),
+            professionalJpaRepository.findAll(spec).filter { it.user?.active == true },
         )
     }
 
@@ -65,16 +69,24 @@ class ManageProfessionalRepository(
     override fun findProfessionalsWithinRadius(point: Point): List<Professional> =
         professionalMapper.toListDomain(professionalJpaRepository.findProfessionalsWithinRadius(point))
 
+    // TODO: ADD SPECIFICATIONS
     override fun findProfessionalEntityByLinkNameProfessional(linkName: String): Professional =
         professionalMapper.toDomain(
-            professionalJpaRepository.findProfessionalEntityByLinkNameProfessional(linkName).orElseThrow {
+            professionalJpaRepository.findProfessionalEntityByLinkNameProfessionalAndUserActiveIsTrue(linkName).orElseThrow {
                 throw ResourceNotFoundException("professional linkName not found! - $linkName")
             },
         )
 
     override fun findById(id: Int): Professional =
         professionalMapper.toDomain(
-            professionalJpaRepository.findById(id).orElseThrow {
+            professionalJpaRepository.findByIdAndUserActiveIsTrue(id).orElseThrow {
+                throw ResourceNotFoundException("professional not found! - $id")
+            },
+        )
+
+    override fun findByIdActive(id: Int): Professional =
+        professionalMapper.toDomain(
+            professionalJpaRepository.findByIdAndUserActiveIsFalse(id).orElseThrow {
                 throw ResourceNotFoundException("professional not found! - $id")
             },
         )
@@ -117,6 +129,12 @@ class ManageProfessionalRepository(
 
         return professionalMapper.toDomain(professionalEntity)
     }
+
+    override fun existsByUserEmail(email: String): Boolean = professionalJpaRepository.existsByUserEmailAndUserActiveIsTrue(email)
+
+    override fun existsByUserCpf(cpf: String): Boolean = professionalJpaRepository.existsByUserCpfAndUserActiveIsTrue(cpf)
+
+    override fun existsByUserPhone(phone: String): Boolean = professionalJpaRepository.existsByUserPhoneAndUserActiveIsTrue(phone)
 
     override fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity> =
         professionalJpaRepository.saveAll(professionalMapper.toListEntity(professionals))

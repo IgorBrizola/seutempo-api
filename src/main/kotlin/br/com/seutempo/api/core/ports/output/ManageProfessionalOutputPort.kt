@@ -25,6 +25,8 @@ interface ManageProfessionalOutputPort {
 
     fun findById(id: Int): Professional
 
+    fun findByIdActive(id: Int): Professional
+
     fun save(professional: Professional): Professional
 
     fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity>
@@ -37,4 +39,10 @@ interface ManageProfessionalOutputPort {
         professional: Professional,
         professionalInput: UpdateProfessionalInput,
     ): Professional
+
+    fun existsByUserEmail(email: String): Boolean
+
+    fun existsByUserCpf(cpf: String): Boolean
+
+    fun existsByUserPhone(phone: String): Boolean
 }
