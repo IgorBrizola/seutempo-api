@@ -1,7 +1,6 @@
 package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.core.domain.exceptions.BusinessException
-import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateProfessionalInput
@@ -9,8 +8,8 @@ import br.com.seutempo.api.core.domain.model.professional.response.UrlProfession
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageGoogleMapsInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
+import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
-import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import br.com.seutempo.api.util.AppUtil.removeAccents
 import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Service
@@ -21,8 +20,8 @@ import kotlin.random.Random
 @Service
 class ManageProfessionalUseCase(
     private val professionalJpaRepository: ManageProfessionalOutputPort,
-    private val usersJpaRepository: ManageUsersOutputPort,
     private val manageClientUseCase: ManageClientInputPort,
+    private val manageUsersUseCase: ManageUsersInputPort,
     private val manageGoogleMapsUseCase: ManageGoogleMapsInputPort,
     private val specialtyJpaRepository: ManageSpecialtyUseCase,
 ) : ManageProfessionalInputPort {
@@ -32,7 +31,7 @@ class ManageProfessionalUseCase(
 
     @Transactional
     override fun createUsersProfessional(professional: Professional) {
-        verifyUserExists(professional)
+        manageUsersUseCase.verifyIfUserIsValid(professional.user)
 
         val buildProfessional = buildProfessional(professional)
 
@@ -73,15 +72,6 @@ class ManageProfessionalUseCase(
         professional.location = geolocation.location
 
         return professional
-    }
-
-    private fun verifyUserExists(professional: Professional) {
-        if (usersJpaRepository.existsByEmailAndActiveIsTrue(professional.user.email)) {
-            throw ResourceAlreadyExistsException("User with email '${professional.user.email}' already exists.")
-        }
-        if (usersJpaRepository.existsByCpfAndActiveIsTrue(professional.user.cpf)) {
-            throw ResourceAlreadyExistsException("User with cpf '${professional.user.cpf}' already exists.")
-        }
     }
 
     override fun getProfessionals(

@@ -10,6 +10,8 @@ interface ManageUsersOutputPort {
 
     fun existsByCpfAndActiveIsTrue(cpf: String): Boolean
 
+    fun existsByPhoneAndActiveIsTrue(phone: String): Boolean
+
     fun findByIdAndActiveIsTrue(id: Int): Optional<UsersEntity>
 
     fun findAllByActiveIsTrue(): List<UsersEntity>

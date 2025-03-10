@@ -9,4 +9,6 @@ interface ManageUsersInputPort {
     fun findUserById(id: Int): Users
 
     fun updatePassword(passwordInput: UpdatePasswordInput)
+
+    fun verifyIfUserIsValid(user: Users)
 }
