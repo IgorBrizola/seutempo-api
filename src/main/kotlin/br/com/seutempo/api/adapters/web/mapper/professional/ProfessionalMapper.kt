@@ -63,6 +63,7 @@ interface ProfessionalMapper {
     fun professionalResponseToProfessional(professionalResponse: ProfessionalResponse): ProfessionalEntity
 
     @Mapping(source = "name", target = "user.name")
+    @Mapping(source = "middleName", target = "user.middleName")
     @Mapping(source = "lastName", target = "user.lastName")
     @Mapping(source = "email", target = "user.email")
     @Mapping(source = "password", target = "user.password")

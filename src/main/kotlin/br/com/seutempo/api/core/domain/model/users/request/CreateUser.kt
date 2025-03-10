@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 
 data class CreateUser(
     val name: String,
+    val middleName: String,
     val lastName: String,
     val email: String,
     val password: String,

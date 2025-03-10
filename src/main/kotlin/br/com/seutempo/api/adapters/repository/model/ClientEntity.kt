@@ -26,7 +26,7 @@ open class ClientEntity {
     @JoinColumn(name = "id_users", nullable = false)
     open var user: UsersEntity? = null
 
-    @Column(name = "surname", nullable = false)
+    @Column(name = "surname", nullable = true)
     open var surname: String? = null
 
     @Column(name = "cep", nullable = false)
@@ -50,7 +50,10 @@ open class ClientEntity {
     @Column(name = "complement", nullable = false)
     open var complement: String? = null
 
-    @Column(name = "additional_address", nullable = false)
+    @Column(name = "formated_address", nullable = false)
+    open var formatedAddress: String? = null
+
+    @Column(name = "additional_address", nullable = true)
     open var additionalAddress: String? = null
 
     @Column(name = "type_address", nullable = false)

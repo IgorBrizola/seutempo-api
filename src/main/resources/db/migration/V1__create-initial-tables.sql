@@ -1,6 +1,7 @@
 CREATE TABLE users (
     id INT IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    middle_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -25,6 +26,7 @@ CREATE TABLE users (
       number INT,
       complement VARCHAR(50),
       additional_address VARCHAR(255),
+      formated_address VARCHAR(255),
       type_address VARCHAR(50),
       latitude DECIMAL(9,6),
       longitude DECIMAL(9,6),

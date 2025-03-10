@@ -2,14 +2,13 @@ package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.core.domain.exceptions.BusinessException
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
-import br.com.seutempo.api.core.domain.model.googleMaps.response.GeoDomainResponse
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateProfessionalInput
 import br.com.seutempo.api.core.domain.model.professional.response.UrlProfessionalResponse
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
+import br.com.seutempo.api.core.ports.input.ManageGoogleMapsInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
-import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageProfessionalOutputPort
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import br.com.seutempo.api.util.AppUtil.removeAccents
@@ -23,8 +22,8 @@ import kotlin.random.Random
 class ManageProfessionalUseCase(
     private val professionalJpaRepository: ManageProfessionalOutputPort,
     private val usersJpaRepository: ManageUsersOutputPort,
-    private val manageUsersUseCase: ManageUsersInputPort,
     private val manageClientUseCase: ManageClientInputPort,
+    private val manageGoogleMapsUseCase: ManageGoogleMapsInputPort,
     private val specialtyJpaRepository: ManageSpecialtyUseCase,
 ) : ManageProfessionalInputPort {
     private val log = LogManager.getLogger(javaClass)
@@ -38,18 +37,6 @@ class ManageProfessionalUseCase(
         val buildProfessional = buildProfessional(professional)
 
         professionalJpaRepository.save(buildProfessional)
-    }
-
-    private fun generateGeolocation(cep: String): GeoDomainResponse {
-        val geometry = manageUsersUseCase.convertLocationGeo(cep)
-
-        val point = manageUsersUseCase.convertGeometryPoint(geometry)
-
-        return GeoDomainResponse(
-            latitude = geometry.location.lat,
-            longitude = geometry.location.lng,
-            point = point,
-        )
     }
 
     private fun generateLink(professional: Professional): UrlProfessionalResponse {
@@ -74,7 +61,7 @@ class ManageProfessionalUseCase(
     }
 
     private fun buildProfessional(professional: Professional): Professional {
-        val geolocation = generateGeolocation(professional.cep)
+        val geolocation = manageGoogleMapsUseCase.getInfoLocations(professional.cep)
 
         val urlProfessional = generateLink(professional)
 
@@ -83,7 +70,7 @@ class ManageProfessionalUseCase(
 
         professional.lat = geolocation.latitude
         professional.lon = geolocation.longitude
-        professional.location = geolocation.point
+        professional.location = geolocation.location
 
         return professional
     }
@@ -114,7 +101,7 @@ class ManageProfessionalUseCase(
             .findProfessionalEntityBySpecialtiesCategoryEntityId(id)
 
     override fun findProfessionalWithLocation(id: Int): List<Professional> =
-        professionalJpaRepository.findProfessionalsWithinRadius(manageClientUseCase.findClientById(id).location)
+        professionalJpaRepository.findProfessionalsWithinRadius(manageClientUseCase.findClientById(id).location!!)
 
     override fun findProfessionalById(id: Int): Professional {
         log.info("Buscando professional by id - $id")
@@ -146,11 +133,11 @@ class ManageProfessionalUseCase(
         val professional = professionalJpaRepository.findById(updateLocation.id)
 
         if (updateLocation.cep != null) {
-            val geolocation = generateGeolocation(updateLocation.cep)
+            val location = manageGoogleMapsUseCase.getInfoLocations(updateLocation.cep)
 
-            updateLocation.lon = geolocation.longitude
-            updateLocation.lat = geolocation.latitude
-            updateLocation.location = geolocation.point
+            updateLocation.lon = location.longitude
+            updateLocation.lat = location.latitude
+            updateLocation.location = location.location
         }
 
         return professional

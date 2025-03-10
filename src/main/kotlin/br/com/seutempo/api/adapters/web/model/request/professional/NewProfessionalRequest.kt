@@ -9,7 +9,9 @@ import java.time.LocalDateTime
 data class NewProfessionalRequest(
     @Schema(defaultValue = "Igor")
     val name: String,
-    @Schema(defaultValue = "Rodrigues Brizola")
+    @Schema(defaultValue = "Rodrigues")
+    val middleName: String,
+    @Schema(defaultValue = "Brizola")
     val lastName: String,
     @Schema(defaultValue = "igor@seutempo.com")
     val email: String,
