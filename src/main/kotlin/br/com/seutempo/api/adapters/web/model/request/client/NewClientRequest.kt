@@ -1,16 +1,13 @@
 package br.com.seutempo.api.adapters.web.model.request.client
 
 import br.com.seutempo.api.adapters.repository.model.TypeUser
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class NewClientRequest(
     val name: String,
+    val middleName: String,
     val lastName: String,
     val email: String,
     val password: String,

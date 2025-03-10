@@ -101,7 +101,7 @@ class ManageProfessionalUseCase(
             .findProfessionalEntityBySpecialtiesCategoryEntityId(id)
 
     override fun findProfessionalWithLocation(id: Int): List<Professional> =
-        professionalJpaRepository.findProfessionalsWithinRadius(manageClientUseCase.findClientById(id).location)
+        professionalJpaRepository.findProfessionalsWithinRadius(manageClientUseCase.findClientById(id).location!!)
 
     override fun findProfessionalById(id: Int): Professional {
         log.info("Buscando professional by id - $id")

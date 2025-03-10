@@ -24,20 +24,9 @@ class RestClientController(
     override fun registerUsersClient(
         @RequestBody newClientRequest: NewClientRequest,
     ) {
-        val user = clientMapper.usersClientRequestToUsers(newClientRequest)
+        val createClient = clientMapper.toCrate(newClientRequest)
 
-        val geometry = manageUsersInputPort.convertLocationGeo(newClientRequest.address.cep)
-
-        val point = manageUsersInputPort.convertGeometryPoint(geometry)
-
-        val client =
-            clientMapper.usersClientRequestToClient(
-                user,
-                newClientRequest,
-                lat = geometry.location.lat,
-                lon = geometry.location.lng,
-                location = point,
-            )
+        val client = clientMapper.createToClient(createClient)
 
         manageClientUseCase.createUsersClient(client)
     }
