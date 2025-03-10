@@ -9,7 +9,6 @@ import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
 import org.locationtech.jts.geom.PrecisionModel
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,9 +16,6 @@ class ManageUsersUseCase(
     private val usersJpaRepository: ManageUsersOutputPort,
     private val googleMapsIntegration: ManageGoogleMapsIntegrationOutputPort,
 ) : ManageUsersInputPort {
-    @Value("\${app.service.google.maps.key}")
-    lateinit var apiKey: String
-
     private val geometryFactory = GeometryFactory(PrecisionModel(), 4326)
 
     override fun getUsers(): List<Users> =
@@ -29,7 +25,7 @@ class ManageUsersUseCase(
     override fun findUserById(id: Int): Users = usersJpaRepository.findById(id)
 
     override fun convertLocationGeo(address: String): Geometry {
-        val results = googleMapsIntegration.getGeolocationUser(address, apiKey)
+        val results = googleMapsIntegration.getGeolocationUser(address)
         return results.results.map { item -> item.geometry }.first()
     }
 
