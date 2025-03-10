@@ -68,8 +68,8 @@ class ManageProfessionalUseCase(
         professional.urlProfessional = urlProfessional.urlProfessional
         professional.linkNameProfessional = urlProfessional.linkNameProfessional
 
-        professional.lat = geolocation.lat
-        professional.lon = geolocation.lon
+        professional.lat = geolocation.latitude
+        professional.lon = geolocation.longitude
         professional.location = geolocation.location
 
         return professional
@@ -135,8 +135,8 @@ class ManageProfessionalUseCase(
         if (updateLocation.cep != null) {
             val location = manageGoogleMapsUseCase.getInfoLocations(updateLocation.cep)
 
-            updateLocation.lon = location.lon
-            updateLocation.lat = location.lat
+            updateLocation.lon = location.longitude
+            updateLocation.lat = location.latitude
             updateLocation.location = location.location
         }
 

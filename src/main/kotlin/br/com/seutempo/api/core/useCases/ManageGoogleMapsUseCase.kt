@@ -31,8 +31,8 @@ class ManageGoogleMapsUseCase(
             state = result.addressComponents?.find { "administrative_area_level_1" in it.types }?.shortName,
             formatedAddress = result.formattedAddress,
             location = location,
-            lon = result.geometry.location.lng,
-            lat = result.geometry.location.lat,
+            longitude = result.geometry.location.lng,
+            latitude = result.geometry.location.lat,
         )
     }
 }

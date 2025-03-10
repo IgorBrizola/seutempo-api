@@ -35,8 +35,8 @@ class ManageClientUseCase(
 
         val buildClient =
             client.copy(
-                latitude = geolocation.lat,
-                longitude = geolocation.lon,
+                latitude = geolocation.latitude,
+                longitude = geolocation.longitude,
                 location = geolocation.location,
                 formatedAddress = geolocation.formatedAddress,
                 city = geolocation.city,

@@ -11,7 +11,7 @@ data class AddressResponse(
     val city: String?,
     val state: String?,
     val formatedAddress: String?,
-    var lat: Double?,
-    var lon: Double?,
+    var latitude: Double?,
+    var longitude: Double?,
     var location: Point?,
 )
