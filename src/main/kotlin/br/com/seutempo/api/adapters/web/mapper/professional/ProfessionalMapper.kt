@@ -55,12 +55,11 @@ interface ProfessionalMapper {
     fun toSpecialtyListResponse(specialties: List<SpecialtyEntity>): List<SpecialtyResponse>
 
     @Mapping(source = "user", target = "user")
+    @Mapping(source = "professional.id", target = "id")
     fun professionalToProfessionalResponse(
         user: Users,
         professional: Professional,
     ): ProfessionalResponse
-
-    fun professionalResponseToProfessional(professionalResponse: ProfessionalResponse): ProfessionalEntity
 
     @Mapping(source = "name", target = "user.name")
     @Mapping(source = "middleName", target = "user.middleName")

@@ -147,8 +147,34 @@ class ManageProfessionalUseCase(
 
     @Transactional
     override fun activeProfessionalById(id: Int) {
-        val professional = professionalJpaRepository.findById(id)
+        val professional = professionalJpaRepository.findByIdActive(id)
+
+        verifyUserAlreadyExist(professional)
+
         professionalJpaRepository.activeProfessional(professional)
+    }
+
+    private fun verifyUserAlreadyExist(professional: Professional) {
+        if (professionalJpaRepository.existsByUserEmail(
+                professional.user.email,
+            )
+        ) {
+            throw BusinessException("Professional with email already exist! - ${professional.user.email}")
+        }
+
+        if (professionalJpaRepository.existsByUserCpf(
+                professional.user.cpf,
+            )
+        ) {
+            throw BusinessException("Professional with cpf already exist! - ${professional.user.cpf}")
+        }
+
+        if (professionalJpaRepository.existsByUserPhone(
+                professional.user.email,
+            )
+        ) {
+            throw BusinessException("Professional with phone already exist! - ${professional.user.phone}")
+        }
     }
 
     @Transactional
