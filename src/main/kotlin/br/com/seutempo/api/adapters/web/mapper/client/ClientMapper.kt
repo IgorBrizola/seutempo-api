@@ -17,27 +17,9 @@ import org.mapstruct.ReportingPolicy
     componentModel = MappingConstants.ComponentModel.SPRING,
 )
 interface ClientMapper {
-    fun usersToUsersClientRequest(usersEntity: UsersEntity): NewClientRequest
-
     fun usersClientRequestToUsers(newClientRequest: NewClientRequest): Users
 
     fun toUserEntity(user: Users): UsersEntity
-
-    fun clientToUsersClientRequest(clientEntity: ClientEntity): NewClientRequest
-
-    @Mapping(source = "user", target = "user")
-    @Mapping(source = "newUsersClientRequest.surname", target = "surname")
-    @Mapping(source = "newUsersClientRequest.address.cep", target = "cep")
-    @Mapping(source = "newUsersClientRequest.address.neighborhood", target = "neighborhood")
-    @Mapping(source = "newUsersClientRequest.address.street", target = "street")
-    @Mapping(source = "newUsersClientRequest.address.number", target = "number")
-    @Mapping(source = "newUsersClientRequest.address.complement", target = "complement")
-    @Mapping(source = "newUsersClientRequest.address.additionalAddress", target = "additionalAddress")
-    @Mapping(source = "newUsersClientRequest.address.typeAddress", target = "typeAddress")
-    fun usersClientRequestToClient(
-        user: Users,
-        newUsersClientRequest: NewClientRequest,
-    ): Client
 
     @Mapping(source = "user", target = "user")
     fun toClientEntity(client: Client): ClientEntity
