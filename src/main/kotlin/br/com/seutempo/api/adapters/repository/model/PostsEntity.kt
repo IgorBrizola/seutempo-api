@@ -26,12 +26,12 @@ open class PostsEntity {
     @Column(name = "img_url", nullable = false)
     open var imgUrl: String? = null
 
-    @Column(name = "id", nullable = false)
+    @Column(name = "created_at", nullable = false)
     open var createdAt: LocalDateTime? = LocalDateTime.now()
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_professional", nullable = false)
-    open var professional: Int? = null
+    open var professional: ProfessionalEntity? = null
 
     fun isNew() = id == null
 
@@ -45,7 +45,7 @@ open class PostsEntity {
         val thisEffectiveClass =
             if (this is HibernateProxy) this.hibernateLazyInitializer.persistentClass else this.javaClass
         if (thisEffectiveClass != oEffectiveClass) return false
-        other as SpecialtyEntity
+        other as PostsEntity
 
         return id != null && id == other.id
     }
