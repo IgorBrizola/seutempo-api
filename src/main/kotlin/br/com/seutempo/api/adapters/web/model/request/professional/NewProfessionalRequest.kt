@@ -19,7 +19,7 @@ data class NewProfessionalRequest(
     val password: String,
     @Schema(defaultValue = "540.345.455-55")
     val cpf: String,
-    @Schema(defaultValue = "11 95059-2234")
+    @Schema(defaultValue = "+55 (11) 95059-2234")
     val phone: String,
     @Schema(defaultValue = "https://")
     val photoUser: String? = null,
