@@ -5,6 +5,7 @@ import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.users.Users
+import br.com.seutempo.api.core.domain.model.users.request.UpdatePasswordInput
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import org.springframework.stereotype.Repository
 import java.util.Optional
@@ -24,7 +25,10 @@ class ManageUsersRepository(
 
     override fun findByEmailAndActiveIsTrue(email: String): UsersEntity? = usersJpaRepository.findByEmailAndActiveIsTrue(email)
 
-    override fun save(usersEntity: UsersEntity): UsersEntity = usersJpaRepository.save(usersEntity)
+    override fun save(user: Users): Users {
+        val userEntity = usersMapper.toUserEntity(user)
+        return usersMapper.toUsers(usersJpaRepository.save(userEntity))
+    }
 
     override fun findById(id: Int): Users =
         usersMapper.toUsers(
@@ -34,4 +38,15 @@ class ManageUsersRepository(
         )
 
     override fun findAll(): List<Users> = usersMapper.toListUsers(usersJpaRepository.findAll())
+
+    override fun updatePassword(
+        user: Users,
+        passwordInput: UpdatePasswordInput,
+    ): Users {
+        val userEntity = usersMapper.toUserEntity(user)
+
+        userEntity.password = passwordInput.password
+
+        return usersMapper.toUsers(usersJpaRepository.save(userEntity))
+    }
 }
