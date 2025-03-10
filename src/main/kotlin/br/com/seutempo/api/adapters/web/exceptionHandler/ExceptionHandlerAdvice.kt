@@ -1,6 +1,7 @@
 package br.com.seutempo.api.adapters.web.exceptionHandler
 
 import br.com.seutempo.api.core.domain.exceptions.BusinessException
+import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import jakarta.validation.ConstraintViolationException
@@ -54,7 +55,7 @@ class ExceptionHandlerAdvice : ResponseEntityExceptionHandler() {
     }
 
     @ExceptionHandler(ResourceNotFoundException::class)
-    fun handleResourceException(
+    fun handleResourceNotFoundException(
         ex: BusinessException,
         request: WebRequest,
     ): ResponseEntity<Any>? {
@@ -64,7 +65,26 @@ class ExceptionHandlerAdvice : ResponseEntityExceptionHandler() {
         val problem =
             this.createProblem(
                 status,
-                ProblemType.BUSINESS_ERROR,
+                ProblemType.RESOURCE_NOT_FOUND,
+                detail,
+                userMessage,
+            )
+
+        return this.handleExceptionInternal(ex, problem, HttpHeaders(), status, request)
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException::class)
+    fun handleResourceAlreadyExistsException(
+        ex: BusinessException,
+        request: WebRequest,
+    ): ResponseEntity<Any>? {
+        val detail = ex.message ?: DEFAULT_USER_MESSAGE
+        val userMessage = ex.message ?: DEFAULT_USER_MESSAGE
+        val status = HttpStatus.CONFLICT
+        val problem =
+            this.createProblem(
+                status,
+                ProblemType.RESOURCE_ALREADY_EXISTS,
                 detail,
                 userMessage,
             )

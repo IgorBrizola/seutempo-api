@@ -4,8 +4,10 @@ import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
+import br.com.seutempo.api.adapters.web.model.request.user.UpdatePasswordRequest
 import br.com.seutempo.api.adapters.web.model.response.users.UsersResponse
 import br.com.seutempo.api.core.domain.model.users.Users
+import br.com.seutempo.api.core.domain.model.users.request.UpdatePasswordInput
 import org.mapstruct.Mapper
 import org.mapstruct.MappingConstants
 import org.mapstruct.ReportingPolicy
@@ -34,4 +36,9 @@ interface UsersMapper {
     fun toListUsers(usersEntity: List<UsersEntity>): List<Users>
 
     fun toListUsersResponse(users: List<Users>): List<UsersResponse>
+
+    fun toUpdatePasswordInput(
+        id: Int,
+        updatePasswordRequest: UpdatePasswordRequest,
+    ): UpdatePasswordInput
 }
