@@ -23,6 +23,9 @@ open class UsersEntity {
     @Column(name = "name", nullable = false)
     open var name: String? = null
 
+    @Column(name = "middle_name", nullable = false)
+    open var middleName: String? = null
+
     @Column(name = "last_name", nullable = false)
     open var lastName: String? = null
 

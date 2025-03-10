@@ -50,6 +50,9 @@ open class ClientEntity {
     @Column(name = "complement", nullable = false)
     open var complement: String? = null
 
+    @Column(name = "formated_address", nullable = false)
+    open var formatedAddress: String? = null
+
     @Column(name = "additional_address", nullable = false)
     open var additionalAddress: String? = null
 
