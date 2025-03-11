@@ -21,7 +21,7 @@ class RestPostsController(
     private val professionalUseCase: ManageProfessionalInputPort,
 ) : PostsOpenAPI {
     @PostMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     override fun createPost(
         @RequestBody createPostRequest: CreatePostRequest,
     ): PostResponse {
