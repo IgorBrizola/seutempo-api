@@ -1,6 +1,7 @@
 package br.com.seutempo.api.adapters.web.doc
 
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
+import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 
@@ -8,4 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 interface ClientOpenAPI {
     @Operation(summary = "Create new client")
     fun registerUsersClient(newClientRequest: NewClientRequest)
+
+    @Operation(summary = "List all clients")
+    fun listAllClients(): List<ClientResponse>
 }

@@ -22,4 +22,9 @@ class ManageClientRepository(
 
         return clientMapper.toDomain(clientEntity)
     }
+
+    override fun listAllClients(): List<Client> =
+        clientMapper.toListClient(
+            clientJpaRepository.findAll(),
+        )
 }

@@ -6,4 +6,6 @@ interface ManageClientOutputPort {
     fun save(client: Client)
 
     fun findById(id: Int): Client
+
+    fun listAllClients(): List<Client>
 }

@@ -4,6 +4,7 @@ import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.AddressClientResponse
+import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.model.client.Client
 import br.com.seutempo.api.core.domain.model.client.request.CreateClient
 import br.com.seutempo.api.core.domain.model.users.Users
@@ -50,4 +51,22 @@ interface ClientMapper {
     fun toCrate(newClientRequest: NewClientRequest): CreateClient
 
     fun createToClient(createClient: CreateClient): Client
+
+    @Mapping(source = "cep", target = "address.cep")
+    @Mapping(source = "neighborhood", target = "address.neighborhood")
+    @Mapping(source = "street", target = "address.street")
+    @Mapping(source = "number", target = "address.number")
+    @Mapping(source = "complement", target = "address.complement")
+    @Mapping(source = "additionalAddress", target = "address.additionalAddress")
+    @Mapping(source = "typeAddress", target = "address.typeAddress")
+    @Mapping(source = "state", target = "address.state")
+    @Mapping(source = "city", target = "address.city")
+    @Mapping(source = "formatedAddress", target = "address.formatedAddress")
+    @Mapping(source = "latitude", target = "address.latitude")
+    @Mapping(source = "longitude", target = "address.longitude")
+    fun toResponse(client: Client): ClientResponse
+
+    fun toListResponse(clients: List<Client>): List<ClientResponse>
+
+    fun toListClient(clientsEntity: List<ClientEntity>): List<Client>
 }

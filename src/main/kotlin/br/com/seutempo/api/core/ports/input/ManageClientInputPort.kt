@@ -6,4 +6,6 @@ interface ManageClientInputPort {
     fun createUsersClient(client: Client)
 
     fun findClientById(id: Int): Client
+
+    fun listAllClients(): List<Client>
 }
