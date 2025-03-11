@@ -3,10 +3,12 @@ package br.com.seutempo.api.adapters.web.mapper.post
 import br.com.seutempo.api.adapters.repository.model.PostsEntity
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
 import br.com.seutempo.api.adapters.web.model.request.post.CreatePostRequest
+import br.com.seutempo.api.adapters.web.model.request.post.UpdatePostRequest
 import br.com.seutempo.api.adapters.web.model.response.post.PostResponse
 import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
 import br.com.seutempo.api.core.domain.model.posts.Posts
 import br.com.seutempo.api.core.domain.model.posts.request.CreatePost
+import br.com.seutempo.api.core.domain.model.posts.request.UpdatePost
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
 import org.mapstruct.Mapper
@@ -46,4 +48,13 @@ interface PostMapper {
     fun createToPost(createPost: CreatePost): Posts
 
     fun toResponse(posts: Posts): PostResponse
+
+    fun toListPosts(postsEntity: List<PostsEntity>): List<Posts>
+
+    fun toListResponse(posts: List<Posts>): List<PostResponse>
+
+    fun requestToUpdate(
+        id: Int,
+        updatePostRequest: UpdatePostRequest,
+    ): UpdatePost
 }
