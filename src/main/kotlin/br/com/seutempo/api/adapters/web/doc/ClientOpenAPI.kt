@@ -12,4 +12,7 @@ interface ClientOpenAPI {
 
     @Operation(summary = "List all clients")
     fun listAllClients(): List<ClientResponse>
+
+    @Operation(summary = "List client by id")
+    fun listClientById(id: Int): ClientResponse
 }

@@ -8,4 +8,6 @@ interface ManageClientInputPort {
     fun findClientById(id: Int): Client
 
     fun listAllClients(): List<Client>
+
+    fun listClientById(id: Int): Client
 }

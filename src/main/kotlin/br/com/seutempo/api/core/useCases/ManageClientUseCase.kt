@@ -42,4 +42,6 @@ class ManageClientUseCase(
     override fun findClientById(id: Int): Client = clientJpaRepository.findById(id)
 
     override fun listAllClients(): List<Client> = clientJpaRepository.listAllClients()
+
+    override fun listClientById(id: Int): Client = clientJpaRepository.findById(id)
 }
