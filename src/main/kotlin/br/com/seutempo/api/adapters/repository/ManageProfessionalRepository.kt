@@ -94,22 +94,6 @@ class ManageProfessionalRepository(
     override fun save(professional: Professional): Professional =
         professionalMapper.toDomain(professionalJpaRepository.save(professionalMapper.toEntity(professional)))
 
-    override fun disableProfessional(professional: Professional) {
-        val professionalEntity = professionalMapper.toEntity(professional)
-        professionalEntity.user?.active = false
-
-        log.info("Disable professional - ${professional.id} and user - ${professional.user.id}")
-        professionalJpaRepository.save(professionalEntity)
-    }
-
-    override fun activeProfessional(professional: Professional) {
-        val professionalEntity = professionalMapper.toEntity(professional)
-        professionalEntity.user?.active = true
-
-        log.info("Active professional - ${professional.id} and user - ${professional.user.id}")
-        professionalJpaRepository.save(professionalEntity)
-    }
-
     override fun updateProfessional(
         professional: Professional,
         professionalInput: UpdateProfessionalInput,
@@ -129,12 +113,6 @@ class ManageProfessionalRepository(
 
         return professionalMapper.toDomain(professionalEntity)
     }
-
-    override fun existsByUserEmail(email: String): Boolean = professionalJpaRepository.existsByUserEmailAndUserActiveIsTrue(email)
-
-    override fun existsByUserCpf(cpf: String): Boolean = professionalJpaRepository.existsByUserCpfAndUserActiveIsTrue(cpf)
-
-    override fun existsByUserPhone(phone: String): Boolean = professionalJpaRepository.existsByUserPhoneAndUserActiveIsTrue(phone)
 
     override fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity> =
         professionalJpaRepository.saveAll(professionalMapper.toListEntity(professionals))

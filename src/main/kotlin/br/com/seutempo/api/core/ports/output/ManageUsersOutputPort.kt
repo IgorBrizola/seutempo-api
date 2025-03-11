@@ -28,4 +28,10 @@ interface ManageUsersOutputPort {
         user: Users,
         passwordInput: UpdatePasswordInput,
     ): Users
+
+    fun findByIdActive(id: Int): Users
+
+    fun disableUsers(user: Users)
+
+    fun activeUsers(user: Users)
 }

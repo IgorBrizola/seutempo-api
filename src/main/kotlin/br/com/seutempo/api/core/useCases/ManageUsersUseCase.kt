@@ -9,6 +9,7 @@ import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
 import br.com.seutempo.api.util.AppUtil.isValidCpf
 import br.com.seutempo.api.util.AppUtil.isValidPhoneNumber
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ManageUsersUseCase(
@@ -49,4 +50,42 @@ class ManageUsersUseCase(
 //            }
             else -> {}
         }
+
+    @Transactional
+    override fun disableUsersById(id: Int) {
+        val user = usersJpaRepository.findById(id)
+        usersJpaRepository.disableUsers(user)
+    }
+
+    @Transactional
+    override fun activeUsersById(id: Int) {
+        val user = usersJpaRepository.findById(id)
+
+        verifyUserAlreadyExist(user)
+
+        usersJpaRepository.activeUsers(user)
+    }
+
+    private fun verifyUserAlreadyExist(user: Users) {
+        if (usersJpaRepository.existsByEmailAndActiveIsTrue(
+                user.email,
+            )
+        ) {
+            throw BusinessException("Professional with email already exist! - ${user.email}")
+        }
+
+        if (usersJpaRepository.existsByCpfAndActiveIsTrue(
+                user.cpf,
+            )
+        ) {
+            throw BusinessException("Professional with cpf already exist! - ${user.cpf}")
+        }
+
+        if (usersJpaRepository.existsByPhoneAndActiveIsTrue(
+                user.email,
+            )
+        ) {
+            throw BusinessException("Professional with phone already exist! - ${user.phone}")
+        }
+    }
 }

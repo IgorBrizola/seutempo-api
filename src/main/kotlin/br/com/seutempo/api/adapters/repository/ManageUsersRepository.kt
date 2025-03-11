@@ -7,6 +7,7 @@ import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.users.Users
 import br.com.seutempo.api.core.domain.model.users.request.UpdatePasswordInput
 import br.com.seutempo.api.core.ports.output.ManageUsersOutputPort
+import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Repository
 import java.util.Optional
 
@@ -15,6 +16,8 @@ class ManageUsersRepository(
     private val usersJpaRepository: UsersJpaRepository,
     private val usersMapper: UsersMapper,
 ) : ManageUsersOutputPort {
+    private val log = LogManager.getLogger(javaClass)
+
     override fun existsByEmailAndActiveIsTrue(email: String): Boolean = usersJpaRepository.existsByEmailAndActiveIsTrue(email)
 
     override fun existsByCpfAndActiveIsTrue(cpf: String): Boolean = usersJpaRepository.existsByCpfAndActiveIsTrue(cpf)
@@ -39,7 +42,7 @@ class ManageUsersRepository(
             },
         )
 
-    override fun findAll(): List<Users> = usersMapper.toListUsers(usersJpaRepository.findAll())
+    override fun findAll(): List<Users> = usersMapper.toListUsers(usersJpaRepository.findAll().filter { it.active == true })
 
     override fun updatePassword(
         user: Users,
@@ -51,4 +54,27 @@ class ManageUsersRepository(
 
         return usersMapper.toUsers(usersJpaRepository.save(userEntity))
     }
+
+    override fun disableUsers(user: Users) {
+        val userEntity = usersMapper.toUserEntity(user)
+        userEntity.active = false
+
+        log.info("Disable user - ${user.id}")
+        usersJpaRepository.save(userEntity)
+    }
+
+    override fun activeUsers(user: Users) {
+        val userEntity = usersMapper.toUserEntity(user)
+        userEntity.active = true
+
+        log.info("Active user - ${user.id}")
+        usersJpaRepository.save(userEntity)
+    }
+
+    override fun findByIdActive(id: Int): Users =
+        usersMapper.toUsers(
+            usersJpaRepository.findByIdAndActiveIsTrue(id).orElseThrow {
+                throw ResourceNotFoundException("user not found! - $id")
+            },
+        )
 }
