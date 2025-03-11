@@ -8,6 +8,7 @@ import br.com.seutempo.api.adapters.web.model.response.post.PostResponse
 import br.com.seutempo.api.core.ports.input.ManagePostInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -81,4 +82,10 @@ class RestPostsController(
 
         return postMapper.toResponse(postUseCase.updatePost(updatePost))
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    override fun deletePostById(
+        @PathVariable id: Int,
+    ) = postUseCase.deletePostById(id)
 }

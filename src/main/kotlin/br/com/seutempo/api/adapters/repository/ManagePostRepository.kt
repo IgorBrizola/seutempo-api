@@ -33,4 +33,6 @@ class ManagePostRepository(
                 throw ResourceNotFoundException("Post not found! - $id")
             },
         )
+
+    override fun deletePostById(id: Int) = postJpaRepository.deleteById(id)
 }

@@ -22,6 +22,7 @@ class ManagePostUseCase(
 
     override fun listPostById(id: Int): Posts = postJpaRepository.findPostById(id)
 
+    @Transactional
     override fun updatePost(updatePost: UpdatePost): Posts {
         val post = postJpaRepository.findPostById(updatePost.id)
 
@@ -32,5 +33,12 @@ class ManagePostUseCase(
             )
 
         return postJpaRepository.save(postUpdate)
+    }
+
+    @Transactional
+    override fun deletePostById(id: Int) {
+        postJpaRepository.findPostById(id)
+
+        postJpaRepository.deletePostById(id)
     }
 }

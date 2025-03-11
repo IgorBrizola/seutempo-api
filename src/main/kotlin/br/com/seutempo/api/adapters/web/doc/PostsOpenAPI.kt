@@ -25,4 +25,7 @@ interface PostsOpenAPI {
         id: Int,
         updatePostRequest: UpdatePostRequest,
     ): PostResponse
+
+    @Operation(summary = "Delete post by id")
+    fun deletePostById(id: Int)
 }

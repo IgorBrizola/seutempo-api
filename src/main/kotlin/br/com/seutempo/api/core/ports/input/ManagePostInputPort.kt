@@ -14,4 +14,6 @@ interface ManagePostInputPort {
     fun listPostById(id: Int): Posts
 
     fun updatePost(updatePost: UpdatePost): Posts
+
+    fun deletePostById(id: Int)
 }
