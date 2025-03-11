@@ -64,6 +64,15 @@ CREATE TABLE users (
       FOREIGN KEY (id_professional) REFERENCES professional(id),
       FOREIGN KEY (id_specialty) REFERENCES specialty(id));
 
+      CREATE TABLE posts (
+          id INT PRIMARY KEY IDENTITY,
+          title VARCHAR(255) NOT NULL,
+          img_url VARCHAR(MAX),
+          created_at DATETIME2,
+          id_professional INT NOT NULL,
+          FOREIGN KEY (id_professional) REFERENCES professional(id)
+      )
+
 
     CREATE SPATIAL INDEX idx_professional_location
     ON professional(location);
