@@ -3,10 +3,12 @@ package br.com.seutempo.api.adapters.web
 import br.com.seutempo.api.adapters.web.doc.ClientOpenAPI
 import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
+import br.com.seutempo.api.adapters.web.model.request.client.UpdateClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -47,4 +49,15 @@ class RestClientController(
         clientMapper.toResponse(
             clientUseCase.listClientById(id),
         )
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    override fun updateClient(
+        @PathVariable id: Int,
+        @RequestBody updateClientRequest: UpdateClientRequest,
+    ): ClientResponse {
+        val updateClient = clientMapper.toUpdateClient(id, updateClientRequest)
+
+        return clientMapper.toResponse(clientUseCase.updateClient(updateClient))
+    }
 }

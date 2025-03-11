@@ -3,10 +3,12 @@ package br.com.seutempo.api.adapters.web.mapper.client
 import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.UsersEntity
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
+import br.com.seutempo.api.adapters.web.model.request.client.UpdateClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.AddressClientResponse
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.model.client.Client
 import br.com.seutempo.api.core.domain.model.client.request.CreateClient
+import br.com.seutempo.api.core.domain.model.client.request.UpdateClient
 import br.com.seutempo.api.core.domain.model.users.Users
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -69,4 +71,9 @@ interface ClientMapper {
     fun toListResponse(clients: List<Client>): List<ClientResponse>
 
     fun toListClient(clientsEntity: List<ClientEntity>): List<Client>
+
+    fun toUpdateClient(
+        id: Int,
+        updateClientRequest: UpdateClientRequest,
+    ): UpdateClient
 }

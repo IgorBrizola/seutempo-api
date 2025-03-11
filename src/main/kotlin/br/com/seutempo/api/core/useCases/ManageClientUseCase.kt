@@ -1,10 +1,13 @@
 package br.com.seutempo.api.core.useCases
 
+import br.com.seutempo.api.core.domain.exceptions.BusinessException
 import br.com.seutempo.api.core.domain.model.client.Client
+import br.com.seutempo.api.core.domain.model.client.request.UpdateClient
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageGoogleMapsInputPort
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
+import br.com.seutempo.api.util.AppUtil.isValidPhoneNumber
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -44,4 +47,27 @@ class ManageClientUseCase(
     override fun listAllClients(): List<Client> = clientJpaRepository.listAllClients()
 
     override fun listClientById(id: Int): Client = clientJpaRepository.findById(id)
+
+    @Transactional
+    override fun updateClient(updateClient: UpdateClient): Client {
+        val client = clientJpaRepository.findById(updateClient.id)
+
+        if (updateClient.phone != null &&
+            !isValidPhoneNumber(updateClient.phone)
+        ) {
+            throw BusinessException("Number phone is invalid! - use format +xx (xx) xxxxx-xxxx")
+        }
+
+        val clientUpdated =
+            client.copy(
+                surname = updateClient.surname ?: client.surname,
+                user =
+                    client.user.copy(
+                        photoUser = updateClient.photoUser ?: client.user.photoUser,
+                        phone = updateClient.phone ?: client.user.phone,
+                    ),
+            )
+
+        return clientJpaRepository.save(clientUpdated)
+    }
 }

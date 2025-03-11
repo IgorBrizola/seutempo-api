@@ -1,6 +1,7 @@
 package br.com.seutempo.api.core.ports.input
 
 import br.com.seutempo.api.core.domain.model.client.Client
+import br.com.seutempo.api.core.domain.model.client.request.UpdateClient
 
 interface ManageClientInputPort {
     fun createUsersClient(client: Client)
@@ -10,4 +11,6 @@ interface ManageClientInputPort {
     fun listAllClients(): List<Client>
 
     fun listClientById(id: Int): Client
+
+    fun updateClient(updateClient: UpdateClient): Client
 }
