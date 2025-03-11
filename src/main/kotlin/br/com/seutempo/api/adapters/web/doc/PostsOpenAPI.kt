@@ -1,6 +1,7 @@
 package br.com.seutempo.api.adapters.web.doc
 
 import br.com.seutempo.api.adapters.web.model.request.post.CreatePostRequest
+import br.com.seutempo.api.adapters.web.model.request.post.UpdatePostRequest
 import br.com.seutempo.api.adapters.web.model.response.post.PostResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -18,4 +19,10 @@ interface PostsOpenAPI {
 
     @Operation(summary = "List posts by id")
     fun listPostById(id: Int): PostResponse
+
+    @Operation(summary = "Update post by id")
+    fun updatePostById(
+        id: Int,
+        updatePostRequest: UpdatePostRequest,
+    ): PostResponse
 }

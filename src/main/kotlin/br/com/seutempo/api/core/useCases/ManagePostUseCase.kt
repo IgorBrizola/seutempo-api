@@ -1,6 +1,7 @@
 package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.core.domain.model.posts.Posts
+import br.com.seutempo.api.core.domain.model.posts.request.UpdatePost
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.ports.input.ManagePostInputPort
 import br.com.seutempo.api.core.ports.output.ManagePostOutputPort
@@ -20,4 +21,16 @@ class ManagePostUseCase(
         postJpaRepository.findPostsByProfessionalId(professional.id!!)
 
     override fun listPostById(id: Int): Posts = postJpaRepository.findPostById(id)
+
+    override fun updatePost(updatePost: UpdatePost): Posts {
+        val post = postJpaRepository.findPostById(updatePost.id)
+
+        val postUpdate =
+            post.copy(
+                title = updatePost.title ?: post.title,
+                imgUrl = updatePost.imgUrl ?: post.imgUrl,
+            )
+
+        return postJpaRepository.save(postUpdate)
+    }
 }
