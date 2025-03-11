@@ -14,5 +14,8 @@ interface PostsOpenAPI {
     fun listAllPosts(): List<PostResponse>
 
     @Operation(summary = "List posts by professional id")
-    fun listPostsByProfessional(id: Int): List<PostResponse>
+    fun listPostsByProfessionalId(id: Int): List<PostResponse>
+
+    @Operation(summary = "List posts by id")
+    fun listPostById(id: Int): PostResponse
 }

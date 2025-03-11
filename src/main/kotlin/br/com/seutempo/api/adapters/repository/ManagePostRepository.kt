@@ -2,6 +2,7 @@ package br.com.seutempo.api.adapters.repository
 
 import br.com.seutempo.api.adapters.repository.jpa.post.PostJpaRepository
 import br.com.seutempo.api.adapters.web.mapper.post.PostMapper
+import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.posts.Posts
 import br.com.seutempo.api.core.ports.output.ManagePostOutputPort
 import org.springframework.stereotype.Repository
@@ -24,5 +25,12 @@ class ManagePostRepository(
     override fun findPostsByProfessionalId(id: Int): List<Posts> =
         postMapper.toListPosts(
             postJpaRepository.findPostsByProfessionalId(id),
+        )
+
+    override fun findPostById(id: Int): Posts =
+        postMapper.toDomain(
+            postJpaRepository.findById(id).orElseThrow {
+                throw ResourceNotFoundException("Post not found! - $id")
+            },
         )
 }

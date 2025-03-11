@@ -48,9 +48,9 @@ class RestPostsController(
             postUseCase.listAllPosts(),
         )
 
-    @GetMapping("{id}")
+    @GetMapping("professional/{id}")
     @ResponseStatus(HttpStatus.OK)
-    override fun listPostsByProfessional(
+    override fun listPostsByProfessionalId(
         @PathVariable id: Int,
     ): List<PostResponse> {
         val professional = professionalUseCase.findProfessionalById(id)
@@ -59,4 +59,11 @@ class RestPostsController(
             postUseCase.listPostsByProfessionalId(professional),
         )
     }
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    override fun listPostById(id: Int): PostResponse =
+        postMapper.toResponse(
+            postUseCase.listPostById(id),
+        )
 }

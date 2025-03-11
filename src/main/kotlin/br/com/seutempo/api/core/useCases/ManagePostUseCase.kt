@@ -18,4 +18,6 @@ class ManagePostUseCase(
 
     override fun listPostsByProfessionalId(professional: Professional): List<Posts> =
         postJpaRepository.findPostsByProfessionalId(professional.id!!)
+
+    override fun listPostById(id: Int): Posts = postJpaRepository.findPostById(id)
 }

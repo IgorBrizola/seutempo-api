@@ -8,4 +8,6 @@ interface ManagePostOutputPort {
     fun listAllPosts(): List<Posts>
 
     fun findPostsByProfessionalId(id: Int): List<Posts>
+
+    fun findPostById(id: Int): Posts
 }

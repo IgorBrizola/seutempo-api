@@ -9,4 +9,6 @@ interface ManagePostInputPort {
     fun listAllPosts(): List<Posts>
 
     fun listPostsByProfessionalId(professional: Professional): List<Posts>
+
+    fun listPostById(id: Int): Posts
 }
