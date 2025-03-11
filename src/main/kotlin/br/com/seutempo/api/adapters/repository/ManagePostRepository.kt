@@ -15,4 +15,9 @@ class ManagePostRepository(
         val postEntity = postMapper.toEntity(posts)
         return postMapper.toDomain(postJpaRepository.save(postEntity))
     }
+
+    override fun listAllPosts(): List<Posts> =
+        postMapper.toListPosts(
+            postJpaRepository.findAll(),
+        )
 }

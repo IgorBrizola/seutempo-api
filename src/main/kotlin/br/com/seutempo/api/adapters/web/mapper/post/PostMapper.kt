@@ -46,4 +46,8 @@ interface PostMapper {
     fun createToPost(createPost: CreatePost): Posts
 
     fun toResponse(posts: Posts): PostResponse
+
+    fun toListPosts(postsEntity: List<PostsEntity>): List<Posts>
+
+    fun toListResponse(posts: List<Posts>): List<PostResponse>
 }

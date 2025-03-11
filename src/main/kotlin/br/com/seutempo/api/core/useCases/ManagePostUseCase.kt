@@ -12,4 +12,6 @@ class ManagePostUseCase(
 ) : ManagePostInputPort {
     @Transactional
     override fun createPost(post: Posts): Posts = postJpaRepository.save(post)
+
+    override fun listAllPosts(): List<Posts> = postJpaRepository.listAllPosts()
 }

@@ -7,6 +7,7 @@ import br.com.seutempo.api.adapters.web.model.response.post.PostResponse
 import br.com.seutempo.api.core.ports.input.ManagePostInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -38,4 +39,11 @@ class RestPostsController(
 
         return postMapper.toResponse(postUseCase.createPost(post))
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    override fun listAllPosts(): List<PostResponse> =
+        postMapper.toListResponse(
+            postUseCase.listAllPosts(),
+        )
 }
