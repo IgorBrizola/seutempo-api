@@ -20,4 +20,9 @@ class ManagePostRepository(
         postMapper.toListPosts(
             postJpaRepository.findAll(),
         )
+
+    override fun findPostsByProfessionalId(id: Int): List<Posts> =
+        postMapper.toListPosts(
+            postJpaRepository.findPostsByProfessionalId(id),
+        )
 }

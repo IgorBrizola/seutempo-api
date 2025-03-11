@@ -8,6 +8,7 @@ import br.com.seutempo.api.core.ports.input.ManagePostInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -46,4 +47,16 @@ class RestPostsController(
         postMapper.toListResponse(
             postUseCase.listAllPosts(),
         )
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    override fun listPostsByProfessional(
+        @PathVariable id: Int,
+    ): List<PostResponse> {
+        val professional = professionalUseCase.findProfessionalById(id)
+
+        return postMapper.toListResponse(
+            postUseCase.listPostsByProfessionalId(professional),
+        )
+    }
 }
