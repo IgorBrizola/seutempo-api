@@ -6,6 +6,6 @@ import java.time.LocalDateTime
 data class CreatePost(
     val title: String,
     val imgUrl: String,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime,
     val professional: Professional,
 )

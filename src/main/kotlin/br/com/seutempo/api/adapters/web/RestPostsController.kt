@@ -8,6 +8,7 @@ import br.com.seutempo.api.core.ports.input.ManagePostInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
@@ -21,10 +22,12 @@ class RestPostsController(
 ) : PostsOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    override fun createPost(createPostRequest: CreatePostRequest): PostResponse {
-        val createPost = postMapper.requestToCreate(createPostRequest)
-
+    override fun createPost(
+        @RequestBody createPostRequest: CreatePostRequest,
+    ): PostResponse {
         val professional = professionalUseCase.findProfessionalById(createPostRequest.idProfessional)
+
+        val createPost = postMapper.requestToCreate(createPostRequest, professional)
 
         val postWithProfessional =
             createPost.copy(

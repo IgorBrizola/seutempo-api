@@ -66,7 +66,7 @@ CREATE TABLE users (
 
       CREATE TABLE posts (
           id INT PRIMARY KEY IDENTITY,
-          title INT NOT NULL,
+          title VARCHAR(255) NOT NULL,
           img_url VARCHAR(MAX),
           created_at DATETIME2,
           id_professional INT NOT NULL,

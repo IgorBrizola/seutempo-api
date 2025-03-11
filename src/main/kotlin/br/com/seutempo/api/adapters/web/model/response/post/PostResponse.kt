@@ -1,5 +1,6 @@
 package br.com.seutempo.api.adapters.web.model.response.post
 
+import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
 import java.time.LocalDateTime
 
 data class PostResponse(
@@ -7,5 +8,5 @@ data class PostResponse(
     val title: String,
     val imgUrl: String,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val idProfessional: Int,
+    val professional: ProfessionalResponse,
 )
