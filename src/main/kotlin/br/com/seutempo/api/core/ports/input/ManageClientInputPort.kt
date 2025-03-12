@@ -1,6 +1,7 @@
 package br.com.seutempo.api.core.ports.input
 
 import br.com.seutempo.api.core.domain.model.client.Client
+import br.com.seutempo.api.core.domain.model.client.request.UpdateAddressClient
 import br.com.seutempo.api.core.domain.model.client.request.UpdateClient
 
 interface ManageClientInputPort {
@@ -13,4 +14,6 @@ interface ManageClientInputPort {
     fun listClientById(id: Int): Client
 
     fun updateClient(updateClient: UpdateClient): Client
+
+    fun updateAddressClient(updateAddressClient: UpdateAddressClient): Client
 }

@@ -3,6 +3,7 @@ package br.com.seutempo.api.adapters.web
 import br.com.seutempo.api.adapters.web.doc.ClientOpenAPI
 import br.com.seutempo.api.adapters.web.mapper.client.ClientMapper
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
+import br.com.seutempo.api.adapters.web.model.request.client.UpdateAddressClientRequest
 import br.com.seutempo.api.adapters.web.model.request.client.UpdateClientRequest
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
@@ -59,5 +60,16 @@ class RestClientController(
         val updateClient = clientMapper.toUpdateClient(id, updateClientRequest)
 
         return clientMapper.toResponse(clientUseCase.updateClient(updateClient))
+    }
+
+    @PatchMapping("address/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    override fun updateAddress(
+        @PathVariable id: Int,
+        @RequestBody updateAddressClientRequest: UpdateAddressClientRequest,
+    ): ClientResponse {
+        val updateAddress = clientMapper.toUpdateAddressClient(id, updateAddressClientRequest)
+
+        return clientMapper.toResponse(clientUseCase.updateAddressClient(updateAddress))
     }
 }

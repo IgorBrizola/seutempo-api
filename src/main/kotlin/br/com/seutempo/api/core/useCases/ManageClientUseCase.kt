@@ -2,12 +2,14 @@ package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.core.domain.exceptions.BusinessException
 import br.com.seutempo.api.core.domain.model.client.Client
+import br.com.seutempo.api.core.domain.model.client.request.UpdateAddressClient
 import br.com.seutempo.api.core.domain.model.client.request.UpdateClient
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageGoogleMapsInputPort
 import br.com.seutempo.api.core.ports.input.ManageUsersInputPort
 import br.com.seutempo.api.core.ports.output.ManageClientOutputPort
 import br.com.seutempo.api.util.AppUtil.isValidPhoneNumber
+import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,6 +19,8 @@ class ManageClientUseCase(
     private val manageGoogleMapsUseCase: ManageGoogleMapsInputPort,
     private val manageUsersUseCase: ManageUsersInputPort,
 ) : ManageClientInputPort {
+    private val log = LogManager.getLogger(javaClass)
+
     @Transactional
     override fun createUsersClient(client: Client) {
         manageUsersUseCase.verifyIfUserIsValid(client.user)
@@ -36,7 +40,7 @@ class ManageClientUseCase(
                 location = geolocation.location,
                 formatedAddress = geolocation.formatedAddress,
                 city = geolocation.city,
-                state = geolocation.city,
+                state = geolocation.state,
             )
 
         return buildClient
@@ -69,5 +73,33 @@ class ManageClientUseCase(
             )
 
         return clientJpaRepository.save(clientUpdated)
+    }
+
+    @Transactional
+    override fun updateAddressClient(updateAddressClient: UpdateAddressClient): Client {
+        val client = clientJpaRepository.findById(updateAddressClient.id)
+
+        val geolocation = manageGoogleMapsUseCase.getInfoLocations(updateAddressClient.cep)
+
+        val updateAddress =
+            client.copy(
+                cep = updateAddressClient.cep,
+                number = updateAddressClient.number,
+                complement = updateAddressClient.complement ?: client.complement,
+                additionalAddress = updateAddressClient.additionalAddress ?: client.additionalAddress,
+                typeAddress = updateAddressClient.typeAddress,
+                street = updateAddressClient.street,
+                neighborhood = updateAddressClient.neighborhood,
+                formatedAddress = geolocation.formatedAddress,
+                state = geolocation.state,
+                city = geolocation.city,
+                latitude = geolocation.latitude,
+                longitude = geolocation.longitude,
+                location = geolocation.location,
+            )
+
+        log.info("Client Address update - $updateAddress")
+
+        return clientJpaRepository.save(updateAddress)
     }
 }

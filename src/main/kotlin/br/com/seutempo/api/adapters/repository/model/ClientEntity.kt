@@ -47,10 +47,10 @@ open class ClientEntity {
     @Column(name = "number", nullable = false)
     open var number: Int? = null
 
-    @Column(name = "complement", nullable = false)
+    @Column(name = "complement", nullable = true)
     open var complement: String? = null
 
-    @Column(name = "formated_address", nullable = false)
+    @Column(name = "formated_address", nullable = true)
     open var formatedAddress: String? = null
 
     @Column(name = "additional_address", nullable = true)
