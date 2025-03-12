@@ -12,9 +12,9 @@ class ManageClientRepository(
     private val clientJpaRepository: ClientJpaRepository,
     private val clientMapper: ClientMapper,
 ) : ManageClientOutputPort {
-    override fun save(client: Client) {
+    override fun save(client: Client): Client {
         val clientEntity = clientMapper.toClientEntity(client)
-        clientJpaRepository.save(clientEntity)
+        return clientMapper.toDomain(clientJpaRepository.save(clientEntity))
     }
 
     override fun findById(id: Int): Client {
@@ -22,4 +22,9 @@ class ManageClientRepository(
 
         return clientMapper.toDomain(clientEntity)
     }
+
+    override fun listAllClients(): List<Client> =
+        clientMapper.toListClient(
+            clientJpaRepository.findAll(),
+        )
 }

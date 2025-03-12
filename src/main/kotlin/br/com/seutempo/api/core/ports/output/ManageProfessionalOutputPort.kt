@@ -31,18 +31,8 @@ interface ManageProfessionalOutputPort {
 
     fun saveAll(professionals: MutableList<Professional>): List<ProfessionalEntity>
 
-    fun disableProfessional(professional: Professional)
-
-    fun activeProfessional(professional: Professional)
-
     fun updateProfessional(
         professional: Professional,
         professionalInput: UpdateProfessionalInput,
     ): Professional
-
-    fun existsByUserEmail(email: String): Boolean
-
-    fun existsByUserCpf(cpf: String): Boolean
-
-    fun existsByUserPhone(phone: String): Boolean
 }

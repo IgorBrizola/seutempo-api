@@ -11,4 +11,8 @@ interface ManageUsersInputPort {
     fun updatePassword(passwordInput: UpdatePasswordInput)
 
     fun verifyIfUserIsValid(user: Users)
+
+    fun disableUsersById(id: Int)
+
+    fun activeUsersById(id: Int)
 }

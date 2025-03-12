@@ -20,7 +20,7 @@ data class NewClientRequest(
     val photoUser: String? = null,
     @Schema(defaultValue = "477.444.333-23")
     val cpf: String,
-    @Schema(defaultValue = "11 95982-5593")
+    @Schema(defaultValue = "+55 (11) 93982-5593")
     val phone: String,
     @Schema(defaultValue = "2006-03-09")
     val dateAnniversary: LocalDate,

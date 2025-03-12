@@ -15,4 +15,10 @@ interface UsersOpenAPI {
         id: Int,
         updatePasswordRequest: UpdatePasswordRequest,
     )
+
+    @Operation(summary = "Disable user by id")
+    fun disableUserById(id: Int)
+
+    @Operation(summary = "Active user by id")
+    fun activeUserById(id: Int)
 }
