@@ -7,5 +7,5 @@ interface ManageCategoryInputPort {
 
     fun findById(id: Int): Category
 
-    fun listAllCategory(): List<Category>
+    fun listAllCategory(name: String?): List<Category>
 }

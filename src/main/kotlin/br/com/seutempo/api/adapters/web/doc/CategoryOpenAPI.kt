@@ -11,7 +11,7 @@ interface CategoryOpenAPI {
     fun createCategory(newCategoryRequest: NewCategoryRequest)
 
     @Operation(summary = "List all category")
-    fun listAllCategory(): List<CategoryResponse>
+    fun listAllCategory(name: String?): List<CategoryResponse>
 
     @Operation(summary = "Find category by id")
     fun findCategoryById(id: Int): CategoryResponse
