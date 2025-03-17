@@ -3,8 +3,11 @@ package br.com.seutempo.api.adapters.web
 import br.com.seutempo.api.adapters.web.doc.CategoryOpenAPI
 import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
+import br.com.seutempo.api.adapters.web.model.response.category.CategoryResponse
 import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -26,4 +29,15 @@ class RestCategoryController(
 
         manageCategoryUseCase.createNewCategory(category)
     }
+
+    @GetMapping
+    override fun listAllCategory(): List<CategoryResponse> = categoryMapper.toListResponse(manageCategoryUseCase.listAllCategory())
+
+    @GetMapping("{id}")
+    override fun findCategoryById(
+        @PathVariable id: Int,
+    ): CategoryResponse =
+        categoryMapper.toResponse(
+            manageCategoryUseCase.findById(id),
+        )
 }

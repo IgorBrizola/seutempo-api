@@ -9,4 +9,6 @@ interface ManageCategoryOutputPort {
     fun save(category: Category): CategoryEntity
 
     fun findById(id: Int): Category
+
+    fun listAllCategory(): List<Category>
 }

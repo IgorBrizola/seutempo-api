@@ -26,4 +26,9 @@ class ManageCategoryRepository(
                 throw ResourceNotFoundException("Category not found! - $id")
             },
         )
+
+    override fun listAllCategory(): List<Category> =
+        categoryMapper.toListDomain(
+            categoryJpaRepository.findAll(),
+        )
 }

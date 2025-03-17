@@ -2,6 +2,7 @@ package br.com.seutempo.api.adapters.web.mapper.category
 
 import br.com.seutempo.api.adapters.repository.model.CategoryEntity
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
+import br.com.seutempo.api.adapters.web.model.response.category.CategoryResponse
 import br.com.seutempo.api.core.domain.model.category.Category
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -20,9 +21,15 @@ interface CategoryMapper {
 
     fun toCategoryEntity(category: Category): CategoryEntity
 
+    fun toListDomain(categoryEntity: List<CategoryEntity>): List<Category>
+
     @Mapping(source = "id", target = "categoryId")
     fun toDomain(categoryEntity: CategoryEntity): Category
 
     @Mapping(source = "newCategoryRequest.name", target = "nameCategory")
     fun categoryNewRequestToCategory(newCategoryRequest: NewCategoryRequest): CategoryEntity
+
+    fun toResponse(category: Category): CategoryResponse
+
+    fun toListResponse(category: List<Category>): List<CategoryResponse>
 }

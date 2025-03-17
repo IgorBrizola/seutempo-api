@@ -6,4 +6,6 @@ interface ManageCategoryInputPort {
     fun createNewCategory(newCategoryRequest: Category)
 
     fun findById(id: Int): Category
+
+    fun listAllCategory(): List<Category>
 }

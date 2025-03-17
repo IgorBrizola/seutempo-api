@@ -23,4 +23,6 @@ class ManageCategoryUseCase(
     }
 
     override fun findById(id: Int): Category = categoryJpaRepository.findById(id)
+
+    override fun listAllCategory(): List<Category> = categoryJpaRepository.listAllCategory()
 }
