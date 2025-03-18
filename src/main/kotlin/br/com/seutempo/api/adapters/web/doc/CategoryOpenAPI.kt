@@ -22,4 +22,7 @@ interface CategoryOpenAPI {
         categoryId: Int,
         updateCategoryRequest: UpdateCategoryRequest,
     ): CategoryResponse
+
+    @Operation(summary = "Delete category by id", method = "@GetMapping")
+    fun deleteByCategoryById(id: Int)
 }

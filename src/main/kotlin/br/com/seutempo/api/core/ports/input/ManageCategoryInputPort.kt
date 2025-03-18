@@ -11,4 +11,6 @@ interface ManageCategoryInputPort {
     fun listAllCategory(name: String?): List<Category>
 
     fun updateCategory(updateCategory: UpdateCategory): Category
+
+    fun deleteCategoryById(id: Int)
 }

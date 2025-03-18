@@ -34,6 +34,8 @@ class ManageCategoryRepository(
         return categoryMapper.toListDomain(categoryJpaRepository.findAll(spec))
     }
 
+    override fun deleteById(id: Int) = categoryJpaRepository.deleteById(id)
+
     private fun buildSpecFilter(name: String?): Specification<CategoryEntity> {
         var spec: Specification<CategoryEntity> = Specification.where(null)
 

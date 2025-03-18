@@ -7,6 +7,7 @@ import br.com.seutempo.api.adapters.web.model.request.category.UpdateCategoryReq
 import br.com.seutempo.api.adapters.web.model.response.category.CategoryResponse
 import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -55,4 +56,10 @@ class RestCategoryController(
 
         return categoryMapper.toResponse(manageCategoryUseCase.updateCategory(updateCategory))
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    override fun deleteByCategoryById(
+        @PathVariable id: Int,
+    ) = manageCategoryUseCase.deleteCategoryById(id)
 }

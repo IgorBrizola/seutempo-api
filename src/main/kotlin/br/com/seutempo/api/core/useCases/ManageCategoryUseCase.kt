@@ -27,6 +27,7 @@ class ManageCategoryUseCase(
 
     override fun listAllCategory(name: String?): List<Category> = categoryJpaRepository.listAllCategory(name)
 
+    @Transactional
     override fun updateCategory(updateCategory: UpdateCategory): Category {
         val category = categoryJpaRepository.findById(updateCategory.categoryId)
 
@@ -36,5 +37,11 @@ class ManageCategoryUseCase(
             )
 
         return categoryJpaRepository.save(categoryUpdated)
+    }
+
+    @Transactional
+    override fun deleteCategoryById(id: Int) {
+        findById(id)
+        categoryJpaRepository.deleteById(id)
     }
 }

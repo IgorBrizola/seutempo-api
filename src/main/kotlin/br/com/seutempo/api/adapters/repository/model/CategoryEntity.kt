@@ -1,10 +1,12 @@
 package br.com.seutempo.api.adapters.repository.model
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.proxy.HibernateProxy
 
@@ -18,6 +20,9 @@ open class CategoryEntity {
 
     @Column(name = "name_category", nullable = false)
     open var nameCategory: String? = null
+
+    @OneToMany(mappedBy = "categoryEntity", cascade = [CascadeType.ALL])
+    open var specialty: MutableList<SpecialtyEntity>? = mutableListOf()
 
     fun isNew() = id == null
 

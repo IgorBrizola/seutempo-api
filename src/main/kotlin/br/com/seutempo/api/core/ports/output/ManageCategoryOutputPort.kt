@@ -10,4 +10,6 @@ interface ManageCategoryOutputPort {
     fun findById(id: Int): Category
 
     fun listAllCategory(name: String?): List<Category>
+
+    fun deleteById(id: Int)
 }
