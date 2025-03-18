@@ -1,6 +1,7 @@
 package br.com.seutempo.api.adapters.web.doc
 
 import br.com.seutempo.api.adapters.web.model.request.category.NewCategoryRequest
+import br.com.seutempo.api.adapters.web.model.request.category.UpdateCategoryRequest
 import br.com.seutempo.api.adapters.web.model.response.category.CategoryResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -15,4 +16,10 @@ interface CategoryOpenAPI {
 
     @Operation(summary = "Find category by id")
     fun findCategoryById(id: Int): CategoryResponse
+
+    @Operation(summary = "Update category by id")
+    fun updateCategoryById(
+        categoryId: Int,
+        updateCategoryRequest: UpdateCategoryRequest,
+    ): CategoryResponse
 }
