@@ -1,4 +1,4 @@
-package br.com.seutempo.api.core.domain.model
+package br.com.seutempo.api.core.domain.model.review
 
 import br.com.seutempo.api.adapters.repository.model.ClientEntity
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
