@@ -2,6 +2,7 @@ package br.com.seutempo.api.core.useCases
 
 import br.com.seutempo.api.core.domain.exceptions.ResourceAlreadyExistsException
 import br.com.seutempo.api.core.domain.model.category.Category
+import br.com.seutempo.api.core.domain.model.category.request.UpdateCategory
 import br.com.seutempo.api.core.ports.input.ManageCategoryInputPort
 import br.com.seutempo.api.core.ports.output.ManageCategoryOutputPort
 import org.springframework.stereotype.Service
@@ -23,4 +24,24 @@ class ManageCategoryUseCase(
     }
 
     override fun findById(id: Int): Category = categoryJpaRepository.findById(id)
+
+    override fun listAllCategory(name: String?): List<Category> = categoryJpaRepository.listAllCategory(name)
+
+    @Transactional
+    override fun updateCategory(updateCategory: UpdateCategory): Category {
+        val category = categoryJpaRepository.findById(updateCategory.categoryId)
+
+        val categoryUpdated =
+            category.copy(
+                nameCategory = updateCategory.nameCategory,
+            )
+
+        return categoryJpaRepository.save(categoryUpdated)
+    }
+
+    @Transactional
+    override fun deleteCategoryById(id: Int) {
+        findById(id)
+        categoryJpaRepository.deleteById(id)
+    }
 }

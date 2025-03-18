@@ -2,7 +2,6 @@ package br.com.seutempo.api.adapters.repository
 
 import br.com.seutempo.api.adapters.repository.jpa.specialty.SpecialtyJpaRepository
 import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
-import br.com.seutempo.api.adapters.web.mapper.category.CategoryMapper
 import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.core.domain.exceptions.ResourceNotFoundException
 import br.com.seutempo.api.core.domain.model.specialty.Specialty
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Repository
 class ManageSpecialtyRepository(
     private val specialtyJpaRepository: SpecialtyJpaRepository,
     private val specialtyMapper: SpecialtyMapper,
-    private val categoryMapper: CategoryMapper,
 ) : ManageSpecialtyOutputPort {
     override fun existsByNameSpecialtyAndCategoryEntityId(
         nameSpecialty: String,
