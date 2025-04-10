@@ -8,7 +8,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
-import java.time.LocalDateTime
 
 @Entity
 @Table(name = "reviews")
@@ -23,14 +22,11 @@ open class ReviewEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_professional", nullable = false)
-    open var idProfessional: ProfessionalEntity? = null
+    open var professional: ProfessionalEntity? = null
 
     @Column(name = "rating", nullable = false)
     open var rating: Double? = null
 
     @Column(name = "comment", nullable = true)
     open var comment: String? = null
-
-    @Column(name = "created_at", nullable = true)
-    open var createdAt: LocalDateTime? = null
 }

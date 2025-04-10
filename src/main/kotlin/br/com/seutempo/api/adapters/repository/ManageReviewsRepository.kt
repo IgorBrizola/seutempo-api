@@ -2,6 +2,7 @@ package br.com.seutempo.api.adapters.repository
 
 import br.com.seutempo.api.adapters.repository.jpa.ReviewsJpaRepository
 import br.com.seutempo.api.adapters.web.mapper.review.ReviewMapper
+import br.com.seutempo.api.core.domain.model.review.Reviews
 import br.com.seutempo.api.core.ports.output.ManageReviewsOutputPort
 import org.springframework.stereotype.Repository
 
@@ -9,4 +10,9 @@ import org.springframework.stereotype.Repository
 class ManageReviewsRepository(
     private val reviewsJpaRepository: ReviewsJpaRepository,
     private val reviewMapper: ReviewMapper,
-) : ManageReviewsOutputPort
+) : ManageReviewsOutputPort {
+    override fun save(reviews: Reviews): Reviews {
+        val reviewEntity = reviewMapper.toEntity(reviews)
+        return reviewMapper.toDomain(reviewsJpaRepository.save(reviewEntity))
+    }
+}

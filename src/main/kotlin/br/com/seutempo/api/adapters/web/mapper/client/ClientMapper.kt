@@ -42,7 +42,6 @@ interface ClientMapper {
     @Mapping(source = "cpf", target = "user.cpf")
     @Mapping(source = "phone", target = "user.phone")
     @Mapping(source = "typeUser", target = "user.typeUser")
-    @Mapping(source = "createdAt", target = "user.createdAt")
     @Mapping(source = "active", target = "user.active")
     @Mapping(source = "dateAnniversary", target = "user.dateAnniversary")
     @Mapping(source = "address.cep", target = "cep")

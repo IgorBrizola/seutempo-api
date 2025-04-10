@@ -70,7 +70,6 @@ interface ProfessionalMapper {
     @Mapping(source = "phone", target = "user.phone")
     @Mapping(source = "photoUser", target = "user.photoUser")
     @Mapping(source = "dateAnniversary", target = "user.dateAnniversary")
-    @Mapping(source = "createdAt", target = "user.createdAt")
     @Mapping(source = "typeUser", target = "user.typeUser")
     @Mapping(source = "active", target = "user.active")
     fun toCreate(newUsersProfessionalRequest: NewProfessionalRequest): CreateProfessional
