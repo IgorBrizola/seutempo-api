@@ -1,6 +1,7 @@
 package br.com.seutempo.api.adapters.web.doc
 
 import br.com.seutempo.api.adapters.web.model.request.review.CreateReviewRequest
+import br.com.seutempo.api.adapters.web.model.response.review.RatingResponse
 import br.com.seutempo.api.adapters.web.model.response.review.ReviewResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 
@@ -9,4 +10,6 @@ interface ReviewOpenAPI {
     fun createReview(createReviewRequest: CreateReviewRequest): ReviewResponse
 
     fun findReviewByProfessionalId(id: Int): List<ReviewResponse>
+
+    fun findRatingByProfessionalId(id: Int): RatingResponse
 }

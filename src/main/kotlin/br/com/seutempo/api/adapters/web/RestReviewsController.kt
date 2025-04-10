@@ -3,6 +3,7 @@ package br.com.seutempo.api.adapters.web
 import br.com.seutempo.api.adapters.web.doc.ReviewOpenAPI
 import br.com.seutempo.api.adapters.web.mapper.review.ReviewMapper
 import br.com.seutempo.api.adapters.web.model.request.review.CreateReviewRequest
+import br.com.seutempo.api.adapters.web.model.response.review.RatingResponse
 import br.com.seutempo.api.adapters.web.model.response.review.ReviewResponse
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
@@ -53,4 +54,9 @@ class RestReviewsController(
         val reviews = reviewUseCase.findReviewByProfessionalId(id)
         return reviews.map { reviewMapper.toResponse(it) }
     }
+
+    @GetMapping("rating/professional/{id}")
+    override fun findRatingByProfessionalId(
+        @PathVariable id: Int,
+    ): RatingResponse = reviewUseCase.findRatingByProfessionalId(id)
 }
