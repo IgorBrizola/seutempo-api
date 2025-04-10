@@ -41,8 +41,6 @@ class RestReviewsController(
 
         val review = reviewMapper.createReviewToReview(createReview)
 
-        val reviewCreate = reviewUseCase.createReview(review)
-
-        return reviewMapper.toResponse(reviewCreate)
+        return reviewMapper.toResponse(reviewUseCase.createReview(review))
     }
 }
