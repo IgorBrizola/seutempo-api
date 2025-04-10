@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.proxy.HibernateProxy
-import java.time.LocalDateTime
 
 @Entity
 @Table(name = "posts")
@@ -25,9 +24,6 @@ open class PostsEntity {
 
     @Column(name = "img_url", nullable = false)
     open var imgUrl: String? = null
-
-    @Column(name = "created_at", nullable = false)
-    open var createdAt: LocalDateTime? = LocalDateTime.now()
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_professional", nullable = false)

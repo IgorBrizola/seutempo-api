@@ -37,3 +37,11 @@ spring:
       config:
         default:
           loggerLevel: full
+logging:
+  level:
+    root: INFO
+    org.springframework: WARN
+    org.hibernate: WARN
+    com.zaxxer.hikari: WARN
+    org.flywaydb: WARN
+    org.apache: WARN

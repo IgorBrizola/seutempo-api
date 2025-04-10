@@ -10,7 +10,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.proxy.HibernateProxy
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Entity
 @Table(name = "users")
@@ -46,9 +45,6 @@ open class UsersEntity {
 
     @Column(name = "date_anniversary", nullable = false)
     open var dateAnniversary: LocalDate? = null
-
-    @Column(name = "created_at", nullable = false)
-    open var createdAt: LocalDateTime? = LocalDateTime.now()
 
     @Column(name = "type_user", nullable = false)
     @Enumerated(value = EnumType.STRING)

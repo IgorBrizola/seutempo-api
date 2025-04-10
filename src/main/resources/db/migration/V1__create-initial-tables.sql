@@ -9,7 +9,7 @@ CREATE TABLE users (
     phone VARCHAR(20) NOT NULL,
     photo_user VARCHAR(255),
     date_anniversary DATE NOT NULL,
-    created_at DATETIME2 NOT NULL,
+    created_at DATETIME2 DEFAULT GETDATE(),
     type_user VARCHAR(50) NOT NULL,
     active BIT NOT NULL);
 
@@ -68,10 +68,21 @@ CREATE TABLE users (
           id INT PRIMARY KEY IDENTITY,
           title VARCHAR(255) NOT NULL,
           img_url VARCHAR(MAX),
-          created_at DATETIME2,
+          created_at DATETIME2 DEFAULT GETDATE(),
           id_professional INT NOT NULL,
           FOREIGN KEY (id_professional) REFERENCES professional(id)
       )
+
+      CREATE TABLE reviews (
+          id INT IDENTITY PRIMARY KEY,
+          id_client INT NOT NULL,
+          id_professional INT NOT NULL,
+          rating INT CHECK (rating BETWEEN 0 AND 5) NOT NULL,
+          comment TEXT,
+          created_at DATETIME2 DEFAULT GETDATE(),
+          FOREIGN KEY (id_client) REFERENCES client(id),
+          FOREIGN KEY (id_professional) REFERENCES professional(id)
+      );
 
 
     CREATE SPATIAL INDEX idx_professional_location

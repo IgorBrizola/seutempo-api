@@ -2,7 +2,6 @@ package br.com.seutempo.api.core.domain.model.users
 
 import br.com.seutempo.api.adapters.repository.model.TypeUser
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 data class Users(
     val id: Int?,
@@ -15,7 +14,6 @@ data class Users(
     val phone: String,
     val photoUser: String?,
     val dateAnniversary: LocalDate,
-    val createdAt: LocalDateTime,
     val typeUser: TypeUser,
     val active: Boolean,
 )

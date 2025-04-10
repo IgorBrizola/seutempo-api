@@ -1,17 +1,15 @@
 package br.com.seutempo.api.adapters.web.mapper.client
 
 import br.com.seutempo.api.adapters.repository.model.ClientEntity
-import br.com.seutempo.api.adapters.repository.model.UsersEntity
+import br.com.seutempo.api.adapters.web.mapper.users.UsersMapper
 import br.com.seutempo.api.adapters.web.model.request.client.NewClientRequest
 import br.com.seutempo.api.adapters.web.model.request.client.UpdateAddressClientRequest
 import br.com.seutempo.api.adapters.web.model.request.client.UpdateClientRequest
-import br.com.seutempo.api.adapters.web.model.response.client.AddressClientResponse
 import br.com.seutempo.api.adapters.web.model.response.client.ClientResponse
 import br.com.seutempo.api.core.domain.model.client.Client
 import br.com.seutempo.api.core.domain.model.client.request.CreateClient
 import br.com.seutempo.api.core.domain.model.client.request.UpdateAddressClient
 import br.com.seutempo.api.core.domain.model.client.request.UpdateClient
-import br.com.seutempo.api.core.domain.model.users.Users
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
@@ -20,16 +18,11 @@ import org.mapstruct.ReportingPolicy
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
     componentModel = MappingConstants.ComponentModel.SPRING,
+    uses = [UsersMapper::class],
 )
 interface ClientMapper {
-    fun usersClientRequestToUsers(newClientRequest: NewClientRequest): Users
-
-    fun toUserEntity(user: Users): UsersEntity
-
     @Mapping(source = "user", target = "user")
     fun toClientEntity(client: Client): ClientEntity
-
-    fun toAddressResponse(clientEntity: ClientEntity): AddressClientResponse
 
     fun toDomain(clientEntity: ClientEntity): Client
 
@@ -42,7 +35,6 @@ interface ClientMapper {
     @Mapping(source = "cpf", target = "user.cpf")
     @Mapping(source = "phone", target = "user.phone")
     @Mapping(source = "typeUser", target = "user.typeUser")
-    @Mapping(source = "createdAt", target = "user.createdAt")
     @Mapping(source = "active", target = "user.active")
     @Mapping(source = "dateAnniversary", target = "user.dateAnniversary")
     @Mapping(source = "address.cep", target = "cep")

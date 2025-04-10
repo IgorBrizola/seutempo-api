@@ -4,7 +4,6 @@ import br.com.seutempo.api.adapters.repository.model.TypeUser
 import io.swagger.v3.oas.annotations.media.Schema
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 data class NewProfessionalRequest(
     @Schema(defaultValue = "Igor")
@@ -35,8 +34,6 @@ data class NewProfessionalRequest(
     val serviceRadiusKm: Int,
     @Schema(hidden = true)
     val typeUser: TypeUser = TypeUser.PROFESSIONAL,
-    @Schema(hidden = true)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
     @Schema(hidden = true)
     val active: Boolean = true,
 )
