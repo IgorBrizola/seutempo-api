@@ -31,7 +31,8 @@ interface ReviewsJpaRepository : JpaRepository<ReviewEntity, Int> {
         """
     SELECT new $RANK_RESPONSE(
         r.professional.id,
-        AVG(r.rating)
+        AVG(r.rating),
+        COALESCE(COUNT(r.id), 0)
     )
     FROM ReviewEntity r
     GROUP BY r.professional.id

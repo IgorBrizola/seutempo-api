@@ -38,6 +38,7 @@ class ManageReviewsRepository(
                         professionalOutputPort.findById(item.professionalId),
                     ),
                 rating = item.rating,
+                totalReviews = item.totalReviews,
             )
         }
     }

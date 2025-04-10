@@ -5,4 +5,5 @@ import br.com.seutempo.api.adapters.web.model.response.professional.Professional
 data class RankResponse(
     val professional: ProfessionalResponse,
     val rating: Double,
+    val totalReviews: Long,
 )

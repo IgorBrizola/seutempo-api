@@ -4,7 +4,6 @@ import br.com.seutempo.api.adapters.web.model.response.review.RankResponse
 import br.com.seutempo.api.adapters.web.model.response.review.RatingResponse
 import br.com.seutempo.api.core.domain.exceptions.BusinessException
 import br.com.seutempo.api.core.domain.model.review.Reviews
-import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import br.com.seutempo.api.core.ports.input.ManageReviewInputPort
 import br.com.seutempo.api.core.ports.output.ManageReviewsOutputPort
 import org.springframework.stereotype.Service
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service
 @Service
 class ManageReviewUseCase(
     private val reviewJpaRepository: ManageReviewsOutputPort,
-    private val professionalUseCase: ManageProfessionalInputPort,
 ) : ManageReviewInputPort {
     override fun createReview(reviews: Reviews): Reviews =
         if (reviews.rating <= 5) reviewJpaRepository.save(reviews) else throw BusinessException("Avaliação não pode ser maior que 5")
