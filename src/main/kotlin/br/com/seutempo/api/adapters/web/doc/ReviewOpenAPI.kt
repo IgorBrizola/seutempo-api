@@ -7,4 +7,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 @Tag(name = "review controller")
 interface ReviewOpenAPI {
     fun createReview(createReviewRequest: CreateReviewRequest): ReviewResponse
+
+    fun findReviewByProfessionalId(id: Int): List<ReviewResponse>
 }

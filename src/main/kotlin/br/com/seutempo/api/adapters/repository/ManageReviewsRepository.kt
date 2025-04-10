@@ -15,4 +15,9 @@ class ManageReviewsRepository(
         val reviewEntity = reviewMapper.toEntity(reviews)
         return reviewMapper.toDomain(reviewsJpaRepository.save(reviewEntity))
     }
+
+    override fun findByProfessionalId(id: Int): List<Reviews> {
+        val reviewEntity = reviewsJpaRepository.findByProfessionalId(id)
+        return reviewMapper.toListDomain(reviewEntity)
+    }
 }

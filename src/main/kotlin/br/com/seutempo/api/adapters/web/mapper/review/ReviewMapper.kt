@@ -22,6 +22,8 @@ import org.mapstruct.ReportingPolicy
 interface ReviewMapper {
     fun toDomain(reviewEntity: ReviewEntity): Reviews
 
+    fun toListDomain(reviewEntity: List<ReviewEntity>): List<Reviews>
+
     fun toEntity(reviews: Reviews): ReviewEntity
 
     fun toResponse(reviews: Reviews): ReviewResponse

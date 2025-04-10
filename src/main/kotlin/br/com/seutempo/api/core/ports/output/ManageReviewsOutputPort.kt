@@ -4,4 +4,6 @@ import br.com.seutempo.api.core.domain.model.review.Reviews
 
 interface ManageReviewsOutputPort {
     fun save(reviews: Reviews): Reviews
+
+    fun findByProfessionalId(id: Int): List<Reviews>
 }

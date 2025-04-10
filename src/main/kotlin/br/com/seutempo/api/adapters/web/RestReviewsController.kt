@@ -8,6 +8,8 @@ import br.com.seutempo.api.core.ports.input.ManageClientInputPort
 import br.com.seutempo.api.core.ports.input.ManageProfessionalInputPort
 import br.com.seutempo.api.core.ports.input.ManageReviewInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -42,5 +44,13 @@ class RestReviewsController(
         val review = reviewMapper.createReviewToReview(createReview)
 
         return reviewMapper.toResponse(reviewUseCase.createReview(review))
+    }
+
+    @GetMapping("professional/{id}")
+    override fun findReviewByProfessionalId(
+        @PathVariable id: Int,
+    ): List<ReviewResponse> {
+        val reviews = reviewUseCase.findReviewByProfessionalId(id)
+        return reviews.map { reviewMapper.toResponse(it) }
     }
 }

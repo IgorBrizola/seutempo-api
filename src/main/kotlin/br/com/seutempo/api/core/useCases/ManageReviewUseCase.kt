@@ -12,4 +12,6 @@ class ManageReviewUseCase(
 ) : ManageReviewInputPort {
     override fun createReview(reviews: Reviews): Reviews =
         if (reviews.rating <= 5) reviewJpaRepository.save(reviews) else throw BusinessException("Avaliação não pode ser maior que 5")
+
+    override fun findReviewByProfessionalId(id: Int): List<Reviews> = reviewJpaRepository.findByProfessionalId(id)
 }
