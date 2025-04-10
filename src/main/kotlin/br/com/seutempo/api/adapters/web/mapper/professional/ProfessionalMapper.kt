@@ -1,12 +1,11 @@
 package br.com.seutempo.api.adapters.web.mapper.professional
 
 import br.com.seutempo.api.adapters.repository.model.ProfessionalEntity
-import br.com.seutempo.api.adapters.repository.model.SpecialtyEntity
+import br.com.seutempo.api.adapters.web.mapper.specialty.SpecialtyMapper
 import br.com.seutempo.api.adapters.web.model.request.professional.NewProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateAddressProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.request.professional.UpdateProfessionalRequest
 import br.com.seutempo.api.adapters.web.model.response.professional.ProfessionalResponse
-import br.com.seutempo.api.adapters.web.model.response.specialty.SpecialtyResponse
 import br.com.seutempo.api.core.domain.model.professional.Professional
 import br.com.seutempo.api.core.domain.model.professional.request.CreateProfessional
 import br.com.seutempo.api.core.domain.model.professional.request.UpdateLocation
@@ -21,17 +20,10 @@ import org.mapstruct.ReportingPolicy
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
     componentModel = MappingConstants.ComponentModel.SPRING,
+    uses = [SpecialtyMapper::class],
 )
 interface ProfessionalMapper {
     fun professionalToNewUsersProfessionalRequest(professionalEntity: ProfessionalEntity): NewProfessionalRequest
-
-    @Mapping(source = "category", target = "categoryEntity")
-    @Mapping(source = "category.categoryId", target = "categoryEntity.id")
-    fun specialtyToSpecialtyEntity(specialty: Specialty): SpecialtyEntity
-
-    @Mapping(source = "categoryEntity", target = "category")
-    @Mapping(source = "categoryEntity.id", target = "category.categoryId")
-    fun specialtyToSpecialtyEntity(specialty: SpecialtyEntity): Specialty
 
     @Mapping(source = "user", target = "user")
     fun toEntity(professional: Professional): ProfessionalEntity
@@ -48,11 +40,6 @@ interface ProfessionalMapper {
         createProfessional: CreateProfessional,
         specialties: List<Specialty>,
     ): Professional
-
-    @Mapping(source = "categoryEntity.nameCategory", target = "nameCategory")
-    fun toSpecialtyResponse(specialties: SpecialtyEntity): SpecialtyResponse
-
-    fun toSpecialtyListResponse(specialties: List<SpecialtyEntity>): List<SpecialtyResponse>
 
     @Mapping(source = "user", target = "user")
     @Mapping(source = "professional.id", target = "id")
