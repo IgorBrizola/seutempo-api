@@ -3,6 +3,7 @@ package br.com.seutempo.api.adapters.web
 import br.com.seutempo.api.adapters.web.doc.ReviewOpenAPI
 import br.com.seutempo.api.adapters.web.mapper.review.ReviewMapper
 import br.com.seutempo.api.adapters.web.model.request.review.CreateReviewRequest
+import br.com.seutempo.api.adapters.web.model.response.review.RankResponse
 import br.com.seutempo.api.adapters.web.model.response.review.RatingResponse
 import br.com.seutempo.api.adapters.web.model.response.review.ReviewResponse
 import br.com.seutempo.api.core.ports.input.ManageClientInputPort
@@ -48,6 +49,7 @@ class RestReviewsController(
     }
 
     @GetMapping("professional/{id}")
+    @ResponseStatus(HttpStatus.OK)
     override fun findReviewByProfessionalId(
         @PathVariable id: Int,
     ): List<ReviewResponse> {
@@ -56,7 +58,12 @@ class RestReviewsController(
     }
 
     @GetMapping("rating/professional/{id}")
+    @ResponseStatus(HttpStatus.OK)
     override fun findRatingByProfessionalId(
         @PathVariable id: Int,
     ): RatingResponse = reviewUseCase.findRatingByProfessionalId(id)
+
+    @GetMapping("ranking/professional")
+    @ResponseStatus(HttpStatus.OK)
+    override fun findRankByRatingProfessional(): List<RankResponse> = reviewUseCase.findRankByRatingProfessional()
 }
